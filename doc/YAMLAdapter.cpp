@@ -43,5 +43,5 @@ DocElement *YAMLAdapter::parseDoc(FILE *fin) {
     yaml_parser_delete(&parser);
 
     fclose(fin);
-    
+
 }
