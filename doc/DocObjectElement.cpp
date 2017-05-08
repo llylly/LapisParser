@@ -4,7 +4,9 @@
 
 #include "DocObjectElement.h"
 
-DocObjectElement::DocObjectElement(int level) {
+DocObjectElement::DocObjectElement(int line, int col, int level) {
+    this->line = line;
+    this->col = col;
     this->type = DOC_OBJECT;
     this->level = level;
 }

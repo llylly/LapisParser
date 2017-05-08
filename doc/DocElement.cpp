@@ -4,4 +4,4 @@
 
 #include "DocElement.h"
 
-std::vector <DocElement*> DocElement::docs;
+map <string, DocElement*> DocElement::docs;

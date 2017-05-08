@@ -1,5 +1,4 @@
 #include <iostream>
-#include "parser/libyaml/yaml.h"
 #include "doc/DocElement.h"
 #include "doc/YAMLAdapter.h"
 
@@ -9,7 +8,11 @@ int main() {
     FILE *fin = fopen("input.yaml", "r");
     DocElement *root = YAMLAdapter::parseDoc(fin);
     fclose(fin);
-    DocElement::docs.push_back(root);
+    if (Error::hasError()) {
+        Error::printError(cerr);
+        return 0;
+    }
+    DocElement::docs[string("input.yaml")] = root;
     root->printTo(cout);
     return 0;
 }

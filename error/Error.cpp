@@ -19,6 +19,6 @@ void Error::printError(std::ostream &os) {
             ite != Error::errorPool.end();
             ++ite) {
         Error *cur = *ite;
-        os << "(Line: " << cur->line << " Col: " << cur->col << " " << cur->msg << std::endl;
+        os << "(Line: " << cur->line << " Col: " << cur->col << ") " << cur->msg << std::endl;
     }
 }

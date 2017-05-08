@@ -10,7 +10,7 @@
 
 class DocSequenceElement: public DocElement {
 public:
-    DocSequenceElement(int level = 0);
+    DocSequenceElement(int line, int col, int level = 0);
     void add(DocElement *ele);
     DocElement *get(int index);
     int getLength();

@@ -10,7 +10,7 @@
 
 class DocObjectElement: public DocElement {
 public:
-    DocObjectElement(int level = 0);
+    DocObjectElement(int line, int col, int level = 0);
     void add(std::string key, DocElement *ele);
     DocElement *get(std::string key);
     int getSize();

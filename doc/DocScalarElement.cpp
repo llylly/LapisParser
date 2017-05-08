@@ -4,7 +4,9 @@
 
 #include "DocScalarElement.h"
 
-DocScalarElement::DocScalarElement(std::string _value, int level) {
+DocScalarElement::DocScalarElement(int line, int col, std::string _value, int level) {
+    this->line = line;
+    this->col = col;
     this->type = DOC_SCALAR;
     this->level = level;
     this->value = _value;

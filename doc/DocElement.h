@@ -6,7 +6,7 @@
 #define VPARSER_DOCELEMENT_H
 
 #include <string>
-#include <vector>
+#include <map>
 #include <iostream>
 
 using namespace std;
@@ -20,9 +20,11 @@ public:
     DOC_ELEMENT_TYPE type;
     int level;
 
+    int line, col;
+
     virtual void printTo(std::ostream &os) = 0;
 
-    static std::vector<DocElement*> docs;
+    static map<string, DocElement*> docs;
 };
 
 

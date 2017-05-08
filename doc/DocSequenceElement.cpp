@@ -4,7 +4,9 @@
 
 #include "DocSequenceElement.h"
 
-DocSequenceElement::DocSequenceElement(int level) {
+DocSequenceElement::DocSequenceElement(int line, int col, int level) {
+    this->line = line;
+    this->col = col;
     this->type = DOC_SEQUENCE;
     this->level = level;
 }
@@ -30,8 +32,6 @@ void DocSequenceElement::printTo(std::ostream &os) {
     for (std::vector<DocElement*>::iterator ite = this->arr.begin();
             ite != this->arr.end();
             ++ite) {
-        for (int i=0; i<=level; ++i) os << "  ";
-        os << endl;
         (*ite)->printTo(os);
     }
 }
