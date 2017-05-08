@@ -5,3 +5,5 @@
 #include "DocElement.h"
 
 map <string, DocElement*> DocElement::docs;
+
+DocElement::~DocElement() { }

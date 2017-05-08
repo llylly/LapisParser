@@ -35,3 +35,11 @@ void DocSequenceElement::printTo(std::ostream &os) {
         (*ite)->printTo(os);
     }
 }
+
+DocSequenceElement::~DocSequenceElement() {
+    for (vector<DocElement*>::iterator ite = this->arr.begin();
+            ite != this->arr.end();
+            ++ite) {
+        delete *ite;
+    }
+}

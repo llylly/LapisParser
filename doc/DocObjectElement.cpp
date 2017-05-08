@@ -38,3 +38,10 @@ void DocObjectElement::printTo(std::ostream &os) {
         ite->second->printTo(os);
     }
 }
+
+DocObjectElement::~DocObjectElement() {
+    for (map<std::string, DocElement*>::iterator ite = this->member.begin();
+            ite != this->member.end(); ++ite) {
+        delete ite->second;
+    }
+}

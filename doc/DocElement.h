@@ -19,10 +19,10 @@ class DocElement {
 public:
     DOC_ELEMENT_TYPE type;
     int level;
-
     int line, col;
 
     virtual void printTo(std::ostream &os) = 0;
+    ~DocElement();
 
     static map<string, DocElement*> docs;
 };

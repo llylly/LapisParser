@@ -12,6 +12,7 @@ public:
     DocScalarElement(int line, int col, std::string _value, int level = 0);
     std::string getValue();
     void printTo(std::ostream &os) override;
+    ~DocScalarElement();
 
 private:
     std::string value;

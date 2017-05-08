@@ -15,6 +15,7 @@ public:
     DocElement *get(int index);
     int getLength();
     void printTo(std::ostream &os) override;
+    ~DocSequenceElement();
 
 private:
     std::vector<DocElement*> arr;

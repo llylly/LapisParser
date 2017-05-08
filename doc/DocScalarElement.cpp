@@ -21,3 +21,5 @@ void DocScalarElement::printTo(std::ostream &os) {
         os << "  ";
     os << value << endl;
 }
+
+DocScalarElement::~DocScalarElement() {}

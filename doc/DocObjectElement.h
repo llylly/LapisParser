@@ -15,6 +15,7 @@ public:
     DocElement *get(std::string key);
     int getSize();
     void printTo(std::ostream &os) override;
+    ~DocObjectElement();
 
 private:
     std::map<std::string, DocElement*> member;
