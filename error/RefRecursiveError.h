@@ -10,6 +10,7 @@
 class RefRecursiveError: public Error {
 public:
     RefRecursiveError(int _line, int _col) {
+        this->fileName = curFileName;
         this->line = _line;
         this->col = _col;
         this->errorType = REF_RECURSIVE_ERROR;

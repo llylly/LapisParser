@@ -10,6 +10,7 @@
 class XMLFormatError: public Error {
 public:
     XMLFormatError(int _line, int _col) {
+        this->fileName = curFileName;
         this->line = _line;
         this->col = _col;
         this->errorType = XML_FORMAT_ERROR;

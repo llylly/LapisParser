@@ -10,6 +10,7 @@
 class RefNotFoundError: public Error {
 public:
     RefNotFoundError(int _line, int _col) {
+        this->fileName = Error::curFileName;
         this->line = _line;
         this->col = _col;
         this->errorType = REF_NOT_FOUND_ERROR;

@@ -10,6 +10,7 @@
 class YAMLFormatError: public Error {
 public:
     YAMLFormatError(int _line, int _col) {
+        this->fileName = curFileName;
         this->line = _line;
         this->col = _col;
         this->errorType = YAML_FORMAT_ERROR;

@@ -10,6 +10,7 @@
 class YAMLParserInitError: public Error {
 public:
     YAMLParserInitError(int _line, int _col) {
+        this->fileName = curFileName;
         this->line = _line;
         this->col = _col;
         this->errorType = YAML_PARSER_INIT_ERROR;

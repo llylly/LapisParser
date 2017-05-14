@@ -28,6 +28,10 @@ int DocObjectElement::getSize() {
     return (int)this->member.size();
 }
 
+std::map<std::string, DocElement*> *DocObjectElement::getMemberMap() {
+    return &member;
+}
+
 void DocObjectElement::printTo(std::ostream &os) {
     for (int i=0; i<this->level; ++i) os << "  ";
     os << "[object]" << endl;

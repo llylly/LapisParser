@@ -6,10 +6,10 @@
 #include "../error/YAMLParserInitError.h"
 #include "../error/YAMLFormatError.h"
 #include "../parser/libyaml/yaml.h"
+#include "../error/YAMLEmitterInitError.h"
+#include "../error/YAMLEmitterError.h"
 
-DocElement *YAMLAdapter::parseDoc(FILE *fin) {
-
-    DocSequenceElement *d = NULL;
+DocElement *YAMLAdapter::parseDoc(const char *fileName) {
 
     yaml_parser_t parser;
     yaml_event_t event;
@@ -19,11 +19,14 @@ DocElement *YAMLAdapter::parseDoc(FILE *fin) {
 
     bool done = false;
 
+    FILE *fin = NULL;
+
     if (!yaml_parser_initialize(&parser)) {
         Error::addError(new YAMLParserInitError(1, 1));
         goto error;
         return NULL;
     }
+    fin = fopen(fileName, "r");
     yaml_parser_set_input_file(&parser, fin);
 
     while (!done) {
@@ -33,7 +36,6 @@ DocElement *YAMLAdapter::parseDoc(FILE *fin) {
         }
         switch (event.type) {
             case YAML_STREAM_START_EVENT:
-                d = new DocSequenceElement((int) parser.mark.line, (int) parser.mark.column);
                 break;
 
             case YAML_STREAM_END_EVENT:
@@ -45,7 +47,6 @@ DocElement *YAMLAdapter::parseDoc(FILE *fin) {
                     yaml_event_delete(&event);
                     goto error;
                 }
-                d->add(doc);
                 break;
 
             // Illegal States in this context
@@ -72,12 +73,14 @@ DocElement *YAMLAdapter::parseDoc(FILE *fin) {
     }
 
     yaml_parser_delete(&parser);
+    fclose(fin);
 
-    return d;
+    return doc;
 
 error:
-    if (d != NULL) delete d;
+    if (doc != NULL) delete doc;
     yaml_parser_delete(&parser);
+    fclose(fin);
     return NULL;
     
 }
@@ -367,4 +370,197 @@ void YAMLAdapter::addFormatErrorFromParser(yaml_parser_t& parser) {
         err->msg = string(parser.problem);
         Error::addError(err);
     }
+}
+
+int YAMLAdapter::saveFile(const char *fileName, DocElement *root) {
+    yaml_emitter_t emitter;
+    yaml_event_t event;
+    FILE *out = NULL;
+
+    if (!yaml_emitter_initialize(&emitter)) {
+        Error::addError(new YAMLEmitterInitError(1, 1));
+        goto err;
+
+    }
+
+    out = fopen(fileName, "wb");
+    if (out == NULL)
+        goto err;
+
+    yaml_emitter_set_output_file(&emitter, out);
+    yaml_emitter_set_encoding(&emitter, YAML_UTF8_ENCODING);
+
+    if (!yaml_stream_start_event_initialize(&event, YAML_UTF8_ENCODING)) {
+        YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+        err->msg = "Emitter start event initialize error.";
+        Error::addError(err);
+        goto err;
+    }
+
+    if (!yaml_emitter_emit(&emitter, &event)) {
+        YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+        err->msg = "Emitter start event emit error.";
+        Error::addError(err);
+        goto err;
+    }
+
+    if (!yaml_document_start_event_initialize(&event, NULL, NULL, NULL, true)) {
+        YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+        err->msg = "Emitter document start event initialize error.";
+        Error::addError(err);
+        goto err;
+    }
+
+    if (!yaml_emitter_emit(&emitter, &event)) {
+        YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+        err->msg = "Emitter document start event emit error.";
+        Error::addError(err);
+        goto err;
+    }
+
+    // ----- Main Start ------
+
+    if (emitObject(&emitter, &event, root)) goto err;
+
+    // ----- Main End -----
+
+    if (!yaml_document_end_event_initialize(&event, true)) {
+        YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+        err->msg = "Emitter document end event initialize error.";
+        Error::addError(err);
+        goto err;
+    }
+
+    if (!yaml_emitter_emit(&emitter, &event)) {
+        YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+        err->msg = "Emitter document end event emit error.";
+        Error::addError(err);
+        goto err;
+    }
+
+    if (!yaml_stream_end_event_initialize(&event)) {
+        YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+        err->msg = "Emitter end event initialize error.";
+        Error::addError(err);
+        goto err;
+    }
+
+    if (!yaml_emitter_emit(&emitter, &event)) {
+        YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+        err->msg = "Emitter end event emit error.";
+        Error::addError(err);
+        goto err;
+    }
+
+err:
+    if (out != NULL) fclose(out);
+    yaml_emitter_delete(&emitter);
+    return -1;
+}
+
+int YAMLAdapter::emitObject(yaml_emitter_t *emitter, yaml_event_t *event, DocElement *ele) {
+    if (ele->type == DOC_SCALAR) {
+        if (!yaml_scalar_event_initialize(event, NULL, NULL,
+                                     (yaml_char_t*)((DocScalarElement*)ele)->getValue().c_str(),
+                                     (int)((DocScalarElement*)ele)->getValue().length(),
+                                     true, true, YAML_ANY_SCALAR_STYLE)) {
+            YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+            err->msg = "Scalar emit initialize error.";
+            Error::addError(err);
+            return -1;
+        }
+        if (!yaml_emitter_emit(emitter, event)) {
+            YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+            err->msg = "Scalar emit error.";
+            Error::addError(err);
+            return -1;
+        }
+    }
+    if (ele->type == DOC_SEQUENCE) {
+        if (!yaml_sequence_start_event_initialize(event, NULL, NULL, true, YAML_ANY_SEQUENCE_STYLE)) {
+            YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+            err->msg = "Sequence start emit initialize error.";
+            Error::addError(err);
+            return -1;
+        }
+        if (!yaml_emitter_emit(emitter, event)) {
+            YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+            err->msg = "Sequence start emit error.";
+            Error::addError(err);
+            return -1;
+        }
+
+        DocSequenceElement *now = (DocSequenceElement*)ele;
+        int len = now->getLength();
+        for (int i=0; i<len; ++i) {
+            DocElement *cur = now->get(i);
+            if (emitObject(emitter, event, cur)) return -1;
+        }
+
+        if (!yaml_sequence_end_event_initialize(event)) {
+            YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+            err->msg = "Sequence end emit initialize error.";
+            Error::addError(err);
+            return -1;
+        }
+        if (!yaml_emitter_emit(emitter, event)) {
+            YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+            err->msg = "Sequence end emit error.";
+            Error::addError(err);
+            return -1;
+        }
+    }
+    if (ele->type == DOC_OBJECT) {
+        if (!yaml_mapping_start_event_initialize(event, NULL, NULL, true, YAML_ANY_MAPPING_STYLE)) {
+            YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+            err->msg = "Mapping start emit initialize error.";
+            Error::addError(err);
+            return -1;
+        }
+        if (!yaml_emitter_emit(emitter, event)) {
+            YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+            err->msg = "Mapping start emit error.";
+            Error::addError(err);
+            return -1;
+        }
+
+        DocObjectElement *now = (DocObjectElement*)ele;
+        map<string, DocElement*> *map = now->getMemberMap();
+        for (std::map<std::string, DocElement*>::iterator ite = map->begin(); ite != map->end(); ++ite) {
+            // key
+
+            if (!yaml_scalar_event_initialize(event, NULL, NULL,
+                                              (yaml_char_t*)ite->first.c_str(),
+                                              (int)(ite->first.length()),
+                                              true, true, YAML_ANY_SCALAR_STYLE)) {
+                YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+                err->msg = "Mapping key emit initialize error.";
+                Error::addError(err);
+                return -1;
+            }
+            if (!yaml_emitter_emit(emitter, event)) {
+                YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+                err->msg = "Mapping key emit error.";
+                Error::addError(err);
+                return -1;
+            }
+
+            // value
+            if (emitObject(emitter, event, ite->second)) return -1;
+        }
+
+        if (!yaml_mapping_end_event_initialize(event)) {
+            YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+            err->msg = "Mapping end emit initialize error.";
+            Error::addError(err);
+            return -1;
+        }
+        if (!yaml_emitter_emit(emitter, event)) {
+            YAMLEmitterError *err = new YAMLEmitterError(1, 1);
+            err->msg = "Mapping end emit error.";
+            Error::addError(err);
+            return -1;
+        }
+    }
+    return 0;
 }

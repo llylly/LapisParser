@@ -12,13 +12,14 @@ class RefExpand {
 public:
     void work();
 
-    void visitor(DocElement *ele);
+    bool visitor(DocElement *ele);
 
     DocElement *finder(string path);
 
 private:
     vector<string> pathStack;
     vector<DocElement*> eleStack;
+    string curFile;
 };
 
 

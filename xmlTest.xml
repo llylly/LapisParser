@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<root>
+    <food nodeType="array">
+        <food>
+            <name value="Belgian Waffles" />
+            <price value="$5.95" />
+            <description value="Two of our famous Belgian Waffles with plenty of real maple syrup"></description>
+            <calories>650</calories>
+        </food>
+
+    </food>
+</root>
