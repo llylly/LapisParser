@@ -7,8 +7,12 @@ set(SOURCE_FILES main.cpp error/Error.cpp error/Error.h error/YAMLFormatError.cp
 
 add_executable(VParser ${SOURCE_FILES})
 
+add_library(VParserPy ${SOURCE_FILES})
+
 link_libraries(parser/libyaml/)
 target_link_libraries(VParser yaml)
+target_link_libraries(VParserPy yaml)
 
 link_libraries(parser/libxml/)
 target_link_libraries(VParser xml2)
+target_link_libraries(VParserPy xml2)

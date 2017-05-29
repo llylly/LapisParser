@@ -24,3 +24,7 @@ void Error::printError(std::ostream &os) {
         os << "(File: " << cur->fileName << " Line: " << cur->line << " Col: " << cur->col << ") " << cur->msg << std::endl;
     }
 }
+
+std::vector<Error*> *Error::getErrors() {
+    return &errorPool;
+}

@@ -34,6 +34,8 @@ public:
     static bool hasError();
     static void printError(std::ostream &os);
 
+    static std::vector<Error*> *getErrors();
+
 private:
     static std::vector<Error*> errorPool;
 };
