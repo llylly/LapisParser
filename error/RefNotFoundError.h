@@ -17,6 +17,14 @@ public:
         this->msg = "Illegal path of reference object.";
     }
 
+    RefNotFoundError(std::string _fileName, int _line, int _col) {
+        this->fileName = _fileName;
+        this->line = _line;
+        this->col = _col;
+        this->errorType = REF_NOT_FOUND_ERROR;
+        this->msg = "Illegal path of reference object.";
+    }
+
 };
 
 

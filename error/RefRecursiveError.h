@@ -14,7 +14,15 @@ public:
         this->line = _line;
         this->col = _col;
         this->errorType = REF_RECURSIVE_ERROR;
-        this->msg = "Recursive Reference.";
+        this->msg = "Recursion too match when parsing references. Maybe there are some infinite recursive references.";
+    }
+
+    RefRecursiveError(std::string _fileName, int _line, int _col) {
+            this->fileName = _fileName;
+            this->line = _line;
+            this->col = _col;
+            this->errorType = REF_RECURSIVE_ERROR;
+            this->msg = "Recursion too match when parsing references. Maybe there are some infinite recursive references.";
     }
 };
 

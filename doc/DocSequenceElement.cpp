@@ -22,6 +22,13 @@ DocElement *DocSequenceElement::get(int index) {
         return NULL;
 }
 
+DocElement **DocSequenceElement::editGet(int index) {
+    if ((index >= 0) && (index < this->arr.size()))
+        return &((this->arr)[index]);
+    else
+        return NULL;
+}
+
 int DocSequenceElement::getLength() {
     return (int)this->arr.size();
 }

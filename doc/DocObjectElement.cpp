@@ -24,6 +24,13 @@ DocElement *DocObjectElement::get(std::string key) {
         return this->member[key];
 }
 
+DocElement **DocObjectElement::editGet(std::string key) {
+    if (this->member.find(key) == this->member.end())
+        return NULL;
+    else
+        return &(this->member[key]);
+}
+
 int DocObjectElement::getSize() {
     return (int)this->member.size();
 }

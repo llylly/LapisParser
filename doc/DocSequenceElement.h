@@ -13,6 +13,7 @@ public:
     DocSequenceElement(int line, int col, int level = 0);
     void add(DocElement *ele);
     DocElement *get(int index);
+    DocElement **editGet(int index);
     int getLength();
     void printTo(std::ostream &os) override;
     ~DocSequenceElement();

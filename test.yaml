@@ -1,0 +1,21 @@
+x-vee: 2.0 AS
+swagger: 2.0
+schemes:
+  - http
+  - https
+consumes:
+  - text/plain; charset=utf-8
+  - application/json
+produces:
+  - text/plain; charset=utf-8
+  - application/json
+tags:
+  - name: test1
+    description: so it's not true
+  - name: oss
+    description: ossgroup
+    externalDocs:
+      url: aliyun.com
+externalDocs:
+  url: aliyun.com
+  description: it's an APIs script from aliyun

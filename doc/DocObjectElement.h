@@ -13,6 +13,7 @@ public:
     DocObjectElement(int line, int col, int level = 0);
     void add(std::string key, DocElement *ele);
     DocElement *get(std::string key);
+    DocElement **editGet(std::string key);
     int getSize();
     std::map<std::string, DocElement*> *getMemberMap();
     void printTo(std::ostream &os) override;
