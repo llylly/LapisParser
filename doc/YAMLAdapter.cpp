@@ -451,6 +451,7 @@ int YAMLAdapter::saveFile(const char *fileName, DocElement *root) {
         Error::addError(err);
         goto err;
     }
+    return 0;
 
 err:
     if (out != NULL) fclose(out);

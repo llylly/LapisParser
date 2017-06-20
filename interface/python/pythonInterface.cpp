@@ -7,13 +7,15 @@
  * Module Name: LapisParser
  */
 
+extern "C" {
 #include "python2.7/Python.h"
-#include "../error/Error.h"
-#include "../doc/DocElement.h"
-#include "../doc/YAMLAdapter.h"
-#include "../doc/XMLAdapter.h"
-#include "../ref_expand/RefExpand.h"
-#include "../schema/Controller.h"
+}
+#include "../../error/Error.h"
+#include "../../doc/DocElement.h"
+#include "../../doc/YAMLAdapter.h"
+#include "../../doc/XMLAdapter.h"
+#include "../../ref_expand/RefExpand.h"
+#include "../../schema/Controller.h"
 
 enum CURRENT_STATE {
     START, PARSED, ERROR
@@ -26,6 +28,17 @@ enum FORMAT {
 CURRENT_STATE state;
 
 bool readFiles(int filec, char** filev, FORMAT format) {
+    //----- Clean all -----
+    for (map<string, DocElement*>::iterator ite = DocElement::docs.begin(); ite != DocElement::docs.end(); ++ite)
+        delete ite->second;
+    DocElement::docs.clear();
+
+    std::vector<Error*> *errs = Error::getErrors();
+    for (std::vector<Error*>::iterator ite = errs->begin(); ite != errs->end(); ++ite)
+        delete *ite;
+    errs->clear();
+
+
     //----- phase I -----
     for (int i=0; i<filec; ++i) {
         Error::curFileName = (std::string)(filev[i]);
@@ -153,7 +166,7 @@ PyObject* wrap_readXML(PyObject* self, PyObject* args) {
             return NULL;
     }
 
-    bool res = readFiles(len, fileList, YAML);
+    bool res = readFiles(len, fileList, XML);
 
     PyObject *ret = Py_BuildValue("i", !res);
     return ret;
@@ -223,6 +236,7 @@ static PyMethodDef LapisParserMethods[] = {
         {NULL, NULL}
 };
 
+extern "C"
 PyMODINIT_FUNC initLapisParser() {
     state = START;
     Py_InitModule("LapisParser", LapisParserMethods);
