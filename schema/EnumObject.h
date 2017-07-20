@@ -7,11 +7,15 @@
 
 #include <vector>
 #include "../doc/DocSequenceElement.h"
+#include "BaseObject.h"
 
 using namespace std;
 
-struct EnumObject {
+struct EnumObject: public BaseObject {
     vector<string> vec;
+
+public:
+    BaseDataObject* toDataObject() override;
 };
 
 struct EnumObjectFactory {

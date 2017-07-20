@@ -20,8 +20,8 @@
 using namespace std;
 
 /**
- * Managemenet of the Schema Object representation of input data
- * Transform doc representation to data schema class
+ * Management of the class representation of input data
+ * Transform doc representation to class
  */
 class Controller {
 

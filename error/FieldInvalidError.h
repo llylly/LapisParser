@@ -35,7 +35,7 @@ public:
         this->fileName = _fileName;
         this->line = _line;
         this->col = _col;
-        this->errorType = FIELD_MISS_ERROR;
+        this->errorType = FIELD_INVALID_ERROR;
         this->msg = "Field is invalid due to wrong format: \"" + _fieldName + "\". Format " + realStr + " found. " +
                 "Format " + expectedStr + " expected.";
     }

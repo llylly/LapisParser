@@ -6,8 +6,11 @@
 #define VPARSER_BASEOBJECT_H
 
 
-class BaseObject {
+struct BaseDataObject;
 
+class BaseObject {
+public:
+    virtual BaseDataObject* toDataObject() = 0;
 };
 
 

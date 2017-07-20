@@ -6,6 +6,14 @@
 #include "../error/FieldInvalidError.h"
 #include "../doc/DocScalarElement.h"
 #include "../error/FieldMissError.h"
+#include "../data/SequenceDataObject.h"
+#include "../data/ObjectDataObject.h"
+#include "../data/StringDataObject.h"
+
+TagItem::TagItem() {
+    this->hasDescription = false;
+    this->hasExternalDocObject = false;
+}
 
 TagsObject *TagsObjectFactory::create(string filePath, DocSequenceElement *ele) {
     TagsObject *obj = new TagsObject();
@@ -63,6 +71,20 @@ TagsObject *TagsObjectFactory::create(string filePath, DocSequenceElement *ele) 
             }
             obj->vec.push_back(tagItem);
         }
+    }
+    return obj;
+}
+
+BaseDataObject *TagsObject::toDataObject() {
+    SequenceDataObject *obj = new SequenceDataObject();
+    for (vector<TagItem>::iterator ite = vec.begin(); ite != vec.end(); ++ite) {
+        ObjectDataObject *objN = new ObjectDataObject();
+        (*objN)["name"] = new StringDataObject(ite->name);
+        if (ite->hasDescription)
+            (*objN)["description"] = new StringDataObject(ite->description);
+        if (ite->hasExternalDocObject)
+            (*objN)["externalDocObject"] = ite->externalDocObject.toDataObject();
+        obj->push(objN);
     }
     return obj;
 }

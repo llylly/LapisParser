@@ -242,7 +242,7 @@ void Controller::work() {
 }
 
 void Controller::printTo(std::ostream &os) {
-    os << "----- Grand Info -----" << endl;
+    os << "----- General Info -----" << endl;
     os << "Info:" << endl;
     os << "  title: " << infoObject->title << endl;
     if (infoObject->hasDescription)

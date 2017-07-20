@@ -5,6 +5,8 @@
 #include "EnumObject.h"
 #include "../error/FieldInvalidError.h"
 #include "../doc/DocScalarElement.h"
+#include "../data/SequenceDataObject.h"
+#include "../data/StringDataObject.h"
 
 EnumObject *EnumObjectFactory::create(string filePath, string nodeName, DocSequenceElement *ele) {
     EnumObject *obj = new EnumObject();
@@ -18,6 +20,14 @@ EnumObject *EnumObjectFactory::create(string filePath, string nodeName, DocSeque
             delete obj;
             return NULL;
         }
+    }
+    return obj;
+}
+
+BaseDataObject *EnumObject::toDataObject() {
+    SequenceDataObject *obj = new SequenceDataObject();
+    for (vector<string>::iterator ite = this->vec.begin(); ite != this->vec.end(); ++ite) {
+        obj->push(new StringDataObject(*ite));
     }
     return obj;
 }

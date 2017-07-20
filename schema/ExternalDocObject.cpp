@@ -7,6 +7,12 @@
 #include "../error/FieldInvalidError.h"
 #include "../error/FieldMissError.h"
 #include "../doc/DocScalarElement.h"
+#include "../data/ObjectDataObject.h"
+#include "../data/StringDataObject.h"
+
+ExternalDocObject::ExternalDocObject() {
+    this->hasDescription = false;
+}
 
 ExternalDocObject * ExternalDocObjectFactory::create(string filePath, string nodeName, DocObjectElement *ele) {
     ExternalDocObject *obj = new ExternalDocObject();
@@ -34,5 +40,13 @@ ExternalDocObject * ExternalDocObjectFactory::create(string filePath, string nod
             obj->description = ((DocScalarElement*)description)->getValue();
         }
     }
+    return obj;
+}
+
+BaseDataObject *ExternalDocObject::toDataObject() {
+    ObjectDataObject *obj = new ObjectDataObject();
+    (*obj)["url"] = new StringDataObject(this->url);
+    if (this->hasDescription)
+        (*obj)["description"] = new StringDataObject(this->description);
     return obj;
 }

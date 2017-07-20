@@ -9,6 +9,7 @@
 #include <vector>
 #include "ExternalDocObject.h"
 #include "../doc/DocSequenceElement.h"
+#include "BaseObject.h"
 
 using namespace std;
 
@@ -18,10 +19,15 @@ struct TagItem {
     string description;
     bool hasExternalDocObject;
     ExternalDocObject externalDocObject;
+
+    TagItem();
 };
 
-struct TagsObject {
+struct TagsObject: public BaseObject {
     vector<TagItem> vec;
+
+public:
+    BaseDataObject* toDataObject() override;
 };
 
 struct TagsObjectFactory {

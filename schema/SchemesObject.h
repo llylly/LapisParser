@@ -7,12 +7,17 @@
 
 #include "../doc/DocScalarElement.h"
 #include "../doc/DocSequenceElement.h"
+#include "BaseObject.h"
 
 enum SUPPORT_SCHEME {INVALID, HTTP, HTTPS};
 
-struct SchemesObject {
+struct SchemesObject: public BaseObject {
     bool http;
     bool https;
+
+public:
+    SchemesObject();
+    BaseDataObject* toDataObject() override;
 };
 
 struct SchemesObjectFactory {

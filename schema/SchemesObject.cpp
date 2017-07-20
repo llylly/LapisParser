@@ -7,6 +7,13 @@
 #include "../error/Error.h"
 #include "../error/FieldInvalidError.h"
 #include "../error/InvalidSchemeError.h"
+#include "../data/SequenceDataObject.h"
+#include "../data/StringDataObject.h"
+
+SchemesObject::SchemesObject() {
+    this->http = false;
+    this->https = false;
+}
 
 SchemesObject *SchemesObjectFactory::create(string filePath, DocSequenceElement *obj) {
     SchemesObject *schemes = new SchemesObject();
@@ -35,4 +42,13 @@ SchemesObject *SchemesObjectFactory::create(string filePath, DocSequenceElement 
         }
     }
     return schemes;
+}
+
+BaseDataObject *SchemesObject::toDataObject() {
+    SequenceDataObject *obj = new SequenceDataObject();
+    if (this->http)
+        obj->push(new StringDataObject("http"));
+    if (this->https)
+        obj->push(new StringDataObject("https"));
+    return obj;
 }

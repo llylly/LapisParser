@@ -7,8 +7,21 @@
 #include "../error/FieldMissError.h"
 #include "../doc/DocScalarElement.h"
 #include "../error/FieldInvalidError.h"
+#include "../data/ObjectDataObject.h"
+#include "../data/StringDataObject.h"
 
 using namespace std;
+
+InfoObject::InfoObject() {
+    this->hasDescription = false;
+    this->hasTermsOfService = false;
+    this->hasContact = false;
+    this->hasLicense = false;
+    this->contact.hasUrl = false;
+    this->contact.hasName = false;
+    this->contact.hasEmail = false;
+    this->license.hasUrl = false;
+}
 
 InfoObject *InfoObjectFactory::create(string filePath, DocObjectElement *obj) {
     InfoObject *info = new InfoObject();
@@ -145,4 +158,32 @@ InfoObject *InfoObjectFactory::create(string filePath, DocObjectElement *obj) {
     info->version = ((DocScalarElement*)versionEle)->getValue();
 
     return info;
+}
+
+BaseDataObject* InfoObject::toDataObject() {
+    ObjectDataObject *obj = new ObjectDataObject();
+    (*obj)["title"] = new StringDataObject(this->title);
+    if (this->hasDescription)
+        (*obj)["description"] = new StringDataObject(this->description);
+    if (this->hasTermsOfService)
+        (*obj)["termsOfService"] = new StringDataObject(this->termsOfService);
+    if (this->hasContact) {
+        ObjectDataObject *objC = new ObjectDataObject();
+        if (this->contact.hasName)
+            (*objC)["name"] = new StringDataObject(this->contact.name);
+        if (this->contact.hasUrl)
+            (*objC)["url"] = new StringDataObject(this->contact.url);
+        if (this->contact.hasEmail)
+            (*objC)["email"] = new StringDataObject(this->contact.email);
+        (*obj)["contact"] = objC;
+    }
+    if (this->hasLicense) {
+        ObjectDataObject *objL = new ObjectDataObject();
+        (*objL)["name"] = new StringDataObject(this->license.name);
+        if (this->license.hasUrl)
+            (*objL)["url"] = new StringDataObject(this->license.url);
+        (*obj)["license"] = objL;
+    }
+    (*obj)["version"] = new StringDataObject(this->version);
+    return obj;
 }

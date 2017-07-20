@@ -42,6 +42,10 @@ struct InfoObject: public BaseObject {
     bool hasLicense;
 
     string version;
+
+public:
+    InfoObject();
+    BaseDataObject* toDataObject() override;
 };
 
 struct InfoObjectFactory {

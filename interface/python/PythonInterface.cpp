@@ -7,25 +7,11 @@
  * Module Name: LapisParser
  */
 
-extern "C" {
-#include "python2.7/Python.h"
-}
-#include "../../error/Error.h"
-#include "../../doc/DocElement.h"
-#include "../../doc/YAMLAdapter.h"
-#include "../../doc/XMLAdapter.h"
-#include "../../ref_expand/RefExpand.h"
-#include "../../schema/Controller.h"
-
-enum CURRENT_STATE {
-    START, PARSED, ERROR
-};
-
-enum FORMAT {
-    YAML, XML
-};
+#include "PythonInterface.h"
 
 CURRENT_STATE state;
+
+Controller *controller;
 
 bool readFiles(int filec, char** filev, FORMAT format) {
     //----- Clean all -----
@@ -65,7 +51,7 @@ bool readFiles(int filec, char** filev, FORMAT format) {
     }
 
     //----- phase III -----
-    Controller *controller = new Controller();
+    controller = new Controller();
     controller->work();
     if (Error::hasError()) {
         state = ERROR;
@@ -80,13 +66,6 @@ std::vector<Error*> *getErrors() {
     return Error::getErrors();
 }
 
-/**
- * Translate stored doc to XML or YAML
- * But only translate the first doc in map now
- * @param path
- * @param format
- * @return true: succeed, false: failed
- */
 bool translate(char *path, FORMAT format) {
     if (state != PARSED) {
         return false;
@@ -108,30 +87,25 @@ bool translate(char *path, FORMAT format) {
     return true;
 }
 
-/**
- * Read YAML
- * @param self
- * @param args, contains filePath list
- * @return 0 - success, 1 - failed
- */
+
 PyObject* wrap_readYAML(PyObject* self, PyObject* args) {
     PyObject *pathList;
     if (!PyArg_ParseTuple(args, "O", &pathList))
-        return NULL;
+        return Py_None;
     if (!(PyList_CheckExact(pathList)))
-        return NULL;
+        return Py_None;
     Py_ssize_t len = PyList_Size(pathList);
 
     char **fileList = new char*[(int)len];
     for (Py_ssize_t i = 0; i < len; ++i) {
         PyObject *item = PyList_GetItem(pathList, i);
         if (!(PyString_CheckExact(item)))
-            return NULL;
+            return Py_None;
         Py_ssize_t nowlen = PyString_Size(item);
         fileList[(int)i] = new char[nowlen + 1];
         nowlen++;
         if (PyString_AsStringAndSize(item, &(fileList[(int)i]), &nowlen))
-            return NULL;
+            return Py_None;
     }
 
     bool res = readFiles(len, fileList, YAML);
@@ -140,30 +114,24 @@ PyObject* wrap_readYAML(PyObject* self, PyObject* args) {
     return ret;
 }
 
-/**
- * Read XML
- * @param self
- * @param args, contains filePath list
- * @return 0 - success, 1 - failed
- */
 PyObject* wrap_readXML(PyObject* self, PyObject* args) {
     PyObject *pathList;
     if (!PyArg_ParseTuple(args, "O", &pathList))
-        return NULL;
+        return Py_None;
     if (!(PyList_CheckExact(pathList)))
-        return NULL;
+        return Py_None;
     Py_ssize_t len = PyList_Size(pathList);
 
     char **fileList = new char*[(int)len];
     for (Py_ssize_t i = 0; i < len; ++i) {
         PyObject *item = PyList_GetItem(pathList, i);
         if (!(PyString_CheckExact(item)))
-            return NULL;
+            return Py_None;
         Py_ssize_t nowlen = PyString_Size(item);
         fileList[(int)i] = new char[nowlen + 1];
         nowlen++;
         if (PyString_AsStringAndSize(item, &(fileList[(int)i]), &nowlen))
-            return NULL;
+            return Py_None;
     }
 
     bool res = readFiles(len, fileList, XML);
@@ -172,12 +140,6 @@ PyObject* wrap_readXML(PyObject* self, PyObject* args) {
     return ret;
 }
 
-/**
- * Get parse errors
- * @param self
- * @param args, nothing needed
- * @return list, each item is a dict: {fileName: string, line: integer, col: integer, msg: string}
- */
 PyObject* wrap_getErrors(PyObject* self, PyObject* args) {
     std::vector<Error*> *errorsVec = getErrors();
     PyObject *res = PyList_New(errorsVec->size());
@@ -193,16 +155,10 @@ PyObject* wrap_getErrors(PyObject* self, PyObject* args) {
     return res;
 }
 
-/**
- * Translate internal doc to a YAML file
- * @param self
- * @param args, contains a filePath to be written to
- * @return 0 - success, 1 - failed
- */
 PyObject* wrap_translate2YAML(PyObject* self, PyObject* args) {
     char *filePath;
     if (!PyArg_ParseTuple(args, "s", &filePath))
-        return NULL;
+        return Py_None;
 
     bool res = translate(filePath, YAML);
 
@@ -210,21 +166,91 @@ PyObject* wrap_translate2YAML(PyObject* self, PyObject* args) {
     return ret;
 }
 
-/**
- * Translate internal doc to a XML file
- * @param self
- * @param args, contains a filePath to be written to
- * @return 0 - success, 1 - failed
- */
 PyObject* wrap_translate2XML(PyObject* self, PyObject* args) {
     char *filePath;
     if (!PyArg_ParseTuple(args, "s", &filePath))
-        return NULL;
+        return Py_None;
 
     bool res = translate(filePath, XML);
 
     PyObject *ret = Py_BuildValue("i", !res);
     return ret;
+}
+
+PyObject *wrap_getInfo(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return NULL;
+    BaseDataObject *dataObject = controller->infoObject->toDataObject();
+    PyObject *py = DataObjectAdapter::fromDataObject(dataObject);
+    delete dataObject;
+    return py;
+}
+
+PyObject *wrap_getHost(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    return PyString_FromString(controller->host.c_str());
+}
+
+PyObject *wrap_getBasePath(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    return PyString_FromString(controller->basePath.c_str());
+}
+
+PyObject *wrap_getSchemes(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    if (controller->schemes == NULL)
+        return Py_None;
+    BaseDataObject *dataObject = controller->schemes->toDataObject();
+    PyObject *py = DataObjectAdapter::fromDataObject(dataObject);
+    delete dataObject;
+    return py;
+}
+
+PyObject *wrap_getConsumes(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    if (controller->consumes == NULL)
+        return Py_None;
+    BaseDataObject *dataObject = controller->consumes->toDataObject();
+    PyObject *py = DataObjectAdapter::fromDataObject(dataObject);
+    delete dataObject;
+    return py;
+}
+
+PyObject *wrap_getProduces(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    if (controller->produces == NULL)
+        return Py_None;
+    BaseDataObject *dataObject = controller->produces->toDataObject();
+    PyObject *py = DataObjectAdapter::fromDataObject(dataObject);
+    delete dataObject;
+    return py;
+}
+
+PyObject *wrap_getTags(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    if (controller->tags == NULL)
+        return Py_None;
+    BaseDataObject *dataObject = controller->tags->toDataObject();
+    PyObject *py = DataObjectAdapter::fromDataObject(dataObject);
+    delete dataObject;
+    return py;
+}
+
+PyObject *wrap_getExternalDocs(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    if (controller->externalDocs == NULL)
+        return Py_None;
+    BaseDataObject *dataObject = controller->externalDocs->toDataObject();
+    PyObject *py = DataObjectAdapter::fromDataObject(dataObject);
+    delete dataObject;
+    return py;
 }
 
 static PyMethodDef LapisParserMethods[] = {
@@ -233,10 +259,17 @@ static PyMethodDef LapisParserMethods[] = {
         {"getErrors", wrap_getErrors, METH_VARARGS, "Get all parse errors."},
         {"translate2YAML", wrap_translate2YAML, METH_VARARGS, "Translate parsed doc to YAML."},
         {"translate2XML", wrap_translate2XML, METH_VARARGS, "Translate parsed doc to XML."},
+        {"getInfo", wrap_getInfo, METH_VARARGS, "Get the Info Object."},
+        {"getHost", wrap_getHost, METH_VARARGS, "Get the host url"},
+        {"getBasePath", wrap_getBasePath, METH_VARARGS, "Get the basePath"},
+        {"getSchemes", wrap_getSchemes, METH_VARARGS, "Get the schemes list"},
+        {"getConsumes", wrap_getConsumes, METH_VARARGS, "Get the consumes list"},
+        {"getProduces", wrap_getProduces, METH_VARARGS, "Get the produces list"},
+        {"getTags", wrap_getTags, METH_VARARGS, "Get the tags list"},
+        {"getExternalDocs", wrap_getExternalDocs, METH_VARARGS, "Get the externalDocs Object"},
         {NULL, NULL}
 };
 
-extern "C"
 PyMODINIT_FUNC initLapisParser() {
     state = START;
     Py_InitModule("LapisParser", LapisParserMethods);

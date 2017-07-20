@@ -268,6 +268,7 @@ int XMLAdapter::saveObject(xmlNodePtr objPtr, DocElement *ele, string fieldName)
         xmlNewProp(objPtr, BAD_CAST "value", BAD_CAST scaEle->getValue().c_str());
         return 0;
     }
+    return 0;
 }
 
 bool XMLAdapter::needAlternate(string s) {
