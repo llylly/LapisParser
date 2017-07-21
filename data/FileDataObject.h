@@ -5,18 +5,19 @@
 #ifndef VPARSER_FILEDATAOBJECT_H
 #define VPARSER_FILEDATAOBJECT_H
 
-
+#include <cstring>
 #include "BaseDataObject.h"
 
 struct FileDataObject: public BaseDataObject {
     /**
-     * CAUTION: the class only wrap the passed data block, NOT copy it
+     * It owns the data
      */
     unsigned char* data;
     int len;
 
     FileDataObject(unsigned char* data, int len);
     FileDataObject(const FileDataObject &source);
+    ~FileDataObject() override;
 
     bool equals(BaseDataObject *b) override;
 };

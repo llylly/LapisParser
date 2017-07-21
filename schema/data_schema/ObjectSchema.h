@@ -7,10 +7,22 @@
 
 
 #include "../DataSchemaObject.h"
+#include "../../error/FieldMissError.h"
+#include "../../error/FieldIllegalError.h"
+#include "../../error/FieldInvalidError.h"
+#include "../../error/IllegalIntervalError.h"
+
+enum ObjectSerialType {
+    JSON, YAML, XML
+};
 
 class ObjectSchema: public DataSchemaObject {
 
 public:
+
+    map<string, DataSchemaObject*> properties;
+    ObjectSerialType serialType;
+
     ObjectSchema();
     BaseDataObject *toDataObject() override;
     bool check(BaseDataObject *obj) override;

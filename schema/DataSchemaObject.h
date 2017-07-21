@@ -114,6 +114,9 @@ protected:
      * @return the random real
      */
     static double randomReal();
+
+    friend class ArraySchema;
+    friend class ObjectSchema;
 };
 
 struct DataSchemaObjectFactory {

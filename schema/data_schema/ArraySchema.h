@@ -7,6 +7,10 @@
 
 
 #include "../DataSchemaObject.h"
+#include "../../error/FieldMissError.h"
+#include "../../error/FieldIllegalError.h"
+#include "../../error/FieldInvalidError.h"
+#include "../../error/IllegalIntervalError.h"
 
 enum ArrayCollectionFormat {
     CSV, SSV, TSV, PIPES, MULTI

@@ -9,6 +9,10 @@
 #include "../DataSchemaObject.h"
 
 class FileSchema: public DataSchemaObject {
+/**
+ * There's no extra fields and extra constraints for 'file' type
+ * So many functions do nothing :)
+ */
 
 public:
     FileSchema();

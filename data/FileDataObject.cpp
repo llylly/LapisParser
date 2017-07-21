@@ -6,13 +6,15 @@
 
 FileDataObject::FileDataObject(unsigned char* data, int len): BaseDataObject() {
     type = BYTEFILE;
-    this->data = data;
+    this->data = new unsigned char[len];
+    memcpy((void*)this->data, (const void*)data, (size_t)len);
     this->len = len;
 }
 
 FileDataObject::FileDataObject(const FileDataObject &source): BaseDataObject(source) {
     type = BYTEFILE;
-    this->data = source.data;
+    this->data = new unsigned char[len];
+    memcpy((void*)this->data, (const void*)source.data, (size_t)source.len);
     this->len = source.len;
 }
 
@@ -30,4 +32,8 @@ bool FileDataObject::equals(BaseDataObject *b) {
         return eq;
     } else
         return false;
+}
+
+FileDataObject::~FileDataObject() {
+    delete this->data;
 }

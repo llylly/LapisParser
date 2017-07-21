@@ -5,12 +5,12 @@
 #ifndef VPARSER_CUSTOMIZEDDATAOBJECT_H
 #define VPARSER_CUSTOMIZEDDATAOBJECT_H
 
-
+#include <cstring>
 #include "BaseDataObject.h"
 
 struct CustomizedDataObject: public BaseDataObject {
     /**
-     * CAUTION: the class only wrap the passed data block, NOT copy it
+     * It owns the data
      * We view customized data entity as a char sequence
      */
     unsigned char* data;
@@ -18,6 +18,7 @@ struct CustomizedDataObject: public BaseDataObject {
 
     CustomizedDataObject(unsigned char *data, int len);
     CustomizedDataObject(const CustomizedDataObject &source);
+    ~CustomizedDataObject() override;
 
     bool equals(BaseDataObject *b) override;
 };

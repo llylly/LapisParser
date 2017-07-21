@@ -133,7 +133,7 @@ DataSchemaObject *DataSchemaObjectFactory::create(string filePath, DocObjectElem
             Error::addError(new FieldInvalidError(filePath, innerEle->line, innerEle->col, "schema.x-schema", innerEle->type, DOC_OBJECT));
             return NULL;
         } else
-            return DataSchemaObjectFactory::create(filePath, (DocObjectElement*)innerEle, NORMAL_SCHEMA);
+            return DataSchemaObjectFactory::create(filePath, (DocObjectElement*)innerEle, NORMAL_SCHEMA, false);
     } else {
         DocElement *typeEle = obj->get("type");
         if (typeEle == NULL) {
@@ -160,10 +160,10 @@ DataSchemaObject *DataSchemaObjectFactory::create(string filePath, DocObjectElem
         if (typeStr == "array") {
             res = new ArraySchema();
         }
-        if (typeStr == "file") {
+        if ((typeStr == "file") && (schemaType != DataSchemaObjectFactory::ITEM_SCHEMA)) {
             res = new FileSchema();
         }
-        if (typeStr == "object") {
+        if ((typeStr == "object") && (schemaType == DataSchemaObjectFactory::NORMAL_SCHEMA)) {
             res = new ObjectSchema();
         }
         if (res == NULL) {
