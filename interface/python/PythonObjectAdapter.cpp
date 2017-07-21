@@ -2,7 +2,7 @@
 // Created by lly on 14/07/2017.
 //
 
-#include "DataObjectAdapter.h"
+#include "PythonObjectAdapter.h"
 #include "../../data/IntegerDataObject.h"
 #include "../../data/NumberDataObject.h"
 #include "../../data/BooleanDataObject.h"
@@ -11,8 +11,9 @@
 #include "../../data/CustomizedDataObject.h"
 #include "../../data/SequenceDataObject.h"
 #include "../../data/ObjectDataObject.h"
+#include "../../data/DataObjectAdapter.h"
 
-PyObject *DataObjectAdapter::fromDataObject(BaseDataObject *obj) {
+PyObject *PythonObjectAdapter::fromDataObject(BaseDataObject *obj) {
     if (obj->type == BASE) {
         return Py_None;
     }
@@ -51,7 +52,7 @@ PyObject *DataObjectAdapter::fromDataObject(BaseDataObject *obj) {
         int len = o->length();
         PyObject *seq = PyList_New((Py_ssize_t)len);
         for (int i=0; i<len; ++i) {
-            PyObject *now = DataObjectAdapter::fromDataObject((*o)[i]);
+            PyObject *now = PythonObjectAdapter::fromDataObject((*o)[i]);
             PyList_SetItem(seq, (Py_ssize_t)i, now);
         }
         return seq;
@@ -61,7 +62,7 @@ PyObject *DataObjectAdapter::fromDataObject(BaseDataObject *obj) {
         PyObject *dict = PyDict_New();
         for (map<string, BaseDataObject*>::iterator ite = o->m.begin();
                 ite != o->m.end(); ++ite) {
-            PyObject *now = DataObjectAdapter::fromDataObject(ite->second);
+            PyObject *now = PythonObjectAdapter::fromDataObject(ite->second);
             PyDict_SetItemString(dict, ite->first.c_str(), now);
         }
         return dict;
@@ -69,7 +70,7 @@ PyObject *DataObjectAdapter::fromDataObject(BaseDataObject *obj) {
     return Py_None;
 }
 
-BaseDataObject *DataObjectAdapter::toDocElement(PyObject *obj) {
+BaseDataObject *PythonObjectAdapter::toDocElement(PyObject *obj) {
     if (PyInt_Check(obj)) {
         // to IntegerDataObject
         return new IntegerDataObject(PyInt_AsLong(obj));
@@ -98,18 +99,18 @@ BaseDataObject *DataObjectAdapter::toDocElement(PyObject *obj) {
         SequenceDataObject *seq = new SequenceDataObject();
         int len = (int)PyList_Size(obj);
         for (int i=0; i<len; ++i) {
-            seq->push(DataObjectAdapter::toDocElement(PyList_GetItem(obj, (Py_ssize_t)i)));
+            seq->push(PythonObjectAdapter::toDocElement(PyList_GetItem(obj, (Py_ssize_t)i)));
         }
         return seq;
     }
     if (PyDict_Check(obj)) {
         // to DocScalarElement if represents Customized for File
-        if (DataObjectAdapter::isFile(obj)) {
+        if (PythonObjectAdapter::isFile(obj)) {
             PyObject *data = PyDict_GetItemString(obj, "data");
             FileDataObject *fi = new FileDataObject((unsigned char*)PyByteArray_AsString(data), (int)PyByteArray_Size(data));
             return fi;
         }
-        if (DataObjectAdapter::isCustomized(obj)) {
+        if (PythonObjectAdapter::isCustomized(obj)) {
             PyObject *data = PyDict_GetItemString(obj, "data");
             CustomizedDataObject *cus = new CustomizedDataObject((unsigned char*)PyByteArray_AsString(data), (int)PyByteArray_Size(data));
             return cus;
@@ -122,7 +123,7 @@ BaseDataObject *DataObjectAdapter::toDocElement(PyObject *obj) {
             for (int i=0; i<size; ++i) {
                 PyObject *nowKey = PyList_GetItem(keyList, (Py_ssize_t)i);
                 if ((nowKey) && (PyString_Check(nowKey))) {
-                    (*o)[string(PyString_AsString(nowKey))] = DataObjectAdapter::toDocElement(PyDict_GetItem(obj, nowKey));
+                    (*o)[string(PyString_AsString(nowKey))] = PythonObjectAdapter::toDocElement(PyDict_GetItem(obj, nowKey));
                 }
             }
         }
@@ -131,7 +132,7 @@ BaseDataObject *DataObjectAdapter::toDocElement(PyObject *obj) {
     return NULL;
 }
 
-bool DataObjectAdapter::isFile(PyObject *obj) {
+bool PythonObjectAdapter::isFile(PyObject *obj) {
     if (PyDict_Check(obj)) {
         int size = (int)PyDict_Size(obj);
         if (size == 2) {
@@ -146,7 +147,7 @@ bool DataObjectAdapter::isFile(PyObject *obj) {
     return false;
 }
 
-bool DataObjectAdapter::isCustomized(PyObject *obj) {
+bool PythonObjectAdapter::isCustomized(PyObject *obj) {
     if (PyDict_Check(obj)) {
         int size = (int)PyDict_Size(obj);
         if (size == 2) {

@@ -9,7 +9,8 @@ set(CMAKE_C_FLAGS "-fPIC")
 
 set(SOURCE_FILES
         main.cpp
-        interface/python/PythonInterface.cpp
+        interface/python/PythonObjectAdapter.cpp interface/python/PythonObjectAdapter.h
+        interface/python/PythonInterface.cpp interface/python/PythonInterface.h
         error/Error.cpp error/Error.h error/YAMLFormatError.cpp error/YAMLFormatError.h
         doc/DocElement.cpp doc/DocElement.h doc/DocScalarElement.cpp doc/DocScalarElement.h
         doc/DocObjectElement.cpp doc/DocObjectElement.h doc/DocSequenceElement.cpp
@@ -35,7 +36,6 @@ set(SOURCE_FILES
         data/StringDataObject.cpp data/StringDataObject.h data/FileDataObject.cpp data/FileDataObject.h
         data/ObjectDataObject.cpp data/ObjectDataObject.h data/CustomizedDataObject.cpp
         data/CustomizedDataObject.h data/SequenceDataObject.cpp data/SequenceDataObject.h
-        interface/python/PythonInterface.h interface/python/DataObjectAdapter.cpp interface/python/DataObjectAdapter.h
         schema/data_schema/XMLObject.cpp schema/data_schema/XMLObject.h
         data/DataObjectAdapter.cpp data/DataObjectAdapter.h error/FieldIllegalError.cpp error/FieldIllegalError.h
         schema/data_schema/StringSchema.cpp schema/data_schema/StringSchema.h

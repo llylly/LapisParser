@@ -16,7 +16,7 @@ extern "C" {
 #include "../../doc/XMLAdapter.h"
 #include "../../ref_expand/RefExpand.h"
 #include "../../schema/Controller.h"
-#include "DataObjectAdapter.h"
+#include "PythonObjectAdapter.h"
 
 enum CURRENT_STATE {
     START, PARSED, ERROR

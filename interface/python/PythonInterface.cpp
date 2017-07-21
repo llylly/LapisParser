@@ -181,7 +181,7 @@ PyObject *wrap_getInfo(PyObject *self, PyObject *args) {
     if (state != PARSED)
         return NULL;
     BaseDataObject *dataObject = controller->infoObject->toDataObject();
-    PyObject *py = DataObjectAdapter::fromDataObject(dataObject);
+    PyObject *py = PythonObjectAdapter::fromDataObject(dataObject);
     delete dataObject;
     return py;
 }
@@ -204,7 +204,7 @@ PyObject *wrap_getSchemes(PyObject *self, PyObject *args) {
     if (controller->schemes == NULL)
         return Py_None;
     BaseDataObject *dataObject = controller->schemes->toDataObject();
-    PyObject *py = DataObjectAdapter::fromDataObject(dataObject);
+    PyObject *py = PythonObjectAdapter::fromDataObject(dataObject);
     delete dataObject;
     return py;
 }
@@ -215,7 +215,7 @@ PyObject *wrap_getConsumes(PyObject *self, PyObject *args) {
     if (controller->consumes == NULL)
         return Py_None;
     BaseDataObject *dataObject = controller->consumes->toDataObject();
-    PyObject *py = DataObjectAdapter::fromDataObject(dataObject);
+    PyObject *py = PythonObjectAdapter::fromDataObject(dataObject);
     delete dataObject;
     return py;
 }
@@ -226,7 +226,7 @@ PyObject *wrap_getProduces(PyObject *self, PyObject *args) {
     if (controller->produces == NULL)
         return Py_None;
     BaseDataObject *dataObject = controller->produces->toDataObject();
-    PyObject *py = DataObjectAdapter::fromDataObject(dataObject);
+    PyObject *py = PythonObjectAdapter::fromDataObject(dataObject);
     delete dataObject;
     return py;
 }
@@ -237,7 +237,7 @@ PyObject *wrap_getTags(PyObject *self, PyObject *args) {
     if (controller->tags == NULL)
         return Py_None;
     BaseDataObject *dataObject = controller->tags->toDataObject();
-    PyObject *py = DataObjectAdapter::fromDataObject(dataObject);
+    PyObject *py = PythonObjectAdapter::fromDataObject(dataObject);
     delete dataObject;
     return py;
 }
@@ -248,7 +248,7 @@ PyObject *wrap_getExternalDocs(PyObject *self, PyObject *args) {
     if (controller->externalDocs == NULL)
         return Py_None;
     BaseDataObject *dataObject = controller->externalDocs->toDataObject();
-    PyObject *py = DataObjectAdapter::fromDataObject(dataObject);
+    PyObject *py = PythonObjectAdapter::fromDataObject(dataObject);
     delete dataObject;
     return py;
 }

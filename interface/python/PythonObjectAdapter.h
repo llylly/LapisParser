@@ -2,8 +2,8 @@
 // Created by lly on 14/07/2017.
 //
 
-#ifndef VPARSER_DATAOBJECTADAPTER_H
-#define VPARSER_DATAOBJECTADAPTER_H
+#ifndef VPARSER_PYTHONOBJECTADAPTER_H
+#define VPARSER_PYTHONOBJECTADAPTER_H
 
 #include "../../data/BaseDataObject.h"
 #include "../../doc/DocElement.h"
@@ -15,7 +15,7 @@ extern "C" {
 /**
  * Adapter for DataObject classes and PyObject class
  */
-class DataObjectAdapter {
+class PythonObjectAdapter {
 public:
     /**
      * Translate DataObject to PyObject
@@ -40,4 +40,4 @@ private:
 };
 
 
-#endif //VPARSER_DATAOBJECTADAPTER_H
+#endif //VPARSER_PYTHONOBJECTADAPTER_H
