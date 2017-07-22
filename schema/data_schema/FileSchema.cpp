@@ -47,7 +47,7 @@ BaseDataObject *FileSchema::generate() {
     BaseDataObject *enumGen = DataSchemaObject::generate();
     if (enumGen) return enumGen;
     if (!this->valid) return NULL;
-    if (DataSchemaObject::randomReal() < emptyProbability) return NULL;
+    if ((DataSchemaObject::randomReal() < emptyProbability) && (this->allowEmptyValue)) return NULL;
     // --- above are routine ---
     int len = rand() % (1048576);
     unsigned char *uarr = new unsigned char[len];

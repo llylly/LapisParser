@@ -82,7 +82,7 @@ public:
      */
     virtual bool init(string filePath, DocObjectElement *obj, int schemaType) = 0;
 
-protected:
+public:
     DataSchemaObject();
 
     /**

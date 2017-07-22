@@ -393,12 +393,10 @@ bool DataSchemaObject::check(BaseDataObject *obj) {
 
 BaseDataObject *DataSchemaObject::generate() {
     if ((!this->valid) || (this->_enum.size() == 0)) return NULL;
-    srand((unsigned int)time(0));
     int pick_no = (rand() & 0x7FFFFFFF) % (int)this->_enum.size();
     return this->_enum[pick_no];
 }
 
 double DataSchemaObject::randomReal() {
-    srand((unsigned int)time(0));
-    return (double)rand() / (double)RAND_MAX;
+    return (double)(rand()) / (double)(RAND_MAX);
 }

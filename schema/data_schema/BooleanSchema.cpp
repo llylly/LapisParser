@@ -68,9 +68,8 @@ BaseDataObject *BooleanSchema::generate() {
     BaseDataObject *enumGen = DataSchemaObject::generate();
     if (enumGen) return enumGen;
     if (!this->valid) return NULL;
-    if (DataSchemaObject::randomReal() < emptyProbability) return NULL;
+    if ((DataSchemaObject::randomReal() < emptyProbability) && (this->allowEmptyValue)) return NULL;
     // --- above are routine ---
-    srand((unsigned int)time(0));
     bool x = (bool)(rand() & 1);
     if (x) {
         if (trueString == "true")

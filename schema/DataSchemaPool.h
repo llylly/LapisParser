@@ -7,8 +7,11 @@
 
 
 #include <set>
+#include <sstream>
 #include "../doc/DocElement.h"
 #include "DataSchemaObject.h"
+
+using namespace std;
 
 class DataSchemaPool {
 /**
@@ -32,7 +35,7 @@ public:
      * @param nodeName: enabling customized schema name
      * @return bool: success or not
      */
-    bool parseDataSchema(DocElement *ele, string schemaName = "");
+    bool parseDataSchema(string filePath, DocElement *ele, string schemaName = "");
 
     /**
      * Rename a schema
@@ -82,16 +85,31 @@ public:
     /**
      * Set ref count by doc node
      * @param ele
+     * @param ref
      * @return success or not
      */
-    bool setRefCount(DocElement *ele);
+    bool setRefCount(DocElement *ele, int ref);
 
     /**
      * Set ref count by name
      * @param name
+     * @param ref
      * @return success or not
      */
-    bool setRefCount(string name);
+    bool setRefCount(string name, int ref);
+
+    /**
+     * Get the name map
+     * @return the name map
+     */
+    const map<string, DocElement*> &getNameMap();
+
+    /**
+     * Get schema by name
+     * @param name
+     * @return find: return schema; not find: return NULL
+     */
+    DataSchemaObject *getSchemaByName(string name);
 
 private:
     set<DocElement*> schemaSet;
@@ -99,6 +117,10 @@ private:
     map<DocElement*, int> refMap;
     map<DocElement*, string> nameMap;
     map<string, DocElement*> revNameMap;
+
+    int accuCnt;
+
+    string makeName();
 };
 
 

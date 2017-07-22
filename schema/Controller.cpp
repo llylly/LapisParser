@@ -14,6 +14,29 @@
 #include "../doc/DocSequenceElement.h"
 #include "../error/FieldMissError.h"
 
+Controller::Controller() {
+    srand((unsigned int)time(0));
+    definitions = new DataSchemaPool();
+}
+
+Controller::~Controller() {
+    if (infoObject)
+        delete infoObject;
+    if (schemes)
+        delete schemes;
+    if (consumes)
+        delete consumes;
+    if (produces)
+        delete produces;
+    if (tags)
+        delete tags;
+    if (externalDocs)
+        delete externalDocs;
+
+    delete definitions;
+
+}
+
 void Controller::work() {
     bool infoFind = false;
     bool hostFind = false;
@@ -193,7 +216,21 @@ void Controller::work() {
                 }
             }
             /** Below this line are fields which can spread over several docs **/
-            /** definitions (working on...) **/
+            /** definitions **/
+            DocElement *definitionsEle = docRoot->get("definitions");
+            if (definitionsEle != NULL) {
+                if (definitionsEle->type != DOC_OBJECT) {
+                    Error::addError(new FieldInvalidError(ite->first, definitionsEle->line, definitionsEle->col, "definitions", definitionsEle->type, DOC_OBJECT));
+                    return;
+                } else {
+                    DocObjectElement *o = (DocObjectElement*)definitionsEle;
+                    map<string, DocElement*> *m = o->getMemberMap();
+                    for (map<string, DocElement*>::iterator iite = m->begin(); iite != m->end(); ++iite) {
+                        if (!definitions->parseDataSchema(ite->first, iite->second, iite->first))
+                            return;
+                    }
+                }
+            }
 
             /** parameters (working on...) **/
 

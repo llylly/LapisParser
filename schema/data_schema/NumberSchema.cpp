@@ -73,7 +73,7 @@ BaseDataObject *NumberSchema::generate() {
     BaseDataObject *enumGen = DataSchemaObject::generate();
     if (enumGen) return enumGen;
     if (!this->valid) return NULL;
-    if (DataSchemaObject::randomReal() < emptyProbability) return NULL;
+    if ((DataSchemaObject::randomReal() < emptyProbability) && (this->allowEmptyValue)) return NULL;
     // --- above are routine ---
 
     /**
@@ -82,7 +82,6 @@ BaseDataObject *NumberSchema::generate() {
      *      we generate by bit-wise random.
      *  Otherwise use uniform distribution in the interval.
      */
-    srand((unsigned int)time(0));
 
     bool large = false;
 
@@ -100,7 +99,7 @@ BaseDataObject *NumberSchema::generate() {
             u.v1 = (t1 << 48LL) + (t2 << 32LL) + (t3 << 16LL) + t4;
             if (hasMultipleOf)
                 u.v2 = u.v2 - fmod(u.v2, multipleOf);
-        } while ((u.v2 > minimum) && (u.v2 < maximum));
+        } while ((u.v2 > maximum) || (u.v2 < minimum));
         return new NumberDataObject(u.v2);
     } else {
         if (maximum - minimum < EPS) {
@@ -112,7 +111,7 @@ BaseDataObject *NumberSchema::generate() {
                 v = minimum + identity * (maximum - minimum);
                 if (hasMultipleOf)
                     v = v - fmod(v, multipleOf);
-            }  while ((v > minimum) && (v < maximum));
+            }  while ((v > maximum) || (v < minimum));
             return new NumberDataObject(v);
         }
     }

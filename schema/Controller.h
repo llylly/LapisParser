@@ -55,6 +55,10 @@ public:
     /** externalDocs(External Documentation Object, Optional) **/
     ExternalDocObject *externalDocs;
 
+
+    Controller();
+    ~Controller();
+
     void work();
 
     void printTo(std::ostream &os);

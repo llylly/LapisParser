@@ -26,12 +26,12 @@ public:
     static PyObject *fromDataObject(BaseDataObject* obj);
 
     /**
-     * Translate PyObject to DocElement
-     * CAUTION: it will view {type: "file"/"customized", data: *ByteArray*} as a DocScalarElement
+     * Translate PyObject to DataObject
+     * CAUTION: it will view {type: "file"/"customized", data: *ByteArray*} as corresponding types
      * @param obj
      * @return
      */
-    static BaseDataObject *toDocElement(PyObject *obj);
+    static BaseDataObject *toDataObject(PyObject *obj);
 
 private:
     static bool isFile(PyObject *obj);

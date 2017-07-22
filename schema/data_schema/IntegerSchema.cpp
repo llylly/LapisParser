@@ -73,19 +73,20 @@ BaseDataObject *IntegerSchema::generate() {
     BaseDataObject *enumGen = DataSchemaObject::generate();
     if (enumGen) return enumGen;
     if (!this->valid) return NULL;
-    if (DataSchemaObject::randomReal() < emptyProbability) return NULL;
+    if ((DataSchemaObject::randomReal() < emptyProbability) && (this->allowEmptyValue)) return NULL;
     // --- above are routine ---
-    srand((unsigned int)time(0));
     long long v;
     long long s = minimum + (long long)exclusiveMinimum, t = maximum - (long long)exclusiveMaximum;
     long long gap = t - s + 1;
+    bool large = false;
+    if ((s <= 0) && (t > 0) && ((s < LONG_LONG_MIN / 4L) || (t > LONG_LONG_MAX / 4L))) large = true;
     do {
         long long t1 = rand() & 0xFFFF, t2 = rand() & 0xFFFF, t3 = rand() & 0xFFFF, t4 = rand() & 0xFFFF;
         long long rd = (t1 << 48LL) + (t2 << 32LL) + (t3 << 16LL) + t4;
-        v = s + rd % gap;
+        if (large) v = rd; else v = s + rd % gap;
         if (hasMultipleOf)
             v = v - v % multipleOf;
-    } while ((v >= s) && (v <= t));
+    } while ((v < s) || (v > t));
     return new IntegerDataObject(v);
 }
 
@@ -193,7 +194,7 @@ bool IntegerSchema::init(string filePath, DocObjectElement *obj, int schemaType)
     }
 
     if (exclusiveMaximum & exclusiveMinimum)
-        if (maximum - minimum < 2) {
+        if ((minimum > maximum) || ((minimum <= maximum) && (maximum - minimum < 2))) {
             Error::addError(
                     new IllegalIntervalError(filePath, obj->line, obj->col, "schema", (double)minimum, (double)maximum)
             );
@@ -201,12 +202,19 @@ bool IntegerSchema::init(string filePath, DocObjectElement *obj, int schemaType)
         }
 
     if (exclusiveMaximum || exclusiveMinimum)
-        if (maximum - minimum < 1) {
+        if ((minimum > maximum) || ((minimum <= maximum) && (maximum - minimum < 1))) {
             Error::addError(
                     new IllegalIntervalError(filePath, obj->line, obj->col, "schema", (double)minimum, (double)maximum)
             );
             return false;
         }
+
+    if (minimum > maximum) {
+        Error::addError(
+                new IllegalIntervalError(filePath, obj->line, obj->col, "schema", (double)minimum, (double)maximum)
+        );
+        return false;
+    }
 
     if (hasMultipleOf) {
         /* Check whether the domain set is empty */

@@ -70,7 +70,7 @@ PyObject *PythonObjectAdapter::fromDataObject(BaseDataObject *obj) {
     return Py_None;
 }
 
-BaseDataObject *PythonObjectAdapter::toDocElement(PyObject *obj) {
+BaseDataObject *PythonObjectAdapter::toDataObject(PyObject *obj) {
     if (PyInt_Check(obj)) {
         // to IntegerDataObject
         return new IntegerDataObject(PyInt_AsLong(obj));
@@ -99,7 +99,7 @@ BaseDataObject *PythonObjectAdapter::toDocElement(PyObject *obj) {
         SequenceDataObject *seq = new SequenceDataObject();
         int len = (int)PyList_Size(obj);
         for (int i=0; i<len; ++i) {
-            seq->push(PythonObjectAdapter::toDocElement(PyList_GetItem(obj, (Py_ssize_t)i)));
+            seq->push(PythonObjectAdapter::toDataObject(PyList_GetItem(obj, (Py_ssize_t)i)));
         }
         return seq;
     }
@@ -123,7 +123,7 @@ BaseDataObject *PythonObjectAdapter::toDocElement(PyObject *obj) {
             for (int i=0; i<size; ++i) {
                 PyObject *nowKey = PyList_GetItem(keyList, (Py_ssize_t)i);
                 if ((nowKey) && (PyString_Check(nowKey))) {
-                    (*o)[string(PyString_AsString(nowKey))] = PythonObjectAdapter::toDocElement(PyDict_GetItem(obj, nowKey));
+                    (*o)[string(PyString_AsString(nowKey))] = PythonObjectAdapter::toDataObject(PyDict_GetItem(obj, nowKey));
                 }
             }
         }

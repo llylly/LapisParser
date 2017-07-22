@@ -4,3 +4,7 @@ cmake-build-debug/*
 *.so
 *.yaml
 *.xml
+Makefile
+CMakeCache.txt
+CMakeFiles/*
+cmake_install.cmake

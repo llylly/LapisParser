@@ -105,7 +105,7 @@ BaseDataObject *ObjectSchema::generate() {
     BaseDataObject *enumGen = DataSchemaObject::generate();
     if (enumGen) return enumGen;
     if (!this->valid) return NULL;
-    if (DataSchemaObject::randomReal() < emptyProbability) return NULL;
+    if ((DataSchemaObject::randomReal() < emptyProbability) && (this->allowEmptyValue)) return NULL;
     // --- above are routine ---
     ObjectDataObject *obj = new ObjectDataObject();
     for (map<string, DataSchemaObject*>::iterator ite = properties.begin();
@@ -188,4 +188,12 @@ bool ObjectSchema::init(string filePath, DocObjectElement *obj, int schemaType) 
     }
 
     return true;
+}
+
+ObjectSchema::~ObjectSchema() {
+    for (map<string, DataSchemaObject*>::iterator ite = properties.begin();
+            ite != properties.end();
+            ++ite) {
+        delete ite->second;
+    }
 }

@@ -107,7 +107,7 @@ BaseDataObject *ArraySchema::generate() {
     BaseDataObject *enumGen = DataSchemaObject::generate();
     if (enumGen) return enumGen;
     if (!this->valid) return NULL;
-    if (DataSchemaObject::randomReal() < emptyProbability) return NULL;
+    if ((DataSchemaObject::randomReal() < emptyProbability) && (this->allowEmptyValue)) return NULL;
     // --- above are routine ---
     int n = rand() % (maxItems - minItems + 1) + minItems;
     SequenceDataObject *seq = new SequenceDataObject();
@@ -243,4 +243,8 @@ bool ArraySchema::init(string filePath, DocObjectElement *obj, int schemaType) {
     }
 
     return true;
+}
+
+ArraySchema::~ArraySchema() {
+    delete items;
 }

@@ -11,28 +11,28 @@
 
 CURRENT_STATE state;
 
-Controller *controller;
+Controller *controller = NULL;
 
-bool readFiles(int filec, char** filev, FORMAT format) {
+bool readFiles(int filec, char **filev, FORMAT *format) {
     //----- Clean all -----
-    for (map<string, DocElement*>::iterator ite = DocElement::docs.begin(); ite != DocElement::docs.end(); ++ite)
+    for (map<string, DocElement *>::iterator ite = DocElement::docs.begin(); ite != DocElement::docs.end(); ++ite)
         delete ite->second;
     DocElement::docs.clear();
 
-    std::vector<Error*> *errs = Error::getErrors();
-    for (std::vector<Error*>::iterator ite = errs->begin(); ite != errs->end(); ++ite)
+    std::vector<Error *> *errs = Error::getErrors();
+    for (std::vector<Error *>::iterator ite = errs->begin(); ite != errs->end(); ++ite)
         delete *ite;
     errs->clear();
 
 
     //----- phase I -----
-    for (int i=0; i<filec; ++i) {
-        Error::curFileName = (std::string)(filev[i]);
+    for (int i = 0; i < filec; ++i) {
+        Error::curFileName = (std::string) (filev[i]);
         DocElement *curDoc = NULL;
-        if (format == YAML) {
+        if (format[i] == YAML) {
             curDoc = YAMLAdapter::parseDoc(filev[i]);
         }
-        if (format == XML) {
+        if (format[i] == XML) {
             curDoc = XMLAdapter::parseDoc(filev[i]);
         }
         DocElement::docs[string(filev[i])] = curDoc;
@@ -51,6 +51,7 @@ bool readFiles(int filec, char** filev, FORMAT format) {
     }
 
     //----- phase III -----
+    if (controller) delete controller;
     controller = new Controller();
     controller->work();
     if (Error::hasError()) {
@@ -62,7 +63,7 @@ bool readFiles(int filec, char** filev, FORMAT format) {
     return true;
 }
 
-std::vector<Error*> *getErrors() {
+std::vector<Error *> *getErrors() {
     return Error::getErrors();
 }
 
@@ -87,8 +88,7 @@ bool translate(char *path, FORMAT format) {
     return true;
 }
 
-
-PyObject* wrap_readYAML(PyObject* self, PyObject* args) {
+PyObject *wrap_read(PyObject *self, PyObject *args) {
     PyObject *pathList;
     if (!PyArg_ParseTuple(args, "O", &pathList))
         return Py_None;
@@ -96,25 +96,38 @@ PyObject* wrap_readYAML(PyObject* self, PyObject* args) {
         return Py_None;
     Py_ssize_t len = PyList_Size(pathList);
 
-    char **fileList = new char*[(int)len];
+    char **fileList = new char *[(int) len];
     for (Py_ssize_t i = 0; i < len; ++i) {
         PyObject *item = PyList_GetItem(pathList, i);
         if (!(PyString_CheckExact(item)))
             return Py_None;
         Py_ssize_t nowlen = PyString_Size(item);
-        fileList[(int)i] = new char[nowlen + 1];
+        fileList[(int) i] = new char[nowlen + 1];
         nowlen++;
-        if (PyString_AsStringAndSize(item, &(fileList[(int)i]), &nowlen))
+        if (PyString_AsStringAndSize(item, &(fileList[(int) i]), &nowlen))
             return Py_None;
     }
 
-    bool res = readFiles(len, fileList, YAML);
+    FORMAT *farr = new FORMAT[len];
+    for (int i = 0; i < len; ++i) {
+        char *now = fileList[i];
+        char *endNow = now + strlen(now) - 3;
+        // if filePath is ended with "xml", parse as XML file. Otherwise parse as YAML file.
+        if (strcmp(endNow, "xml") == 0) {
+            farr[i] = XML;
+        } else {
+            farr[i] = YAML;
+        }
+    }
+    bool res = readFiles((int) len, fileList, farr);
+    delete[] farr;
 
     PyObject *ret = Py_BuildValue("i", !res);
     return ret;
 }
 
-PyObject* wrap_readXML(PyObject* self, PyObject* args) {
+
+PyObject *wrap_readYAML(PyObject *self, PyObject *args) {
     PyObject *pathList;
     if (!PyArg_ParseTuple(args, "O", &pathList))
         return Py_None;
@@ -122,40 +135,74 @@ PyObject* wrap_readXML(PyObject* self, PyObject* args) {
         return Py_None;
     Py_ssize_t len = PyList_Size(pathList);
 
-    char **fileList = new char*[(int)len];
+    char **fileList = new char *[(int) len];
     for (Py_ssize_t i = 0; i < len; ++i) {
         PyObject *item = PyList_GetItem(pathList, i);
         if (!(PyString_CheckExact(item)))
             return Py_None;
         Py_ssize_t nowlen = PyString_Size(item);
-        fileList[(int)i] = new char[nowlen + 1];
+        fileList[(int) i] = new char[nowlen + 1];
         nowlen++;
-        if (PyString_AsStringAndSize(item, &(fileList[(int)i]), &nowlen))
+        if (PyString_AsStringAndSize(item, &(fileList[(int) i]), &nowlen))
             return Py_None;
     }
 
-    bool res = readFiles(len, fileList, XML);
+    FORMAT *farr = new FORMAT[len];
+    for (int i = 0; i < len; ++i)
+        farr[i] = YAML;
+    bool res = readFiles((int) len, fileList, farr);
+    delete[] farr;
 
     PyObject *ret = Py_BuildValue("i", !res);
     return ret;
 }
 
-PyObject* wrap_getErrors(PyObject* self, PyObject* args) {
-    std::vector<Error*> *errorsVec = getErrors();
+PyObject *wrap_readXML(PyObject *self, PyObject *args) {
+    PyObject *pathList;
+    if (!PyArg_ParseTuple(args, "O", &pathList))
+        return Py_None;
+    if (!(PyList_CheckExact(pathList)))
+        return Py_None;
+    Py_ssize_t len = PyList_Size(pathList);
+
+    char **fileList = new char *[(int) len];
+    for (Py_ssize_t i = 0; i < len; ++i) {
+        PyObject *item = PyList_GetItem(pathList, i);
+        if (!(PyString_CheckExact(item)))
+            return Py_None;
+        Py_ssize_t nowlen = PyString_Size(item);
+        fileList[(int) i] = new char[nowlen + 1];
+        nowlen++;
+        if (PyString_AsStringAndSize(item, &(fileList[(int) i]), &nowlen))
+            return Py_None;
+    }
+
+    FORMAT *farr = new FORMAT[len];
+    for (int i = 0; i < len; ++i)
+        farr[i] = XML;
+    bool res = readFiles((int) len, fileList, farr);
+    delete[] farr;
+
+    PyObject *ret = Py_BuildValue("i", !res);
+    return ret;
+}
+
+PyObject *wrap_getErrors(PyObject *self, PyObject *args) {
+    std::vector<Error *> *errorsVec = getErrors();
     PyObject *res = PyList_New(errorsVec->size());
-    for (int i=0; i<errorsVec->size(); ++i) {
+    for (int i = 0; i < errorsVec->size(); ++i) {
         Error *now = (*errorsVec)[i];
         PyObject *nowObj = PyDict_New();
         PyDict_SetItemString(nowObj, "fileName", Py_BuildValue("s", now->fileName.c_str()));
         PyDict_SetItemString(nowObj, "line", Py_BuildValue("i", now->line));
         PyDict_SetItemString(nowObj, "col", Py_BuildValue("i", now->col));
         PyDict_SetItemString(nowObj, "msg", Py_BuildValue("s", now->msg.c_str()));
-        PyList_SetItem(res, (Py_ssize_t)i, nowObj);
+        PyList_SetItem(res, (Py_ssize_t) i, nowObj);
     }
     return res;
 }
 
-PyObject* wrap_translate2YAML(PyObject* self, PyObject* args) {
+PyObject *wrap_translate2YAML(PyObject *self, PyObject *args) {
     char *filePath;
     if (!PyArg_ParseTuple(args, "s", &filePath))
         return Py_None;
@@ -166,7 +213,7 @@ PyObject* wrap_translate2YAML(PyObject* self, PyObject* args) {
     return ret;
 }
 
-PyObject* wrap_translate2XML(PyObject* self, PyObject* args) {
+PyObject *wrap_translate2XML(PyObject *self, PyObject *args) {
     char *filePath;
     if (!PyArg_ParseTuple(args, "s", &filePath))
         return Py_None;
@@ -253,21 +300,93 @@ PyObject *wrap_getExternalDocs(PyObject *self, PyObject *args) {
     return py;
 }
 
+PyObject *wrap_getDataSchemaNames(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    const map<string, DocElement*> &nameMap = controller->definitions->getNameMap();
+    PyObject *l = PyList_New(nameMap.size());
+    int i = 0;
+    for (map<string, DocElement*>::const_iterator ite = nameMap.cbegin();
+            ite != nameMap.cend();
+            ++ite) {
+        PyList_SetItem(l, (Py_ssize_t)i, Py_BuildValue("s", ite->first.c_str()));
+        ++i;
+    }
+    return l;
+}
+
+PyObject *wrap_getDataSchemaByName(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    char *nameObj;
+    if (!PyArg_ParseTuple(args, "s", &nameObj))
+        return Py_None;
+    string name = string(nameObj);
+    DataSchemaObject *o = controller->definitions->getSchemaByName(name);
+    if (o == NULL)
+        return Py_None;
+    BaseDataObject *ele = o->toDataObject();
+    if (ele == NULL)
+        return Py_None;
+    return PythonObjectAdapter::fromDataObject(ele);
+}
+
+PyObject *wrap_randFromDataSchema(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    char *nameObj;
+    if (!PyArg_ParseTuple(args, "s", &nameObj))
+        return Py_None;
+    string name = string(nameObj);
+    DataSchemaObject *o = controller->definitions->getSchemaByName(name);
+    if (o == NULL)
+        return Py_None;
+    BaseDataObject *ele = o->generate();
+    if (ele == NULL)
+        return Py_None;
+    return PythonObjectAdapter::fromDataObject(ele);
+}
+
+PyObject *wrap_checkData(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    PyObject *dataObj;
+    char *nameObj;
+    if (!PyArg_ParseTuple(args, "Os", &dataObj, &nameObj))
+        return Py_None;
+    string name = string(nameObj);
+    DataSchemaObject *o = controller->definitions->getSchemaByName(name);
+    if (o == NULL)
+        return Py_None;
+    BaseDataObject *obj = PythonObjectAdapter::toDataObject(dataObj);
+    if (obj == NULL)
+        return Py_None;
+    if (o->check(obj))
+        return Py_True;
+    else
+        return Py_False;
+}
+
 static PyMethodDef LapisParserMethods[] = {
-        {"readYAML", wrap_readYAML, METH_VARARGS, "Read YAML format files."},
-        {"readXML", wrap_readXML, METH_VARARGS, "Read XML format files."},
-        {"getErrors", wrap_getErrors, METH_VARARGS, "Get all parse errors."},
-        {"translate2YAML", wrap_translate2YAML, METH_VARARGS, "Translate parsed doc to YAML."},
-        {"translate2XML", wrap_translate2XML, METH_VARARGS, "Translate parsed doc to XML."},
-        {"getInfo", wrap_getInfo, METH_VARARGS, "Get the Info Object."},
-        {"getHost", wrap_getHost, METH_VARARGS, "Get the host url"},
-        {"getBasePath", wrap_getBasePath, METH_VARARGS, "Get the basePath"},
-        {"getSchemes", wrap_getSchemes, METH_VARARGS, "Get the schemes list"},
-        {"getConsumes", wrap_getConsumes, METH_VARARGS, "Get the consumes list"},
-        {"getProduces", wrap_getProduces, METH_VARARGS, "Get the produces list"},
-        {"getTags", wrap_getTags, METH_VARARGS, "Get the tags list"},
-        {"getExternalDocs", wrap_getExternalDocs, METH_VARARGS, "Get the externalDocs Object"},
-        {NULL, NULL}
+        {"read",                wrap_read,                METH_VARARGS, "Read YAML and XML format files."},
+        {"readYAML",            wrap_readYAML,            METH_VARARGS, "Read YAML format files."},
+        {"readXML",             wrap_readXML,             METH_VARARGS, "Read XML format files."},
+        {"getErrors",           wrap_getErrors,           METH_VARARGS, "Get all parse errors."},
+        {"translate2YAML",      wrap_translate2YAML,      METH_VARARGS, "Translate parsed doc to YAML."},
+        {"translate2XML",       wrap_translate2XML,       METH_VARARGS, "Translate parsed doc to XML."},
+        {"getInfo",             wrap_getInfo,             METH_VARARGS, "Get the Info Object."},
+        {"getHost",             wrap_getHost,             METH_VARARGS, "Get the host url"},
+        {"getBasePath",         wrap_getBasePath,         METH_VARARGS, "Get the basePath"},
+        {"getSchemes",          wrap_getSchemes,          METH_VARARGS, "Get the schemes list"},
+        {"getConsumes",         wrap_getConsumes,         METH_VARARGS, "Get the consumes list"},
+        {"getProduces",         wrap_getProduces,         METH_VARARGS, "Get the produces list"},
+        {"getTags",             wrap_getTags,             METH_VARARGS, "Get the tags list"},
+        {"getExternalDocs",     wrap_getExternalDocs,     METH_VARARGS, "Get the externalDocs Object"},
+        {"getDataSchemaNames",  wrap_getDataSchemaNames,  METH_VARARGS, "Get the names for data schemas"},
+        {"getDataSchemaByName", wrap_getDataSchemaByName, METH_VARARGS, "Get the data schema structure by name"},
+        {"randFromDataSchema",  wrap_randFromDataSchema,  METH_VARARGS, "Generate a random value from data schema definition"},
+        {"checkData",           wrap_checkData,           METH_VARARGS, "Check whether the data object conforms to the data schema"},
+        {NULL, NULL,}
 };
 
 PyMODINIT_FUNC initLapisParser() {

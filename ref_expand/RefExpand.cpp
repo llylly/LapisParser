@@ -92,6 +92,7 @@ DocElement* RefExpand::findByPath(string currentDoc, string path, int line, int 
     }
     if (path.length() - lastP > 1)
         pathVec.push_back(path.substr((unsigned)(lastP+1), (unsigned)(path.length()-lastP-1)));
+    if (pathVec.size() <= 0) return NULL;
 
     string doc = currentDoc;
     string fileName = pathVec[0];

@@ -91,7 +91,7 @@ BaseDataObject *StringSchema::generate() {
     BaseDataObject *enumGen = DataSchemaObject::generate();
     if (enumGen) return enumGen;
     if (!this->valid) return NULL;
-    if (DataSchemaObject::randomReal() < emptyProbability) return NULL;
+    if ((DataSchemaObject::randomReal() < emptyProbability) && (this->allowEmptyValue)) return NULL;
     // --- above are routine ---
     if (formatType == StringSchema::DATE)
         return new StringDataObject(StringSchema::generateDate(this->pattern, this->minLength, this->maxLength));
@@ -100,7 +100,6 @@ BaseDataObject *StringSchema::generate() {
     if (this->hasPattern)
         return new StringDataObject(generateFromPattern(this->pattern, this->minLength, this->maxLength));
 
-    srand((unsigned int)time(0));
     int len = this->minLength + (rand() & 0x7FFFFFFF) % (this->maxLength - this->minLength + 1);
     string s;
     s.clear();

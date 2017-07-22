@@ -10,6 +10,7 @@
 extern "C" {
 #include "python2.7/Python.h"
 }
+
 #include "../../error/Error.h"
 #include "../../doc/DocElement.h"
 #include "../../doc/YAMLAdapter.h"
@@ -27,8 +28,16 @@ enum FORMAT {
 };
 
 /*******************
- * Private Functions
+ * Public Functions
  ******************/
+
+/**
+ * Read scripts. YAML or XML is detected by file suffix
+ * @param self
+ * @param args
+ * @return 0 - success, 1 - failed
+ */
+PyObject *wrap_read(PyObject *self, PyObject *args);
 
 /**
  * Read YAML
@@ -36,7 +45,7 @@ enum FORMAT {
  * @param args, contains filePath list
  * @return 0 - success, 1 - failed
  */
-PyObject* wrap_readYAML(PyObject* self, PyObject* args);
+PyObject *wrap_readYAML(PyObject *self, PyObject *args);
 
 /**
  * Read XML
@@ -44,7 +53,7 @@ PyObject* wrap_readYAML(PyObject* self, PyObject* args);
  * @param args, contains filePath list
  * @return 0 - success, 1 - failed
  */
-PyObject* wrap_readXML(PyObject* self, PyObject* args);
+PyObject *wrap_readXML(PyObject *self, PyObject *args);
 
 /**
  * Get parse errors
@@ -52,7 +61,7 @@ PyObject* wrap_readXML(PyObject* self, PyObject* args);
  * @param args, nothing needed
  * @return list, each item is a dict: {fileName: string, line: integer, col: integer, msg: string}
  */
-PyObject* wrap_getErrors(PyObject* self, PyObject* args);
+PyObject *wrap_getErrors(PyObject *self, PyObject *args);
 
 /**
  * Translate internal doc to a YAML file
@@ -60,7 +69,7 @@ PyObject* wrap_getErrors(PyObject* self, PyObject* args);
  * @param args, contains a filePath to be written to
  * @return 0 - success, 1 - failed
  */
-PyObject* wrap_translate2YAML(PyObject* self, PyObject* args);
+PyObject *wrap_translate2YAML(PyObject *self, PyObject *args);
 
 /**
  * Translate internal doc to a XML file
@@ -68,7 +77,7 @@ PyObject* wrap_translate2YAML(PyObject* self, PyObject* args);
  * @param args, contains a filePath to be written to
  * @return 0 - success, 1 - failed
  */
-PyObject* wrap_translate2XML(PyObject* self, PyObject* args);
+PyObject *wrap_translate2XML(PyObject *self, PyObject *args);
 
 /**
  * Get the Info Object of root element
@@ -134,6 +143,38 @@ PyObject *wrap_getTags(PyObject *self, PyObject *args);
  */
 PyObject *wrap_getExternalDocs(PyObject *self, PyObject *args);
 
+/**
+ * Get the names for data schemas
+ * @param self
+ * @param args, no argument needed
+ * @return a python list
+ */
+PyObject *wrap_getDataSchemaNames(PyObject *self, PyObject *args);
+
+/**
+ * Get the data schema structure by name
+ * @param self
+ * @param args, a string from schema name list
+ * @return a python dict representing the data schema
+ */
+PyObject *wrap_getDataSchemaByName(PyObject *self, PyObject *args);
+
+/**
+ * Genrerate a random value from data schema definition
+ * @param self
+ * @param args, a string from schema name list
+ * @return the generated data object
+ */
+PyObject *wrap_randFromDataSchema(PyObject *self, PyObject *args);
+
+/**
+ * Check whether the data object conforms to the data schema
+ * @param self
+ * @param args, first one is the data object to check, second one is the name to the data schema
+ * @return true or false: conform or not conform
+ */
+PyObject *wrap_checkData(PyObject *self, PyObject *args);
+
 /*******************
  * Private Functions
  ******************/
@@ -145,13 +186,13 @@ PyObject *wrap_getExternalDocs(PyObject *self, PyObject *args);
  * @param format: file format: yaml or xml
  * @return Whether successfully read
  */
-bool readFiles(int filec, char** filev, FORMAT format);
+bool readFiles(int filec, char **filev, FORMAT* format);
 
 /**
  * Get parse errors
  * @return vector of errors
  */
-std::vector<Error*> *getErrors();
+std::vector<Error *> *getErrors();
 
 /**
  * Translate stored doc to XML or YAML
