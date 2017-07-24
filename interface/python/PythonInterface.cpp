@@ -303,13 +303,13 @@ PyObject *wrap_getExternalDocs(PyObject *self, PyObject *args) {
 PyObject *wrap_getDataSchemaNames(PyObject *self, PyObject *args) {
     if (state != PARSED)
         return Py_None;
-    const map<string, DocElement*> &nameMap = controller->definitions->getNameMap();
+    const map<string, DocElement *> &nameMap = controller->definitions->getNameMap();
     PyObject *l = PyList_New(nameMap.size());
     int i = 0;
-    for (map<string, DocElement*>::const_iterator ite = nameMap.cbegin();
-            ite != nameMap.cend();
-            ++ite) {
-        PyList_SetItem(l, (Py_ssize_t)i, Py_BuildValue("s", ite->first.c_str()));
+    for (map<string, DocElement *>::const_iterator ite = nameMap.cbegin();
+         ite != nameMap.cend();
+         ++ite) {
+        PyList_SetItem(l, (Py_ssize_t) i, Py_BuildValue("s", ite->first.c_str()));
         ++i;
     }
     return l;
@@ -344,10 +344,12 @@ PyObject *wrap_randFromDataSchema(PyObject *self, PyObject *args) {
     BaseDataObject *ele = o->generate();
     if (ele == NULL)
         return Py_None;
-    return PythonObjectAdapter::fromDataObject(ele);
+    PyObject *ans = PythonObjectAdapter::fromDataObject(ele);
+    if (ele) delete ele;
+    return ans;
 }
 
-PyObject *wrap_checkData(PyObject *self, PyObject *args) {
+PyObject *wrap_checkDataBySchema(PyObject *self, PyObject *args) {
     if (state != PARSED)
         return Py_None;
     PyObject *dataObj;
@@ -361,7 +363,136 @@ PyObject *wrap_checkData(PyObject *self, PyObject *args) {
     BaseDataObject *obj = PythonObjectAdapter::toDataObject(dataObj);
     if (obj == NULL)
         return Py_None;
-    if (o->check(obj))
+    bool ans = o->check(obj);
+    delete obj;
+    if (ans)
+        return Py_True;
+    else
+        return Py_False;
+}
+
+// ------
+
+PyObject *wrap_getParameterNames(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    const map<string, DocElement *> &nameMap = controller->parameters->getNameMap();
+    PyObject *l = PyList_New(nameMap.size());
+    int i = 0;
+    for (map<string, DocElement *>::const_iterator ite = nameMap.cbegin();
+         ite != nameMap.cend();
+         ++ite) {
+        PyList_SetItem(l, (Py_ssize_t) i, Py_BuildValue("s", ite->first.c_str()));
+        ++i;
+    }
+    return l;
+}
+
+PyObject *wrap_getParameterByName(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    char *nameObj;
+    if (!PyArg_ParseTuple(args, "s", &nameObj))
+        return Py_None;
+    string name = string(nameObj);
+    ParameterObject *o = controller->parameters->getParameterByName(name);
+    if (o == NULL)
+        return Py_None;
+    BaseDataObject *ele = o->toDataObject();
+    if (ele == NULL)
+        return Py_None;
+    return PythonObjectAdapter::fromDataObject(ele);
+}
+
+PyObject *wrap_randFromParameter(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    char *nameObj;
+    if (!PyArg_ParseTuple(args, "s", &nameObj))
+        return Py_None;
+    string name = string(nameObj);
+    ParameterObject *o = controller->parameters->getParameterByName(name);
+    if (o == NULL)
+        return Py_None;
+    BaseDataObject *ele = o->schema->generate();
+    if (ele == NULL)
+        return Py_None;
+    PyObject *ans = PythonObjectAdapter::fromDataObject(ele);
+    if (ele) delete ele;
+    return ans;
+}
+
+PyObject *wrap_checkDataByParam(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    PyObject *dataObj;
+    char *nameObj;
+    if (!PyArg_ParseTuple(args, "Os", &dataObj, &nameObj))
+        return Py_None;
+    string name = string(nameObj);
+    ParameterObject *o = controller->parameters->getParameterByName(name);
+    if (o == NULL)
+        return Py_None;
+    BaseDataObject *obj = PythonObjectAdapter::toDataObject(dataObj);
+    if (obj == NULL)
+        return Py_None;
+    bool ans = o->schema->check(obj);
+    delete obj;
+    if (ans)
+        return Py_True;
+    else
+        return Py_False;
+}
+
+PyObject *wrap_getResponseNames(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    const map<string, DocElement *> &nameMap = controller->responses->getNameMap();
+    PyObject *l = PyList_New(nameMap.size());
+    int i = 0;
+    for (map<string, DocElement *>::const_iterator ite = nameMap.cbegin();
+         ite != nameMap.cend();
+         ++ite) {
+        PyList_SetItem(l, (Py_ssize_t) i, Py_BuildValue("s", ite->first.c_str()));
+        ++i;
+    }
+    return l;
+}
+
+PyObject *wrap_getResponseByName(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    char *nameObj;
+    if (!PyArg_ParseTuple(args, "s", &nameObj))
+        return Py_None;
+    string name = string(nameObj);
+    AbstractResponseObject *o = controller->responses->getResponseByName(name);
+    if (o == NULL)
+        return Py_None;
+    BaseDataObject *ele = o->toDataObject();
+    if (ele == NULL)
+        return Py_None;
+    return PythonObjectAdapter::fromDataObject(ele);
+}
+
+PyObject *wrap_checkDataByResponse(PyObject *self, PyObject *args) {
+    if (state != PARSED)
+        return Py_None;
+    PyObject *dataObj;
+    char *nameObj;
+    if (!PyArg_ParseTuple(args, "Os", &dataObj, &nameObj))
+        return Py_None;
+    string name = string(nameObj);
+    AbstractResponseObject *o = controller->responses->getResponseByName(name);
+    if (o == NULL)
+        return Py_None;
+    BaseDataObject *obj = PythonObjectAdapter::toDataObject(dataObj);
+    DocElement *ele = DataObjectAdapter::toDocElement(obj);
+    if (obj == NULL)
+        return Py_None;
+    bool ans = o->checkResponse(ele);
+    delete ele;
+    if (ans)
         return Py_True;
     else
         return Py_False;
@@ -374,6 +505,7 @@ static PyMethodDef LapisParserMethods[] = {
         {"getErrors",           wrap_getErrors,           METH_VARARGS, "Get all parse errors."},
         {"translate2YAML",      wrap_translate2YAML,      METH_VARARGS, "Translate parsed doc to YAML."},
         {"translate2XML",       wrap_translate2XML,       METH_VARARGS, "Translate parsed doc to XML."},
+
         {"getInfo",             wrap_getInfo,             METH_VARARGS, "Get the Info Object."},
         {"getHost",             wrap_getHost,             METH_VARARGS, "Get the host url"},
         {"getBasePath",         wrap_getBasePath,         METH_VARARGS, "Get the basePath"},
@@ -382,10 +514,21 @@ static PyMethodDef LapisParserMethods[] = {
         {"getProduces",         wrap_getProduces,         METH_VARARGS, "Get the produces list"},
         {"getTags",             wrap_getTags,             METH_VARARGS, "Get the tags list"},
         {"getExternalDocs",     wrap_getExternalDocs,     METH_VARARGS, "Get the externalDocs Object"},
+
         {"getDataSchemaNames",  wrap_getDataSchemaNames,  METH_VARARGS, "Get the names for data schemas"},
         {"getDataSchemaByName", wrap_getDataSchemaByName, METH_VARARGS, "Get the data schema structure by name"},
         {"randFromDataSchema",  wrap_randFromDataSchema,  METH_VARARGS, "Generate a random value from data schema definition"},
-        {"checkData",           wrap_checkData,           METH_VARARGS, "Check whether the data object conforms to the data schema"},
+        {"checkDataBySchema",   wrap_checkDataBySchema,   METH_VARARGS, "Check whether the data object conforms to the data schema"},
+
+        {"getParameterNames",   wrap_getParameterNames,   METH_VARARGS, "Get the names for parameters"},
+        {"getParameterByName",  wrap_getParameterByName,  METH_VARARGS, "Get the parameter structure by name"},
+        {"randFromParameter",   wrap_randFromParameter,   METH_VARARGS, "Generate a random value from schema definition of parameter"},
+        {"checkDataByParam",    wrap_checkDataByParam,    METH_VARARGS, "Check whether the data object conforms to the data schema of parameter"},
+
+        {"getResponseNames",    wrap_getResponseNames,    METH_VARARGS, "Get the names for responses"},
+        {"getResponseByName",   wrap_getResponseByName,   METH_VARARGS, "Get the response structure by name"},
+        {"checkDataByResponse", wrap_checkDataByResponse, METH_VARARGS, "Check whether the data object conforms to the data schema of response"},
+
         {NULL, NULL,}
 };
 

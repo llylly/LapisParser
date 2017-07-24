@@ -76,3 +76,23 @@ if __name__ == '__main__':
                 for i in range(upbound):
                     print(LapisParser.randFromDataSchema(name))
 
+        if True:
+            print('Parameter Names:')
+            parameterNames = LapisParser.getParameterNames()
+            print(parameterNames)
+            for name in parameterNames:
+                print('Parameter "%s":' % name)
+                param = LapisParser.getParameterByName(name)
+                print(param)
+                print('Generated Value for "%s":' % name)
+                print(LapisParser.randFromParameter(name))
+
+        if True:
+            print('Response Names:')
+            responseNames = LapisParser.getResponseNames()
+            print(responseNames)
+            for name in responseNames:
+                print('Response %s":' % name)
+                resp = LapisParser.getResponseByName(name)
+                print(resp)
+

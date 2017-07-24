@@ -17,6 +17,8 @@
 Controller::Controller() {
     srand((unsigned int)time(0));
     definitions = new DataSchemaPool();
+    parameters = new ParameterPool(definitions);
+    responses = new ResponsePool(definitions);
 }
 
 Controller::~Controller() {
@@ -34,7 +36,8 @@ Controller::~Controller() {
         delete externalDocs;
 
     delete definitions;
-
+    delete parameters;
+    delete responses;
 }
 
 void Controller::work() {
@@ -226,15 +229,58 @@ void Controller::work() {
                     DocObjectElement *o = (DocObjectElement*)definitionsEle;
                     map<string, DocElement*> *m = o->getMemberMap();
                     for (map<string, DocElement*>::iterator iite = m->begin(); iite != m->end(); ++iite) {
-                        if (!definitions->parseDataSchema(ite->first, iite->second, iite->first))
+                        if (definitions->parseDataSchema(ite->first, iite->second, iite->first) == NULL)
                             return;
                     }
                 }
             }
 
-            /** parameters (working on...) **/
+            /** parameters **/
+            DocElement *paramEle = docRoot->get("parameters");
+            if (paramEle != NULL) {
+                if (paramEle->type != DOC_OBJECT) {
+                    Error::addError(new FieldInvalidError(ite->first, paramEle->line, paramEle->col, "parameters", paramEle->type, DOC_OBJECT));
+                    return;
+                } else {
+                    DocObjectElement *o = (DocObjectElement*)paramEle;
+                    map<string, DocElement*> *m = o->getMemberMap();
+                    for (map<string, DocElement*>::iterator iite = m->begin(); iite != m->end(); ++iite) {
+                        if (parameters->parseParameter(ite->first, iite->second, iite->first) == NULL)
+                            return;
+                    }
+                }
+            }
 
-            /** responses (working on...) **/
+            /** responses **/
+            DocElement *responseEle = docRoot->get("responses");
+            if (responseEle != NULL) {
+                if (responseEle->type != DOC_OBJECT) {
+                    Error::addError(new FieldInvalidError(ite->first, responseEle->line, responseEle->col, "responses", responseEle->type, DOC_OBJECT));
+                    return;
+                } else {
+                    DocObjectElement *o = (DocObjectElement*)responseEle;
+                    map<string, DocElement*> *m = o->getMemberMap();
+                    for (map<string, DocElement*>::iterator iite = m->begin(); iite != m->end(); ++iite) {
+                        const string &paramName = iite->first;
+                        DocElement *nowEle = iite->second;
+                        if (nowEle->type != DOC_OBJECT) {
+                            Error::addError(new FieldInvalidError(ite->first, nowEle->line, nowEle->col, "responses", nowEle->type, DOC_OBJECT));
+                            return;
+                        } else {
+                            DocObjectElement *oEle = (DocObjectElement*)nowEle;
+                            if (oEle->get("name")) {
+                                // must be Response Extension Object
+                                if (responses->parseResponseExtension(ite->first, oEle, paramName) == NULL)
+                                    return;
+                            } else {
+                                // must be Response Object
+                                if (responses->parseResponse(ite->first, oEle, paramName) == NULL)
+                                    return;
+                            }
+                        }
+                    }
+                }
+            }
 
             /** paths (working on...) **/
 

@@ -170,10 +170,69 @@ PyObject *wrap_randFromDataSchema(PyObject *self, PyObject *args);
 /**
  * Check whether the data object conforms to the data schema
  * @param self
- * @param args, first one is the data object to check, second one is the name to the data schema
+ * @param args, first one is the data object to check, second one is the name of the data schema
  * @return true or false: conform or not conform
  */
-PyObject *wrap_checkData(PyObject *self, PyObject *args);
+PyObject *wrap_checkDataBySchema(PyObject *self, PyObject *args);
+
+/**
+ * Get the names for parameters
+ * @param self
+ * @param args, no argument needed
+ * @return a python list
+ */
+PyObject *wrap_getParameterNames(PyObject *self, PyObject *args);
+
+/**
+ * Get the parameter structure by name
+ * @param self
+ * @param args, a string from parameter name list
+ * @return a python dict representing the data schema
+ */
+PyObject *wrap_getParameterByName(PyObject *self, PyObject *args);
+
+/**
+ * Generate a random value from schema definition of parameter
+ * @param self
+ * @param args, a string from parameter name list
+ * @return the generated data object
+ */
+PyObject *wrap_randFromParameter(PyObject *self, PyObject *args);
+
+/**
+// * Check whether the data object conforms to the data schema of parameter
+ * @param self
+ * @param args, first one is the data object to check, second one is the name of the parameter
+ * @return true or false: conform or not conform
+ */
+PyObject *wrap_checkDataByParam(PyObject *self, PyObject *args);
+
+/**
+ * Get the names for responses
+ * @param self
+ * @param args, no argument needed
+ * @return a python list
+ */
+PyObject *wrap_getResponseNames(PyObject *self, PyObject *args);
+
+/**
+ * Get the response structure by name
+ * The return value could be Response Object or Response Extension Object
+ * If it has 'name' field, then Extension Object. Otherwise Response Object.
+ * @param self
+ * @param args, a string from parameter name list
+ * @return a python dict representing the data schema
+ */
+PyObject *wrap_getResponseByName(PyObject *self, PyObject *args);
+
+/**
+ * Check whether the data object conforms to the data schema of response
+ * @param self
+ * @param args, first one is the data object to check, second one is the name of the response
+ * @return true or false: conform or not conform
+ */
+PyObject *wrap_checkDataByResponse(PyObject *self, PyObject *args);
+
 
 /*******************
  * Private Functions

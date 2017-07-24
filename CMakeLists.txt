@@ -45,7 +45,10 @@ set(SOURCE_FILES
         schema/data_schema/FileSchema.h schema/data_schema/ObjectSchema.cpp schema/data_schema/ObjectSchema.h
         schema/data_schema/CustomizedSchema.cpp schema/data_schema/CustomizedSchema.h
         error/IllegalEnumObjectError.cpp error/IllegalEnumObjectError.h
-        error/IllegalRegexError.cpp error/IllegalRegexError.h error/IllegalIntervalError.cpp error/IllegalIntervalError.h)
+        error/IllegalRegexError.cpp error/IllegalRegexError.h error/IllegalIntervalError.cpp error/IllegalIntervalError.h
+        schema/ParameterObject.cpp schema/ParameterObject.h schema/AbstractResponseObject.cpp schema/AbstractResponseObject.h
+        schema/response/ResponseObject.cpp schema/response/ResponseObject.h
+        schema/response/ResponseExtensionObject.cpp schema/response/ResponseExtensionObject.h)
 
 add_executable(VParser ${SOURCE_FILES})
 

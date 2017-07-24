@@ -28,14 +28,19 @@ public:
     DataSchemaPool();
 
     /**
+     * Destructor
+     */
+    ~DataSchemaPool();
+
+    /**
      * Parse a doc node which represents a complete Schema Object
      *  Return whether successfully parsed
      *  If it has parsed, also return true, and increment the ref count
      * @param ele: doc node to be parsed
      * @param nodeName: enabling customized schema name
-     * @return bool: success or not
+     * @return success: Data Schema Object; failed: NULL
      */
-    bool parseDataSchema(string filePath, DocElement *ele, string schemaName = "");
+    DataSchemaObject *parseDataSchema(string filePath, DocElement *ele, string schemaName = "");
 
     /**
      * Rename a schema
