@@ -19,6 +19,7 @@ Controller::Controller() {
     definitions = new DataSchemaPool();
     parameters = new ParameterPool(definitions);
     responses = new ResponsePool(definitions);
+    paths = new APIPool(parameters, responses);
 }
 
 Controller::~Controller() {
@@ -38,6 +39,7 @@ Controller::~Controller() {
     delete definitions;
     delete parameters;
     delete responses;
+    delete paths;
 }
 
 void Controller::work() {
@@ -282,7 +284,91 @@ void Controller::work() {
                 }
             }
 
-            /** paths (working on...) **/
+            /** paths **/
+            DocElement *pathsEle = docRoot->get("paths");
+            if (pathsEle != NULL) {
+                if (pathsEle->type != DOC_OBJECT) {
+                    Error::addError(new FieldInvalidError(ite->first, pathsEle->line, pathsEle->col, "paths", pathsEle->type, DOC_OBJECT));
+                    return;
+                } else {
+                    DocObjectElement *o_pathsEle = (DocObjectElement*)pathsEle;
+                    map<string, DocElement*> *memberMap = o_pathsEle->getMemberMap();
+
+                    for (map<string, DocElement*>::iterator iite = memberMap->begin();
+                            iite != memberMap->end();
+                            ++iite) {
+                        string key = ite->first;
+                        DocElement *item = ite->second;
+
+                        if (item == NULL) {
+                            Error::addError(new FieldMissError(ite->first, pathsEle->line, pathsEle->col, "paths.value"));
+                            return;
+                        }
+                        if ((key.length() <= 0) || (key[0] != '/')) {
+                            Error::addError(new FieldIllegalError(ite->first, item->line, item->col, "paths.key"));
+                            return;
+                        }
+                        if (item->type != DOC_OBJECT) {
+                            Error::addError(new FieldInvalidError(ite->first, item->line, item->col, "paths.value", item->type, DOC_OBJECT));
+                            return;
+                        }
+
+                        DocObjectElement *o_itemEle = (DocObjectElement*)item;
+
+                        vector<ParameterObject*> *paramsVec = new vector<ParameterObject*>();
+                        /** parameter under paths **/
+                        DocElement *p_paramEle = o_itemEle->get("parameter");
+                        if (p_paramEle != NULL) {
+                            if (p_paramEle->type != DOC_SEQUENCE) {
+                                Error::addError(new FieldInvalidError(ite->first, p_paramEle->line, p_paramEle->col, "paths.parameter", p_paramEle->type, DOC_SEQUENCE));
+                                paramsVec->clear();
+                                delete paramsVec;
+                                return;
+                            } else {
+                                DocSequenceElement *s_p_paramEle = (DocSequenceElement*)p_paramEle;
+                                int len = s_p_paramEle->getLength();
+                                for (int i=0; i<len; ++i) {
+                                    DocElement *param_item = s_p_paramEle->get(i);
+                                    ParameterObject *o = parameters->parseParameter(ite->first, param_item);
+                                    if (o == NULL) {
+                                        paramsVec->clear();
+                                        delete paramsVec;
+                                        return;
+                                    }
+                                    paramsVec->push_back(o);
+                                }
+                            }
+                        }
+
+                        /** get **/
+                        DocElement *getEle = o_itemEle->get("get");
+                        if (getEle != NULL) {
+                            APIObject *get_o = paths->parseAPI(ite->first, getEle, key.substr(1), GET, schemes,
+                                                               paramsVec);
+                            if (get_o == NULL) {
+                                paramsVec->clear();
+                                delete paramsVec;
+                                return;
+                            }
+                        }
+
+                        /** post **/
+                        DocElement *postEle = o_itemEle->get("post");
+                        if (postEle != NULL) {
+                            APIObject *post_o = paths->parseAPI(ite->first, postEle, key.substr(1), POST, schemes,
+                                                               paramsVec);
+                            if (post_o == NULL) {
+                                paramsVec->clear();
+                                delete paramsVec;
+                                return;
+                            }
+                        }
+
+                        paramsVec->clear();
+                        delete paramsVec;
+                    }
+                }
+            }
 
             /** x-scenario (working on...) **/
 

@@ -30,7 +30,7 @@ public:
     /**
      * Parse a doc node which represents a complete Response Object
      *  Return whether successfully parsed
-     *  If it has parsed, also return true, and increment the ref count
+     *  If it has parsed, also return the object, and increment the ref count
      * @param ele: doc node to be parsed
      * @param nodeName: enabling customized schema name
      * @return success: the parsed object; failed: NULL

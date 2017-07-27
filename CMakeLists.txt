@@ -48,7 +48,8 @@ set(SOURCE_FILES
         error/IllegalRegexError.cpp error/IllegalRegexError.h error/IllegalIntervalError.cpp error/IllegalIntervalError.h
         schema/ParameterObject.cpp schema/ParameterObject.h schema/AbstractResponseObject.cpp schema/AbstractResponseObject.h
         schema/response/ResponseObject.cpp schema/response/ResponseObject.h
-        schema/response/ResponseExtensionObject.cpp schema/response/ResponseExtensionObject.h)
+        schema/response/ResponseExtensionObject.cpp schema/response/ResponseExtensionObject.h schema/APIObject.cpp schema/APIObject.h
+        schema/api/APIConstraintObject.cpp schema/api/APIConstraintObject.h)
 
 add_executable(VParser ${SOURCE_FILES})
 
