@@ -248,3 +248,15 @@ bool ArraySchema::init(string filePath, DocObjectElement *obj, int schemaType) {
 ArraySchema::~ArraySchema() {
     delete items;
 }
+
+DataSchemaObject *ArraySchema::findField(const vector<string> &fieldVec, int index) {
+    if (index == fieldVec.size()) return this;
+    size_t *errP = new size_t();
+    stoi(fieldVec[index], errP, 10);
+    if (*errP != fieldVec[index].length()) {
+        delete errP;
+        return NULL;
+    }
+    delete errP;
+    return items->findField(fieldVec, index + 1);
+}

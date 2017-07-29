@@ -27,6 +27,8 @@ public:
     BaseDataObject *transform(DocElement *ele) override;
     BaseDataObject *generate() override;
     bool init(string filePath, DocObjectElement *obj, int schemaType) override;
+
+    DataSchemaObject *findField(const vector<string> &fieldVec, int index) override;
 };
 
 

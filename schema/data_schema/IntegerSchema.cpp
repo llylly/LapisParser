@@ -231,3 +231,10 @@ bool IntegerSchema::init(string filePath, DocObjectElement *obj, int schemaType)
 
     return true;
 }
+
+DataSchemaObject *IntegerSchema::findField(const vector<string> &fieldVec, int index) {
+    if (index == fieldVec.size())
+        return this;
+    else
+        return NULL;
+}

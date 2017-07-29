@@ -197,3 +197,14 @@ ObjectSchema::~ObjectSchema() {
         delete ite->second;
     }
 }
+
+DataSchemaObject *ObjectSchema::findField(const vector<string> &fieldVec, int index) {
+    if (index == fieldVec.size())
+        return this;
+    else {
+        if (properties.count(fieldVec[index]) > 0)
+            return properties[fieldVec[index]]->findField(fieldVec, index + 1);
+        else
+            return NULL;
+    }
+}

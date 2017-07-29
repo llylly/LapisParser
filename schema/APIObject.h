@@ -15,12 +15,16 @@
 #include "SchemesObject.h"
 #include "ResponsePool.h"
 #include "ParameterPool.h"
+#include "api/APIConstraintObject.h"
+#include "../error/DuplicateParameterNameError.h"
+#include "../error/IllegalPathParameterError.h"
+#include "../error/IllegalConsumesForFormData.h"
+#include "../error/FormDataAndBodyConflictError.h"
+#include "../error/TooManyBodyParamError.h"
+#include "../error/IllegalFileParameterError.h"
+#include "../error/IllegalMIMEListError.h"
 
 using namespace std;
-
-enum APIRequestMethod {
-    GET, POST
-};
 
 class APIConstraintObject;
 
@@ -42,13 +46,15 @@ public:
      *  Return whether successfully parsed
      * @param filePath: file name of the DocObjectElement
      * @param ele the DocObjectElement to be parsed
+     * @param name the name from the map
+     * @param method the request method from the map
      * @param rootSchemes: the schemes object of the root node, to be appended here
      * @param commonParams: the parameter field of the outer node, to be appended here
      * @param paramPool: the parameter pool, used to parse parameters
      * @param responsePool: the response pool, used to parse responses
      * @return bool: whether successfully parsed
      */
-    bool create(string filePath, DocObjectElement *ele, SchemesObject *rootSchemes, vector<ParameterObject*> *commonParams,
+    bool create(string filePath, DocObjectElement *ele, string name, APIRequestMethod method, SchemesObject *rootSchemes, vector<ParameterObject*> *commonParams,
         ParameterPool *paramPool, ResponsePool *responsePool);
 
     /**
@@ -75,7 +81,11 @@ public:
     map<string, vector<ResponseExtensionObject*>> responseExtensions;
     SchemesObject *schemes;
     bool deprecated;
-    APIConstraintObject *constraint;
+    vector<APIConstraintObject*> constraint;
+
+private:
+    static set<string> mimeList;
+    static bool mimeCheck(const vector<string> &mimeVec);
 };
 
 

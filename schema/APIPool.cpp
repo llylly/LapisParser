@@ -45,7 +45,7 @@ APIObject *APIPool::parseAPI(string filePath, DocElement *ele, string name, APIR
 
     DocObjectElement *o = (DocObjectElement*)ele;
     APIObject *ans = new APIObject();
-    ans->create(filePath, o, rootSchemes, commonParams, paramPool, responsePool);
+    ans->create(filePath, o, name, method, rootSchemes, commonParams, paramPool, responsePool);
     if (!ans->valid) {
         delete ans;
         return NULL;
@@ -58,4 +58,39 @@ APIObject *APIPool::parseAPI(string filePath, DocElement *ele, string name, APIR
     pool[key] = ans;
     refMap[key] = 1;
     return ans;
+}
+
+bool APIPool::touch(DocElement *ele) {
+    return APINodeSet.count(ele) > 0;
+}
+
+pair<string, APIRequestMethod> APIPool::getNameByElement(DocElement *ele) {
+    if (nodeNameMap.count(ele) > 0)
+        return nodeNameMap[ele];
+    else
+        return make_pair(string(""), GET); // illegal return
+}
+
+DocElement *APIPool::getElementByName(pair<string, APIRequestMethod> name) {
+    if(APINameSet.count(name)) {
+        // cost time!
+        for (map<DocElement*, pair<string, APIRequestMethod>>::iterator ite = nodeNameMap.begin();
+                ite != nodeNameMap.end();
+                ++ite) {
+            if (ite->second == name)
+                return ite->first;
+        }
+    }
+    return NULL;
+}
+
+APIObject *APIPool::getObjectByElement(DocElement *ele) {
+    if (nodeNameMap.count(ele) > 0)
+        return pool[nodeNameMap[ele]];
+    else
+        return NULL; // not find
+}
+
+map<pair<string, APIRequestMethod>, APIObject*> &APIPool::getNameObjectMap() {
+    return pool;
 }

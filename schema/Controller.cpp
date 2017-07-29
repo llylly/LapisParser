@@ -389,6 +389,30 @@ void Controller::work() {
         Error::addError(new FieldMissError("/", 1, 1, "host"));
         return;
     }
+
+    // Expand quotation in API Constraint Object
+    {
+        map<pair<string, APIRequestMethod>, APIObject*> &pool = paths->getNameObjectMap();
+        for (map<pair<string, APIRequestMethod>, APIObject*>::iterator ite = pool.begin();
+                ite != pool.end();
+                ++ite) {
+            APIObject *obj = ite->second;
+            if (obj->constraint.size() > 0) {
+                int len = (int)obj->constraint.size();
+                for (int i=0; i < len; ++i) {
+                    APIConstraintObject *now = obj->constraint[i];
+                    if (!now->findGuest(paths)) {
+                        DocElement *ele = paths->getElementByName(ite->first);
+                        Error::addError(
+                                new FieldIllegalError("/", ele->line, ele->col, "operation.x-constraints.operation")
+                        );
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
     // Below are optional
     if (!basePathFind) {
         basePath = "";

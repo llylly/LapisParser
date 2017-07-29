@@ -8,7 +8,6 @@ BaseDataObject *AbstractResponseObject::toDataObject() {
     if (this->stage == INVALID_RESPONSE)
         return NULL;
     ObjectDataObject *obj = new ObjectDataObject();
-    (*obj)["code"] = new IntegerDataObject(this->code);
     if (this->type == NORMAL || this->description != "") {
         (*obj)["description"] = new StringDataObject(this->description);
     }

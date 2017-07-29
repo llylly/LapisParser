@@ -8,6 +8,7 @@ BaseDataObject *ResponseExtensionObject::toDataObject() {
     BaseDataObject *obj = AbstractResponseObject::toDataObject();
     if (obj == NULL) return NULL;
     ObjectDataObject *o = (ObjectDataObject*)obj;
+    (*o)["code"] = new IntegerDataObject(this->code);
     (*o)["name"] = new StringDataObject(this->name);
     (*o)["field"] = new StringDataObject(this->field);
     SequenceDataObject *seq = new SequenceDataObject();
