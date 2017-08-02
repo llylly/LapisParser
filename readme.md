@@ -73,7 +73,7 @@ Then enjoy it :)
 
     Browse `html/index.html` for interface document. It's in the document for `interface/Interface.h`.
     
-    ** Every C++ interface here has a strictly corresponding Python one except for `init()`, which is executed during package initialization. **
+    **Every C++ interface here has a strictly corresponding Python one except for `init()`, which is executed during package initialization.**
 
     + string (C++) - String (Python)
     
