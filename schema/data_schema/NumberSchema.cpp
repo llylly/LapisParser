@@ -245,3 +245,10 @@ bool NumberSchema::init(string filePath, DocObjectElement *obj, int schemaType) 
 
     return true;
 }
+
+DataSchemaObject *NumberSchema::findField(const vector<string> &fieldVec, int index) {
+    if (index == fieldVec.size())
+        return this;
+    else
+        return NULL;
+}

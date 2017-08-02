@@ -14,6 +14,8 @@
 #include "../../data/DataObjectAdapter.h"
 
 PyObject *PythonObjectAdapter::fromDataObject(BaseDataObject *obj) {
+    if (obj == NULL)
+        return Py_None;
     if (obj->type == BASE) {
         return Py_None;
     }

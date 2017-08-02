@@ -10,6 +10,7 @@
 
 
 DocElement *DataObjectAdapter::toDocElement(BaseDataObject *origin) {
+    if (origin == NULL) return NULL;
     if (origin->type == BASE) {
         return NULL;
     }

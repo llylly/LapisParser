@@ -6,7 +6,7 @@ import os
 import shutil
 
 
-def init_module(dll_path):
+def init_module(dll_path='../../cmake-build-debug/libVParserPy.dylib'):
     """
     Copy compiled dylib to this directory and rename, to prepare for use
     :return: None
@@ -22,57 +22,38 @@ if __name__ == '__main__':
             init_module(path)
 
 
-    import LapisParser
+    from LapisParser import *
 
     absPath = os.path.abspath('.')
 
-    # res = LapisParser.readYAML([os.path.join(absPath, '../../example-ossgroup.yaml')])
-    res = LapisParser.readYAML([os.path.join(absPath, '../../test.yaml')])
-    if res == 1:
-        print('Read failed.')
-        print('Errors:')
-        print(LapisParser.getErrors())
-    else:
-        print('Read succeed.')
+    addDocFromFile('../../official_demo.yaml', 'default')
+    print(getDocList())
+    print(parseAPI())
+    print(getInfo())
+    print(getHost())
+    print(getBasePath())
+    print(getSchemes())
+    print(getConsumes())
+    print(getProduces())
+    print(getAPINames())
+    print(getDataSchemaNames())
+    print(getParameterNames())
+    print(getResponseNames())
+    print(getTags())
+    print(getExternalDocs())
 
-        res = LapisParser.translate2XML('../../output.xml')
-        if res == 1:
-            print('Translate failed.')
-        else:
-            print('Translate succeed.')
+    api_name = getAPINames()[3]
+    print(getAPI(api_name['name'], api_name['method']))
 
-        if False:
-            print('------')
+    print(generateRandomDataFromDataSchema('Error'))
 
-            print("Info Object:")
-            print(LapisParser.getInfo())
-            print("Host:")
-            print(LapisParser.getHost())
-            print("BasePath:")
-            print(LapisParser.getBasePath())
-            print("Schemes:")
-            print(LapisParser.getSchemes())
-            print("Consumes:")
-            print(LapisParser.getConsumes())
-            print("Produces:")
-            print(LapisParser.getProduces())
-            print("Tags:")
-            print(LapisParser.getTags())
-            print("ExternalDocs:")
-            print(LapisParser.getExternalDocs())
+    print(getInfo())
+    info = getInfo()
+    info['description'] = 'I modified it!'
+    print(setInfo(info))
+    print(parseAPI())
+    print(getInfo())
 
-        if True:
-            print('Data Schema Names:')
-            schemaNames = LapisParser.getDataSchemaNames()
-            print(schemaNames)
-            for name in schemaNames:
-                print('Data Schema "%s":' % name)
-                schema = LapisParser.getDataSchemaByName(name)
-                print(schema)
-                print('Generated Value for "%s":' % name)
-                upbound = 10
-                if (schema['type'] == 'file') or (schema['type'] == 'customize'):
-                    upbound = 0
-                for i in range(upbound):
-                    print(LapisParser.randFromDataSchema(name))
+    print(getErrors())
+
 

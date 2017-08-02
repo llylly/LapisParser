@@ -115,6 +115,8 @@ BaseDataObject *DataSchemaObject::toDataObject() {
 }
 
 DataSchemaObject *DataSchemaObjectFactory::create(string filePath, DocObjectElement *obj, int schemaType, bool inProperty) {
+    if (obj == NULL) return NULL;
+
     if (obj->type != DOC_OBJECT) {
         Error::addError(new FieldInvalidError(filePath, obj->line, obj->col, "schema", obj->type, DOC_OBJECT));
         return NULL;
@@ -394,7 +396,7 @@ bool DataSchemaObject::check(BaseDataObject *obj) {
 BaseDataObject *DataSchemaObject::generate() {
     if ((!this->valid) || (this->_enum.size() == 0)) return NULL;
     int pick_no = (rand() & 0x7FFFFFFF) % (int)this->_enum.size();
-    return this->_enum[pick_no];
+    return DataObjectAdapter::deepCopy(this->_enum[pick_no]);
 }
 
 double DataSchemaObject::randomReal() {

@@ -11,7 +11,7 @@
 
 int RefExpand::MAX_RECURSIVE_TIME = 100;
 
-void RefExpand::work() {
+bool RefExpand::work() {
     pathStack.clear();
     eleStack.clear();
     refObjRepo.clear();
@@ -24,7 +24,7 @@ void RefExpand::work() {
             expanded |= visit(curFile, &(ite->second));
         }
         // If find error when expanding, stop
-        if (Error::hasError()) return;
+        if (Error::hasError()) return false;
         ++time;
     } while ((expanded) && (time <= MAX_RECURSIVE_TIME));
     // Delete all reference object
@@ -32,7 +32,9 @@ void RefExpand::work() {
         delete *ite;
     if (expanded && (time > MAX_RECURSIVE_TIME)) {
         Error::addError(new RefRecursiveError(1, 1));
+        return false;
     }
+    return true;
 }
 
 bool RefExpand::visit(string currentDoc, DocElement **ele) {

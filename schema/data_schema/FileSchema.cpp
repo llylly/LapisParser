@@ -61,3 +61,10 @@ BaseDataObject *FileSchema::generate() {
 bool FileSchema::init(string filePath, DocObjectElement *obj, int schemaType) {
     return true;
 }
+
+DataSchemaObject *FileSchema::findField(const vector<string> &fieldVec, int index) {
+    if (index == fieldVec.size())
+        return this;
+    else
+        return NULL;
+}

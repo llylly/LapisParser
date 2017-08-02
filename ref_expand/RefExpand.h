@@ -16,7 +16,7 @@
  */
 class RefExpand {
 public:
-    void work();
+    bool work();
 
 
 private:

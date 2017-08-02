@@ -10,6 +10,15 @@ map <string, DocElement*> DocElement::docs;
 
 DocElement::~DocElement() { }
 
+void DocElement::cleanAllDocs() {
+    for (map<string, DocElement*>::iterator ite = docs.begin();
+            ite != docs.end();
+            ++ite) {
+        delete ite->second;
+    }
+    docs.clear();
+}
+
 pair<long long, bool> DocElementHelper::parseToInt(DocElement *ele) {
     long long ans;
     if (ele->type == DOC_SCALAR) {

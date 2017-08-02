@@ -13,18 +13,36 @@ DataSchemaPool::DataSchemaPool() {
     accuCnt = 0;
 }
 
-bool DataSchemaPool::parseDataSchema(string filePath, DocElement *ele, string schemaName) {
+DataSchemaPool::~DataSchemaPool() {
+    for (map<DocElement*, DataSchemaObject*>::iterator ite = pool.begin();
+            ite != pool.end();
+            ++ite)
+        delete ite->second;
+}
+
+DataSchemaObject *DataSchemaPool::parseDataSchema(string filePath, DocElement *ele, string schemaName) {
     if (schemaName == "") schemaName = makeName();
-    if ((ele == NULL) || (ele->type != DOC_OBJECT)) return false;
+    if (ele == NULL) {
+        Error::addError(
+                new FieldMissError(filePath, 1, 1, "schema")
+        );
+        return NULL;
+    }
+    if (ele->type != DOC_OBJECT) {
+        Error::addError(
+                new FieldInvalidError(filePath, ele->line, ele->col, "schema", ele->type, DOC_OBJECT)
+        );
+        return NULL;
+    }
 
     if (schemaSet.count(ele) != 0) {
         ++refMap[ele];
-        return true;
+        return pool[ele];
     }
 
     DocObjectElement *o = (DocObjectElement*)ele;
     DataSchemaObject *res = DataSchemaObjectFactory::create(filePath, o, DataSchemaObjectFactory::NORMAL_SCHEMA, false);
-    if ((res == NULL) || (!res->valid)) return false;
+    if ((res == NULL) || (!res->valid)) return NULL;
 
     schemaSet.insert(ele);
     pool[ele] = res;
@@ -32,7 +50,7 @@ bool DataSchemaPool::parseDataSchema(string filePath, DocElement *ele, string sc
     nameMap[ele] = schemaName;
     revNameMap[schemaName] = ele;
     ++accuCnt;
-    return true;
+    return res;
 }
 
 bool DataSchemaPool::rename(string oldName, string newName) {
@@ -115,5 +133,5 @@ string DataSchemaPool::makeName() {
     stringstream sin(s);
     sin << "schema" << t;
     sin.flush();
-    return s;
+    return sin.str();
 }

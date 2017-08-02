@@ -17,6 +17,8 @@ enum DOC_ELEMENT_TYPE {
 
 class DocElement {
 public:
+    static void cleanAllDocs();
+
     DOC_ELEMENT_TYPE type;
     int level;
     int line, col;

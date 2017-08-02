@@ -179,3 +179,10 @@ bool CustomizedSchema::init(string filePath, DocObjectElement *obj, int schemaTy
 
     return true;
 }
+
+DataSchemaObject *CustomizedSchema::findField(const vector<string> &fieldVec, int index) {
+    if (index == fieldVec.size())
+        return this;
+    else
+        return NULL;
+}

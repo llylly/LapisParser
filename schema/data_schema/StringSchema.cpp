@@ -250,3 +250,10 @@ string StringSchema::generateFromPattern(string pattern, int minLength, int maxL
      */
     return "TODO: generate from pattern";
 }
+
+DataSchemaObject *StringSchema::findField(const vector<string> &fieldVec, int index) {
+    if (index == fieldVec.size())
+        return this;
+    else
+        return NULL;
+}
