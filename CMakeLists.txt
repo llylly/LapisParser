@@ -8,7 +8,6 @@ set(CMAKE_C_FLAGS "-fPIC")
 
 
 set(SOURCE_FILES
-        main.cpp
         interface/python/PythonObjectAdapter.cpp interface/python/PythonObjectAdapter.h
         interface/python/PythonInterface.cpp interface/python/PythonInterface.h
         error/Error.cpp error/Error.h error/YAMLFormatError.h
@@ -51,9 +50,9 @@ set(SOURCE_FILES
         schema/response/ResponseExtensionObject.cpp schema/response/ResponseExtensionObject.h schema/APIObject.cpp schema/APIObject.h
         schema/api/APIConstraintObject.cpp schema/api/APIConstraintObject.h error/IllegalPathParameterError.h
         error/IllegalConsumesForFormData.h error/FormDataAndBodyConflictError.h error/IllegalFileParameterError.h
-        error/IllegalMIMEListError.h error/DuplicateParameterNameError.h error/TooManyBodyParamError.h)
+        error/IllegalMIMEListError.h error/DuplicateParameterNameError.h error/TooManyBodyParamError.h interface/Interface.cpp interface/Interface.h error/FileNotExistError.h error/DocNodeNotExistError.h error/NotParsedError.h)
 
-add_executable(VParser ${SOURCE_FILES})
+add_executable(VParser ${SOURCE_FILES} interface/CXX/demo.cpp)
 
 add_library(VParserPy SHARED ${SOURCE_FILES})
 

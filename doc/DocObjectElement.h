@@ -12,6 +12,7 @@ class DocObjectElement: public DocElement {
 public:
     DocObjectElement(int line, int col, int level = 0);
     void add(std::string key, DocElement *ele);
+    bool erase(std::string key);
     DocElement *get(std::string key);
     DocElement **editGet(std::string key);
     int getSize();

@@ -20,6 +20,15 @@ Controller::Controller() {
     parameters = new ParameterPool(definitions);
     responses = new ResponsePool(definitions);
     paths = new APIPool(parameters, responses);
+
+    infoObject = NULL;
+    host = "";
+    basePath = "";
+    schemes = NULL;
+    consumes = NULL;
+    produces = NULL;
+    tags = NULL;
+    externalDocs = NULL;
 }
 
 Controller::~Controller() {
@@ -42,7 +51,7 @@ Controller::~Controller() {
     delete paths;
 }
 
-void Controller::work() {
+bool Controller::work() {
     bool infoFind = false;
     bool hostFind = false;
     bool basePathFind = false;
@@ -51,6 +60,13 @@ void Controller::work() {
     bool producesFind = false;
     bool tagsFind = false;
     bool externalDocsFind = false;
+
+    basePath = "";
+    schemes = NULL;
+    consumes = NULL;
+    produces = NULL;
+    tags = NULL;
+    externalDocs = NULL;
 
     for (map<string, DocElement*>::iterator ite=DocElement::docs.begin(); ite != DocElement::docs.end(); ++ite) {
         DocElement *priDocRoot = ite->second;
@@ -66,7 +82,7 @@ void Controller::work() {
             }
             if (!xveeValid) {
                 Error::addError(new InvalidXVeeSymbolError(ite->first, priDocRoot->line, priDocRoot->col));
-                return;
+                return false;
             }
             /** swagger check **/
             bool swaggerValid = false;
@@ -77,7 +93,7 @@ void Controller::work() {
             }
             if (!swaggerValid) {
                 Error::addError(new InvalidSwaggerSymbolError(ite->first, priDocRoot->line, priDocRoot->col));
-                return;
+                return false;
             }
             /** Below this line are fields which can only appear in one doc **/
             /** Info Object **/
@@ -85,16 +101,16 @@ void Controller::work() {
             if (infoRoot != NULL) {
                 if (infoRoot->type != DOC_OBJECT) {
                     Error::addError(new FieldInvalidError(ite->first, infoRoot->line, infoRoot->col, "info", infoRoot->type, DOC_OBJECT));
-                    return;
+                    return false;
                 } else {
                     if (infoFind) {
                         Error::addError(new RootFieldDuplicateError(ite->first, infoRoot->line, infoRoot->col, "info"));
-                        return;
+                        return false;
                     } else {
-                        infoFind = true;
                         infoObject = InfoObjectFactory::create(ite->first, (DocObjectElement*)infoRoot);
                         if (infoObject == NULL)
-                            return;
+                            return false;
+                        infoFind = true;
                     }
                 }
             }
@@ -103,14 +119,14 @@ void Controller::work() {
             if (hostEle != NULL) {
                 if (hostEle->type != DOC_SCALAR) {
                     Error::addError(new FieldInvalidError(ite->first, hostEle->line, hostEle->col, "host", hostEle->type, DOC_SCALAR));
-                    return;
+                    return false;
                 } else {
                     if (hostFind) {
                         Error::addError(new RootFieldDuplicateError(ite->first, hostEle->line, hostEle->col, "host"));
-                        return;
+                        return false;
                     } else {
-                        hostFind = true;
                         host = ((DocScalarElement*)hostEle)->getValue();
+                        hostFind = true;
                     }
                 }
             }
@@ -119,14 +135,14 @@ void Controller::work() {
             if (basePathEle != NULL) {
                 if (basePathEle->type != DOC_SCALAR) {
                     Error::addError(new FieldInvalidError(ite->first, basePathEle->line, basePathEle->col, "basePath", basePathEle->type, DOC_SCALAR));
-                    return;
+                    return false;
                 } else {
                     if (basePathFind) {
                         Error::addError(new RootFieldDuplicateError(ite->first, basePathEle->line, basePathEle->col, "basePath"));
-                        return;
+                        return false;
                     } else {
-                        basePathFind = true;
                         basePath = ((DocScalarElement*)basePathEle)->getValue();
+                        basePathFind = true;
                     }
                 }
             }
@@ -135,16 +151,16 @@ void Controller::work() {
             if (schemesEle != NULL) {
                 if (schemesEle->type != DOC_SEQUENCE) {
                     Error::addError(new FieldInvalidError(ite->first, schemesEle->line, schemesEle->col, "schemes", schemesEle->type, DOC_SEQUENCE));
-                    return;
+                    return false;
                 } else {
                     if (schemesFind) {
                         Error::addError(new RootFieldDuplicateError(ite->first, schemesEle->line, schemesEle->col, "schemes"));
-                        return;
+                        return false;
                     } else {
-                        schemesFind = true;
                         schemes = SchemesObjectFactory::create(ite->first, (DocSequenceElement*)schemesEle);
                         if (schemes == NULL)
-                            return;
+                            return false;
+                        schemesFind = true;
                     }
                 }
             }
@@ -153,16 +169,16 @@ void Controller::work() {
             if (consumesEle != NULL) {
                 if (consumesEle->type != DOC_SEQUENCE) {
                     Error::addError(new FieldInvalidError(ite->first, consumesEle->line, consumesEle->col, "consumes", consumesEle->type, DOC_SEQUENCE));
-                    return;
+                    return false;
                 } else {
                     if (consumesFind) {
                         Error::addError(new RootFieldDuplicateError(ite->first, consumesEle->line, consumesEle->col, "consumes"));
-                        return;
+                        return false;
                     } else {
-                        consumesFind = true;
                         consumes = EnumObjectFactory::create(ite->first, "consumes", (DocSequenceElement*)consumesEle);
                         if (consumes == NULL)
-                            return;
+                            return false;
+                        consumesFind = true;
                     }
                 }
             }
@@ -171,16 +187,16 @@ void Controller::work() {
             if (producesEle != NULL) {
                 if (producesEle->type != DOC_SEQUENCE) {
                     Error::addError(new FieldInvalidError(ite->first, producesEle->line, producesEle->col, "produces", producesEle->type, DOC_SEQUENCE));
-                    return;
+                    return false;
                 } else {
                     if (producesFind) {
                         Error::addError(new RootFieldDuplicateError(ite->first, producesEle->line, producesEle->col, "produces"));
-                        return;
+                        return false;
                     } else {
-                        producesFind = true;
                         produces = EnumObjectFactory::create(ite->first, "produces", (DocSequenceElement*)producesEle);
                         if (produces == NULL)
-                            return;
+                            return false;
+                        producesFind = true;
                     }
                 }
             }
@@ -189,16 +205,16 @@ void Controller::work() {
             if (tagsEle != NULL) {
                 if (tagsEle->type != DOC_SEQUENCE) {
                     Error::addError(new FieldInvalidError(ite->first, tagsEle->line, tagsEle->col, "tags", tagsEle->type, DOC_SEQUENCE));
-                    return;
+                    return false;
                 } else {
                     if (tagsFind) {
                         Error::addError(new RootFieldDuplicateError(ite->first, tagsEle->line, tagsEle->col, "tags"));
-                        return;
+                        return false;
                     } else {
-                        tagsFind = true;
                         tags = TagsObjectFactory::create(ite->first, (DocSequenceElement*)tagsEle);
                         if (tags == NULL)
-                            return;
+                            return false;
+                        tagsFind = true;
                     }
                 }
             }
@@ -207,16 +223,16 @@ void Controller::work() {
             if (externalDocsEle != NULL) {
                 if (externalDocsEle->type != DOC_OBJECT) {
                     Error::addError(new FieldInvalidError(ite->first, externalDocsEle->line, externalDocsEle->col, "externalDocs", externalDocsEle->type, DOC_OBJECT));
-                    return;
+                    return false;
                 } else {
                     if (externalDocsFind) {
                         Error::addError(new RootFieldDuplicateError(ite->first, externalDocsEle->line, externalDocsEle->col, "externalDocs"));
-                        return;
+                        return false;
                     } else {
-                        externalDocsFind = true;
                         externalDocs = ExternalDocObjectFactory::create(ite->first, "externalDocs", (DocObjectElement*)externalDocsEle);
                         if (externalDocs == NULL)
-                            return;
+                            return false;
+                        externalDocsFind = true;
                     }
                 }
             }
@@ -226,13 +242,13 @@ void Controller::work() {
             if (definitionsEle != NULL) {
                 if (definitionsEle->type != DOC_OBJECT) {
                     Error::addError(new FieldInvalidError(ite->first, definitionsEle->line, definitionsEle->col, "definitions", definitionsEle->type, DOC_OBJECT));
-                    return;
+                    return false;
                 } else {
                     DocObjectElement *o = (DocObjectElement*)definitionsEle;
                     map<string, DocElement*> *m = o->getMemberMap();
                     for (map<string, DocElement*>::iterator iite = m->begin(); iite != m->end(); ++iite) {
                         if (definitions->parseDataSchema(ite->first, iite->second, iite->first) == NULL)
-                            return;
+                            return false;
                     }
                 }
             }
@@ -242,13 +258,13 @@ void Controller::work() {
             if (paramEle != NULL) {
                 if (paramEle->type != DOC_OBJECT) {
                     Error::addError(new FieldInvalidError(ite->first, paramEle->line, paramEle->col, "parameters", paramEle->type, DOC_OBJECT));
-                    return;
+                    return false;
                 } else {
                     DocObjectElement *o = (DocObjectElement*)paramEle;
                     map<string, DocElement*> *m = o->getMemberMap();
                     for (map<string, DocElement*>::iterator iite = m->begin(); iite != m->end(); ++iite) {
                         if (parameters->parseParameter(ite->first, iite->second, iite->first) == NULL)
-                            return;
+                            return false;
                     }
                 }
             }
@@ -258,7 +274,7 @@ void Controller::work() {
             if (responseEle != NULL) {
                 if (responseEle->type != DOC_OBJECT) {
                     Error::addError(new FieldInvalidError(ite->first, responseEle->line, responseEle->col, "responses", responseEle->type, DOC_OBJECT));
-                    return;
+                    return false;
                 } else {
                     DocObjectElement *o = (DocObjectElement*)responseEle;
                     map<string, DocElement*> *m = o->getMemberMap();
@@ -267,17 +283,17 @@ void Controller::work() {
                         DocElement *nowEle = iite->second;
                         if (nowEle->type != DOC_OBJECT) {
                             Error::addError(new FieldInvalidError(ite->first, nowEle->line, nowEle->col, "responses", nowEle->type, DOC_OBJECT));
-                            return;
+                            return false;
                         } else {
                             DocObjectElement *oEle = (DocObjectElement*)nowEle;
                             if (oEle->get("name")) {
                                 // must be Response Extension Object
                                 if (responses->parseResponseExtension(ite->first, oEle, paramName) == NULL)
-                                    return;
+                                    return false;
                             } else {
                                 // must be Response Object
                                 if (responses->parseResponse(ite->first, oEle, paramName) == NULL)
-                                    return;
+                                    return false;
                             }
                         }
                     }
@@ -289,7 +305,7 @@ void Controller::work() {
             if (pathsEle != NULL) {
                 if (pathsEle->type != DOC_OBJECT) {
                     Error::addError(new FieldInvalidError(ite->first, pathsEle->line, pathsEle->col, "paths", pathsEle->type, DOC_OBJECT));
-                    return;
+                    return false;
                 } else {
                     DocObjectElement *o_pathsEle = (DocObjectElement*)pathsEle;
                     map<string, DocElement*> *memberMap = o_pathsEle->getMemberMap();
@@ -297,20 +313,20 @@ void Controller::work() {
                     for (map<string, DocElement*>::iterator iite = memberMap->begin();
                             iite != memberMap->end();
                             ++iite) {
-                        string key = ite->first;
-                        DocElement *item = ite->second;
+                        string key = iite->first;
+                        DocElement *item = iite->second;
 
                         if (item == NULL) {
                             Error::addError(new FieldMissError(ite->first, pathsEle->line, pathsEle->col, "paths.value"));
-                            return;
+                            return false;
                         }
                         if ((key.length() <= 0) || (key[0] != '/')) {
                             Error::addError(new FieldIllegalError(ite->first, item->line, item->col, "paths.key"));
-                            return;
+                            return false;
                         }
                         if (item->type != DOC_OBJECT) {
                             Error::addError(new FieldInvalidError(ite->first, item->line, item->col, "paths.value", item->type, DOC_OBJECT));
-                            return;
+                            return false;
                         }
 
                         DocObjectElement *o_itemEle = (DocObjectElement*)item;
@@ -323,7 +339,7 @@ void Controller::work() {
                                 Error::addError(new FieldInvalidError(ite->first, p_paramEle->line, p_paramEle->col, "paths.parameter", p_paramEle->type, DOC_SEQUENCE));
                                 paramsVec->clear();
                                 delete paramsVec;
-                                return;
+                                return false;
                             } else {
                                 DocSequenceElement *s_p_paramEle = (DocSequenceElement*)p_paramEle;
                                 int len = s_p_paramEle->getLength();
@@ -333,7 +349,7 @@ void Controller::work() {
                                     if (o == NULL) {
                                         paramsVec->clear();
                                         delete paramsVec;
-                                        return;
+                                        return false;
                                     }
                                     paramsVec->push_back(o);
                                 }
@@ -348,7 +364,7 @@ void Controller::work() {
                             if (get_o == NULL) {
                                 paramsVec->clear();
                                 delete paramsVec;
-                                return;
+                                return false;
                             }
                         }
 
@@ -360,7 +376,7 @@ void Controller::work() {
                             if (post_o == NULL) {
                                 paramsVec->clear();
                                 delete paramsVec;
-                                return;
+                                return false;
                             }
                         }
 
@@ -375,19 +391,19 @@ void Controller::work() {
         } else {
             /** Doc root node is NOT of DocObject type */
             Error::addError(new InvalidRootNodeError(ite->first, priDocRoot->line, priDocRoot->col));
-            return;
+            return false;
         }
     }
 
     // Required
     if (!infoFind) {
         Error::addError(new FieldMissError("/", 1, 1, "info"));
-        return;
+        return false;
     }
     // Required
     if (!hostFind) {
         Error::addError(new FieldMissError("/", 1, 1, "host"));
-        return;
+        return false;
     }
 
     // Expand quotation in API Constraint Object
@@ -406,7 +422,7 @@ void Controller::work() {
                         Error::addError(
                                 new FieldIllegalError("/", ele->line, ele->col, "operation.x-constraints.operation")
                         );
-                        return;
+                        return false;
                     }
                 }
             }
@@ -432,6 +448,8 @@ void Controller::work() {
     if (!externalDocsFind) {
         externalDocs = NULL;
     }
+
+    return true;
 }
 
 void Controller::printTo(std::ostream &os) {

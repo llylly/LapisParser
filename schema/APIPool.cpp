@@ -84,6 +84,13 @@ DocElement *APIPool::getElementByName(pair<string, APIRequestMethod> name) {
     return NULL;
 }
 
+APIObject *APIPool::getObjectByName(pair<string, APIRequestMethod> name) {
+    if (APINameSet.count(name))
+        return pool[name];
+    else
+        return NULL;
+}
+
 APIObject *APIPool::getObjectByElement(DocElement *ele) {
     if (nodeNameMap.count(ele) > 0)
         return pool[nodeNameMap[ele]];

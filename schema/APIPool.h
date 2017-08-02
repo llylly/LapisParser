@@ -68,6 +68,14 @@ public:
     DocElement *getElementByName(pair<string, APIRequestMethod> name);
 
     /**
+     * Get the API object by the doc element
+     * @param name: the pair of API Name & Method
+     * @return a pointer of the API Object;
+     *   If not exist, return NULL
+     */
+    APIObject *getObjectByName(pair<string, APIRequestMethod> name);
+
+    /**
      * Get the API Object by the doc element
      * @param ele: the doc element
      * @return a pointer of the API Object;

@@ -59,7 +59,7 @@ public:
     Controller();
     ~Controller();
 
-    void work();
+    bool work();
 
     void printTo(std::ostream &os);
 };
