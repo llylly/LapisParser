@@ -14,13 +14,13 @@
     if (arg == NULL) return Py_None;            \
                                                 \
     string arg0 = "", arg1 = "";                \
-    if (PyString_Check(arg[0]))                 \
+    if ((arg[0]) && PyString_Check(arg[0]))     \
         arg0 = PyString_AsString(arg[0]);       \
     else {                                      \
         delete[] arg;                           \
         return Py_None;                         \
     }                                           \
-    if (arg[1] && PyString_Check(arg[1]))       \
+    if ((arg[1]) && PyString_Check(arg[1]))     \
         arg1 = PyString_AsString(arg[1]);       \
     delete[] arg;                               \
                                                 \
@@ -38,7 +38,7 @@
                                                 \
     BaseDataObject *arg0 = PythonObjectAdapter::toDataObject(arg[0]); \
     string arg1 = "";                           \
-    if (arg[1] && PyString_Check(arg[1]))       \
+    if ((arg[1]) && PyString_Check(arg[1]))     \
         arg1 = PyString_AsString(arg[1]);       \
     delete[] arg;                               \
                                                 \
@@ -57,7 +57,7 @@
                                                 \
     BaseDataObject *arg0 = PythonObjectAdapter::toDataObject(arg[0]); \
     string arg1 = "";                           \
-    if (PyString_Check(arg[1]))                 \
+    if ((arg[1]) && PyString_Check(arg[1]))     \
         arg1 = PyString_AsString(arg[1]);       \
     else {                                      \
         delete[] arg;                           \
@@ -85,7 +85,7 @@
     if (arg == NULL) return Py_None;            \
                                                 \
     string arg0 = "";                           \
-    if (PyString_Check(arg[0]))                 \
+    if ((arg[0]) && PyString_Check(arg[0]))     \
         arg0 = PyString_AsString(arg[0]);       \
     delete[] arg;                               \
                                                 \
@@ -103,14 +103,14 @@
                                                 \
     BaseDataObject *arg0 = PythonObjectAdapter::toDataObject(arg[0]); \
     string arg1 = "", arg2 = "";                \
-    if (PyString_Check(arg[1]))                 \
+    if ((arg[1]) && PyString_Check(arg[1]))     \
         arg1 = PyString_AsString(arg[1]);       \
     else {                                      \
         delete[] arg;                           \
         delete arg0;                            \
         return Py_None;                         \
     }                                           \
-    if (PyString_Check(arg[2]))                 \
+    if ((arg[2]) && PyString_Check(arg[2]))     \
         arg2 = PyString_AsString(arg[2]);       \
     delete[] arg;                               \
                                                 \
@@ -129,21 +129,21 @@
                                                 \
     BaseDataObject *arg0 = PythonObjectAdapter::toDataObject(arg[0]); \
     string arg1 = "", arg2 = "", arg3 = "";     \
-    if (PyString_Check(arg[1]))                 \
+    if ((arg[1]) && PyString_Check(arg[1]))     \
         arg1 = PyString_AsString(arg[1]);       \
     else {                                      \
         delete[] arg;                           \
         delete arg0;                            \
         return Py_None;                         \
     }                                           \
-    if (PyString_Check(arg[2]))                 \
+    if ((arg[2]) && PyString_Check(arg[2]))     \
         arg2 = PyString_AsString(arg[2]);       \
     else {                                      \
         delete[] arg;                           \
         delete arg0;                            \
         return Py_None;                         \
     }                                           \
-    if (PyString_Check(arg[3]))                 \
+    if ((arg[3]) && PyString_Check(arg[3]))     \
         arg3 = PyString_AsString(arg[3]);       \
     delete[] arg;                               \
                                                 \
@@ -161,19 +161,19 @@
     if (arg == NULL) return Py_None;            \
                                                 \
     string arg0 = "", arg1 = "", arg2 = "";     \
-    if (PyString_Check(arg[0]))                 \
+    if ((arg[0]) && PyString_Check(arg[0]))     \
         arg0 = PyString_AsString(arg[0]);       \
     else {                                      \
         delete[] arg;                           \
         return Py_None;                         \
     }                                           \
-    if (PyString_Check(arg[1]))                 \
+    if ((arg[1]) && PyString_Check(arg[1]))     \
         arg1 = PyString_AsString(arg[1]);       \
     else {                                      \
         delete[] arg;                           \
         return Py_None;                         \
     }                                           \
-    if (PyString_Check(arg[2]))                 \
+    if ((arg[2]) && PyString_Check(arg[2]))     \
         arg2 = PyString_AsString(arg[2]);       \
     delete[] arg;                               \
                                                 \
@@ -190,13 +190,13 @@
     if (arg == NULL) return Py_None;            \
                                                 \
     string arg0 = "", arg1 = "";                \
-    if (PyString_Check(arg[0]))                 \
+    if ((arg[0]) && PyString_Check(arg[0]))     \
         arg0 = PyString_AsString(arg[0]);       \
     else {                                      \
         delete[] arg;                           \
         return Py_None;                         \
     }                                           \
-    if (PyString_Check(arg[1]))                 \
+    if ((arg[1]) && PyString_Check(arg[1]))     \
         arg1 = PyString_AsString(arg[1]);       \
     else {                                      \
         delete[] arg;                           \
@@ -215,7 +215,7 @@
     if (arg == NULL) return Py_None;            \
                                                 \
     string arg0 = "";                           \
-    if (PyString_Check(arg[0]))                 \
+    if ((arg[0]) && PyString_Check(arg[0]))     \
         arg0 = PyString_AsString(arg[0]);       \
     else {                                      \
         delete[] arg;                           \
@@ -228,6 +228,25 @@
     return rett;                                \
 }
 
+#define PARSE_IsOo(args, func) {                \
+    PyObject **arg = parseHelper(args, 0, 1);   \
+    if (arg == NULL) return Py_None;            \
+                                                \
+    string arg0 = "";                           \
+    if ((arg[0]) && PyString_Check(arg[0]))     \
+        arg0 = PyString_AsString(arg[0]);       \
+    delete[] arg;                               \
+                                                \
+    BaseDataObject *ret = NULL;                 \
+    if (arg0 == "")                             \
+        ret = func();                           \
+    else                                        \
+        ret = func(arg0);                       \
+    PyObject *rett = PythonObjectAdapter::fromDataObject(ret); \
+    if (ret) delete ret;                        \
+    return rett;                                \
+}
+
 /* ---------- */
 
 PyObject **parseHelper(PyObject *&args, int min, int max) {
@@ -235,7 +254,7 @@ PyObject **parseHelper(PyObject *&args, int min, int max) {
         return NULL;
     PyObject **arr = new PyObject *[max];
     memset(arr, 0, sizeof(PyObject *) * max);
-    bool ret = false;
+    bool ret;
     switch (max) {
         case 1:
             ret = (bool) PyArg_UnpackTuple(args, "lapis_arg", min, max,
@@ -325,6 +344,18 @@ PyObject *wrap_addXMLDocFromFile
     PARSE_sIsOb(args, addXMLDocFromFile)
 }
 
+PyObject *wrap_addDoc
+        (PyObject *self, PyObject *args) {
+    /** oIsOb **/
+    PARSE_oIsOb(args, addDoc)
+}
+
+PyObject *wrap_getDoc
+        (PyObject *self, PyObject *args) {
+    /** IsOo **/
+    PARSE_IsOo(args, getDoc)
+}
+
 PyObject *wrap_removeDoc
         (PyObject *self, PyObject *args) {
     /** sOb **/
@@ -361,12 +392,6 @@ PyObject *wrap_saveAsXML
         (PyObject *self, PyObject *args) {
     /** sIsOb **/
     PARSE_sIsOb(args, saveAsXML);
-}
-
-PyObject *wrap_addDoc
-        (PyObject *self, PyObject *args) {
-    /** oIsOb **/
-    PARSE_oIsOb(args, addDoc)
 }
 
 PyObject *wrap_reservedFieldsInit
@@ -642,11 +667,12 @@ static PyMethodDef LapisParserMethods[] = {
         {"addDocFromFile",                   wrap_addDocFromFile,                   METH_VARARGS, "addDocFromFile"},
         {"addYAMLDocFromFile",               wrap_addYAMLDocFromFile,               METH_VARARGS, "addYAMLDocFromFile"},
         {"addXMLDocFromFile",                wrap_addXMLDocFromFile,                METH_VARARGS, "addXMLDocFromFile"},
+        {"addDoc",                           wrap_addDoc,                           METH_VARARGS, "addDoc"},
+        {"getDoc",                           wrap_getDoc,                           METH_VARARGS, "getDoc"},
         {"removeDoc",                        wrap_removeDoc,                        METH_VARARGS, "removeDoc"},
         {"getDocList",                       wrap_getDocList,                       METH_VARARGS, "getDocList"},
         {"saveAsYAML",                       wrap_saveAsYAML,                       METH_VARARGS, "saveAsYAML"},
         {"saveAsXML",                        wrap_saveAsXML,                        METH_VARARGS, "saveAsXML"},
-        {"addDoc",                           wrap_addDoc,                           METH_VARARGS, "addDoc"},
         {"reservedFieldsInit",               wrap_reservedFieldsInit,               METH_VARARGS, "reservedFieldsInit"},
         {"setInfo",                          wrap_setInfo,                          METH_VARARGS, "setInfo"},
         {"setHost",                          wrap_setHost,                          METH_VARARGS, "setHost"},

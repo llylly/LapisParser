@@ -69,30 +69,44 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aded493e9e08678274eaec5235bb771b5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_pool.html#aded493e9e08678274eaec5235bb771b5">DataSchemaPool</a> ()</td></tr>
+<tr class="memdesc:aded493e9e08678274eaec5235bb771b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class processes all the Schemas of scripts Schema only mean complete data schema, including 'definitions', 'x-schema', 'scheme', but excluding direct 'items', and direct 'parameters'(means not use 'x-schema' or 'scheme'.  <a href="#aded493e9e08678274eaec5235bb771b5">More...</a><br /></td></tr>
 <tr class="separator:aded493e9e08678274eaec5235bb771b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a273a359bac863ff5e641cb51bee7ed8d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_pool.html#a273a359bac863ff5e641cb51bee7ed8d">~DataSchemaPool</a> ()</td></tr>
+<tr class="memitem:a273a359bac863ff5e641cb51bee7ed8d"><td class="memItemLeft" align="right" valign="top"><a id="a273a359bac863ff5e641cb51bee7ed8d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_pool.html#a273a359bac863ff5e641cb51bee7ed8d">~DataSchemaPool</a> ()</td></tr>
+<tr class="memdesc:a273a359bac863ff5e641cb51bee7ed8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
 <tr class="separator:a273a359bac863ff5e641cb51bee7ed8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a109f81b66a4d3211b6db71ee5dccb9ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_data_schema_object.html">DataSchemaObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_pool.html#a109f81b66a4d3211b6db71ee5dccb9ff">parseDataSchema</a> (string filePath, <a class="el" href="class_doc_element.html">DocElement</a> *ele, string schemaName=&quot;&quot;)</td></tr>
+<tr class="memdesc:a109f81b66a4d3211b6db71ee5dccb9ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a doc node which represents a complete Schema Object Return whether successfully parsed If it has parsed, also return true, and increment the ref count.  <a href="#a109f81b66a4d3211b6db71ee5dccb9ff">More...</a><br /></td></tr>
 <tr class="separator:a109f81b66a4d3211b6db71ee5dccb9ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76da26a2981544fb957f11887df983e8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_pool.html#a76da26a2981544fb957f11887df983e8">rename</a> (string oldName, string newName)</td></tr>
+<tr class="memdesc:a76da26a2981544fb957f11887df983e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rename a schema Fail if oldName doesn't exist, or newName conflicts.  <a href="#a76da26a2981544fb957f11887df983e8">More...</a><br /></td></tr>
 <tr class="separator:a76da26a2981544fb957f11887df983e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70479539b5479b16783b80c48f76e2be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_pool.html#a70479539b5479b16783b80c48f76e2be">remove</a> (string name)</td></tr>
+<tr class="memdesc:a70479539b5479b16783b80c48f76e2be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove one from the pool by name It will delete <a class="el" href="class_data_schema_object.html">DataSchemaObject</a>, but not affect doc node.  <a href="#a70479539b5479b16783b80c48f76e2be">More...</a><br /></td></tr>
 <tr class="separator:a70479539b5479b16783b80c48f76e2be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3369fd927e6288518db249638256946d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_pool.html#a3369fd927e6288518db249638256946d">touch</a> (<a class="el" href="class_doc_element.html">DocElement</a> *ele)</td></tr>
+<tr class="memdesc:a3369fd927e6288518db249638256946d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inspect the existence by doc node.  <a href="#a3369fd927e6288518db249638256946d">More...</a><br /></td></tr>
 <tr class="separator:a3369fd927e6288518db249638256946d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac4627cb145c42ac032eb86441db2cb0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_pool.html#aac4627cb145c42ac032eb86441db2cb0">touch</a> (string name)</td></tr>
+<tr class="memdesc:aac4627cb145c42ac032eb86441db2cb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inspect the existence by name.  <a href="#aac4627cb145c42ac032eb86441db2cb0">More...</a><br /></td></tr>
 <tr class="separator:aac4627cb145c42ac032eb86441db2cb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e35d54b366f96a9bab72ef4b142cbd8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_pool.html#a5e35d54b366f96a9bab72ef4b142cbd8">getRefCount</a> (<a class="el" href="class_doc_element.html">DocElement</a> *ele)</td></tr>
+<tr class="memdesc:a5e35d54b366f96a9bab72ef4b142cbd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get ref count by doc node.  <a href="#a5e35d54b366f96a9bab72ef4b142cbd8">More...</a><br /></td></tr>
 <tr class="separator:a5e35d54b366f96a9bab72ef4b142cbd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d3094731b141f9c09bbccabc7f95452"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_pool.html#a7d3094731b141f9c09bbccabc7f95452">getRefCount</a> (string name)</td></tr>
+<tr class="memdesc:a7d3094731b141f9c09bbccabc7f95452"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get ref count by name.  <a href="#a7d3094731b141f9c09bbccabc7f95452">More...</a><br /></td></tr>
 <tr class="separator:a7d3094731b141f9c09bbccabc7f95452"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a623f62ee5c22d6dc819a134aa101e17c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_pool.html#a623f62ee5c22d6dc819a134aa101e17c">setRefCount</a> (<a class="el" href="class_doc_element.html">DocElement</a> *ele, int ref)</td></tr>
+<tr class="memdesc:a623f62ee5c22d6dc819a134aa101e17c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set ref count by doc node.  <a href="#a623f62ee5c22d6dc819a134aa101e17c">More...</a><br /></td></tr>
 <tr class="separator:a623f62ee5c22d6dc819a134aa101e17c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ea4d5dde812c2f50e43da7108105ccc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_pool.html#a1ea4d5dde812c2f50e43da7108105ccc">setRefCount</a> (string name, int ref)</td></tr>
+<tr class="memdesc:a1ea4d5dde812c2f50e43da7108105ccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set ref count by name.  <a href="#a1ea4d5dde812c2f50e43da7108105ccc">More...</a><br /></td></tr>
 <tr class="separator:a1ea4d5dde812c2f50e43da7108105ccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afebb0e0729a86270862dd3c186ad805d"><td class="memItemLeft" align="right" valign="top">const map&lt; string, <a class="el" href="class_doc_element.html">DocElement</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_pool.html#afebb0e0729a86270862dd3c186ad805d">getNameMap</a> ()</td></tr>
+<tr class="memdesc:afebb0e0729a86270862dd3c186ad805d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the name map.  <a href="#afebb0e0729a86270862dd3c186ad805d">More...</a><br /></td></tr>
 <tr class="separator:afebb0e0729a86270862dd3c186ad805d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af499ca6337bf67550dbd3fc9a85f5246"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_data_schema_object.html">DataSchemaObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_pool.html#af499ca6337bf67550dbd3fc9a85f5246">getSchemaByName</a> (string name)</td></tr>
+<tr class="memdesc:af499ca6337bf67550dbd3fc9a85f5246"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get schema by name.  <a href="#af499ca6337bf67550dbd3fc9a85f5246">More...</a><br /></td></tr>
 <tr class="separator:af499ca6337bf67550dbd3fc9a85f5246"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -110,25 +124,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This class processes all the Schemas of scripts Schema only mean complete data schema, including 'definitions', 'x-schema', 'scheme', but excluding direct 'items', and direct 'parameters'(means not use 'x-schema' or 'scheme' Constructor </p>
 
-</div>
-</div>
-<a id="a273a359bac863ff5e641cb51bee7ed8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a273a359bac863ff5e641cb51bee7ed8d">&#9670;&nbsp;</a></span>~DataSchemaPool()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">DataSchemaPool::~DataSchemaPool </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Destructor </p>
+<p>This class processes all the Schemas of scripts Schema only mean complete data schema, including 'definitions', 'x-schema', 'scheme', but excluding direct 'items', and direct 'parameters'(means not use 'x-schema' or 'scheme'. </p>
+<p>Constructor </p>
 
 </div>
 </div>
@@ -147,7 +145,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the name map </p><dl class="section return"><dt>Returns</dt><dd>the name map </dd></dl>
+
+<p>Get the name map. </p>
+<dl class="section return"><dt>Returns</dt><dd>the name map </dd></dl>
 
 </div>
 </div>
@@ -166,7 +166,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get ref count by doc node </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get ref count by doc node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ele</td><td></td></tr>
   </table>
@@ -191,7 +193,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get ref count by name </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get ref count by name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td></td></tr>
   </table>
@@ -216,7 +220,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get schema by name </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get schema by name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td></td></tr>
   </table>
@@ -257,7 +263,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parse a doc node which represents a complete Schema Object Return whether successfully parsed If it has parsed, also return true, and increment the ref count </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Parse a doc node which represents a complete Schema Object Return whether successfully parsed If it has parsed, also return true, and increment the ref count. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ele</td><td>doc node to be parsed </td></tr>
     <tr><td class="paramname">nodeName</td><td>enabling customized schema name </td></tr>
@@ -283,7 +291,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Remove one from the pool by name It will delete <a class="el" href="class_data_schema_object.html">DataSchemaObject</a>, but not affect doc node </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Remove one from the pool by name It will delete <a class="el" href="class_data_schema_object.html">DataSchemaObject</a>, but not affect doc node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>name to delete </td></tr>
   </table>
@@ -318,7 +328,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Rename a schema Fail if oldName doesn't exist, or newName conflicts </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Rename a schema Fail if oldName doesn't exist, or newName conflicts. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">oldName</td><td>oldName </td></tr>
     <tr><td class="paramname">newName</td><td>newName </td></tr>
@@ -354,7 +366,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set ref count by doc node </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Set ref count by doc node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ele</td><td></td></tr>
     <tr><td class="paramname">ref</td><td></td></tr>
@@ -390,7 +404,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set ref count by name </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Set ref count by name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td></td></tr>
     <tr><td class="paramname">ref</td><td></td></tr>
@@ -416,7 +432,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Inspect the existence by doc node </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Inspect the existence by doc node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ele</td><td>doc node </td></tr>
   </table>
@@ -441,7 +459,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Inspect the existence by name </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Inspect the existence by name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>name </td></tr>
   </table>

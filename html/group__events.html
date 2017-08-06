@@ -71,13 +71,16 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structyaml__event__s.html">yaml_event_s</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The event structure.  <a href="structyaml__event__s.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:ga8934661be36bd7c9d17a8af69eff89a1"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="group__events.html#ga454fccebae859c188fe3e7fa3299577c">yaml_event_type_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga8934661be36bd7c9d17a8af69eff89a1">yaml_event_type_t</a></td></tr>
+<tr class="memdesc:ga8934661be36bd7c9d17a8af69eff89a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Event types.  <a href="#ga8934661be36bd7c9d17a8af69eff89a1">More...</a><br /></td></tr>
 <tr class="separator:ga8934661be36bd7c9d17a8af69eff89a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3b392d9716c4920cabefdd29e78dd542"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structyaml__event__s.html">yaml_event_s</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga3b392d9716c4920cabefdd29e78dd542">yaml_event_t</a></td></tr>
+<tr class="memdesc:ga3b392d9716c4920cabefdd29e78dd542"><td class="mdescLeft">&#160;</td><td class="mdescRight">The event structure.  <a href="#ga3b392d9716c4920cabefdd29e78dd542">More...</a><br /></td></tr>
 <tr class="separator:ga3b392d9716c4920cabefdd29e78dd542"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
@@ -98,31 +101,43 @@ Enumerations</h2></td></tr>
 <a class="el" href="group__events.html#gga454fccebae859c188fe3e7fa3299577cadc3dc55f17056a657005fecfb80fbd30">YAML_MAPPING_END_EVENT</a>
 <br />
  }</td></tr>
+<tr class="memdesc:ga454fccebae859c188fe3e7fa3299577c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Event types.  <a href="group__events.html#ga454fccebae859c188fe3e7fa3299577c">More...</a><br /></td></tr>
 <tr class="separator:ga454fccebae859c188fe3e7fa3299577c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:gad88ee2f0df5c2664506e837e7314e4f1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gad88ee2f0df5c2664506e837e7314e4f1">yaml_stream_start_event_initialize</a> (<a class="el" href="group__events.html#ga3b392d9716c4920cabefdd29e78dd542">yaml_event_t</a> *event, <a class="el" href="group__basic.html#ga2170996d7e636397b5e6bc0c1b7df7c6">yaml_encoding_t</a> encoding)</td></tr>
+<tr class="memdesc:gad88ee2f0df5c2664506e837e7314e4f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the STREAM-START event.  <a href="#gad88ee2f0df5c2664506e837e7314e4f1">More...</a><br /></td></tr>
 <tr class="separator:gad88ee2f0df5c2664506e837e7314e4f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga87c423095c6ad061d3e5c9b805286c0b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga87c423095c6ad061d3e5c9b805286c0b">yaml_stream_end_event_initialize</a> (<a class="el" href="group__events.html#ga3b392d9716c4920cabefdd29e78dd542">yaml_event_t</a> *event)</td></tr>
+<tr class="memdesc:ga87c423095c6ad061d3e5c9b805286c0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the STREAM-END event.  <a href="#ga87c423095c6ad061d3e5c9b805286c0b">More...</a><br /></td></tr>
 <tr class="separator:ga87c423095c6ad061d3e5c9b805286c0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab3fd5335a5405439762ad64bc5c2dce4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gab3fd5335a5405439762ad64bc5c2dce4">yaml_document_start_event_initialize</a> (<a class="el" href="group__events.html#ga3b392d9716c4920cabefdd29e78dd542">yaml_event_t</a> *event, <a class="el" href="group__basic.html#ga2fc55608333fbe6df17cf891be709b72">yaml_version_directive_t</a> *version_directive, <a class="el" href="group__basic.html#ga0b4bc4871b0c9104e32d40d5f3803674">yaml_tag_directive_t</a> *tag_directives_start, <a class="el" href="group__basic.html#ga0b4bc4871b0c9104e32d40d5f3803674">yaml_tag_directive_t</a> *tag_directives_end, int implicit)</td></tr>
+<tr class="memdesc:gab3fd5335a5405439762ad64bc5c2dce4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the DOCUMENT-START event.  <a href="#gab3fd5335a5405439762ad64bc5c2dce4">More...</a><br /></td></tr>
 <tr class="separator:gab3fd5335a5405439762ad64bc5c2dce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga806b89216813447629dc0a2427e35143"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga806b89216813447629dc0a2427e35143">yaml_document_end_event_initialize</a> (<a class="el" href="group__events.html#ga3b392d9716c4920cabefdd29e78dd542">yaml_event_t</a> *event, int implicit)</td></tr>
+<tr class="memdesc:ga806b89216813447629dc0a2427e35143"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the DOCUMENT-END event.  <a href="#ga806b89216813447629dc0a2427e35143">More...</a><br /></td></tr>
 <tr class="separator:ga806b89216813447629dc0a2427e35143"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7070845275cc42e5743e20718ff7bb75"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga7070845275cc42e5743e20718ff7bb75">yaml_alias_event_initialize</a> (<a class="el" href="group__events.html#ga3b392d9716c4920cabefdd29e78dd542">yaml_event_t</a> *event, <a class="el" href="group__basic.html#gaf8657e81f0b8b05d1a081001fc6cb8bd">yaml_char_t</a> *anchor)</td></tr>
+<tr class="memdesc:ga7070845275cc42e5743e20718ff7bb75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an ALIAS event.  <a href="#ga7070845275cc42e5743e20718ff7bb75">More...</a><br /></td></tr>
 <tr class="separator:ga7070845275cc42e5743e20718ff7bb75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga708a578eb91e7b278d3ac562c5cc4a76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga708a578eb91e7b278d3ac562c5cc4a76">yaml_scalar_event_initialize</a> (<a class="el" href="group__events.html#ga3b392d9716c4920cabefdd29e78dd542">yaml_event_t</a> *event, <a class="el" href="group__basic.html#gaf8657e81f0b8b05d1a081001fc6cb8bd">yaml_char_t</a> *anchor, <a class="el" href="group__basic.html#gaf8657e81f0b8b05d1a081001fc6cb8bd">yaml_char_t</a> *tag, <a class="el" href="group__basic.html#gaf8657e81f0b8b05d1a081001fc6cb8bd">yaml_char_t</a> *value, int length, int plain_implicit, int quoted_implicit, <a class="el" href="group__styles.html#ga3fa6405631e1afe5bd5c488a6c5e8065">yaml_scalar_style_t</a> style)</td></tr>
+<tr class="memdesc:ga708a578eb91e7b278d3ac562c5cc4a76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a SCALAR event.  <a href="#ga708a578eb91e7b278d3ac562c5cc4a76">More...</a><br /></td></tr>
 <tr class="separator:ga708a578eb91e7b278d3ac562c5cc4a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5cb087fef4974f50706c5f7fefc73447"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga5cb087fef4974f50706c5f7fefc73447">yaml_sequence_start_event_initialize</a> (<a class="el" href="group__events.html#ga3b392d9716c4920cabefdd29e78dd542">yaml_event_t</a> *event, <a class="el" href="group__basic.html#gaf8657e81f0b8b05d1a081001fc6cb8bd">yaml_char_t</a> *anchor, <a class="el" href="group__basic.html#gaf8657e81f0b8b05d1a081001fc6cb8bd">yaml_char_t</a> *tag, int implicit, <a class="el" href="group__styles.html#ga58a1123d271e56c72de6abf852ac4dc2">yaml_sequence_style_t</a> style)</td></tr>
+<tr class="memdesc:ga5cb087fef4974f50706c5f7fefc73447"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a SEQUENCE-START event.  <a href="#ga5cb087fef4974f50706c5f7fefc73447">More...</a><br /></td></tr>
 <tr class="separator:ga5cb087fef4974f50706c5f7fefc73447"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9ebf0f778c16279758af04695e156ab8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga9ebf0f778c16279758af04695e156ab8">yaml_sequence_end_event_initialize</a> (<a class="el" href="group__events.html#ga3b392d9716c4920cabefdd29e78dd542">yaml_event_t</a> *event)</td></tr>
+<tr class="memdesc:ga9ebf0f778c16279758af04695e156ab8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a SEQUENCE-END event.  <a href="#ga9ebf0f778c16279758af04695e156ab8">More...</a><br /></td></tr>
 <tr class="separator:ga9ebf0f778c16279758af04695e156ab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga10881b4cc5ba19294dbb70537420dace"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga10881b4cc5ba19294dbb70537420dace">yaml_mapping_start_event_initialize</a> (<a class="el" href="group__events.html#ga3b392d9716c4920cabefdd29e78dd542">yaml_event_t</a> *event, <a class="el" href="group__basic.html#gaf8657e81f0b8b05d1a081001fc6cb8bd">yaml_char_t</a> *anchor, <a class="el" href="group__basic.html#gaf8657e81f0b8b05d1a081001fc6cb8bd">yaml_char_t</a> *tag, int implicit, <a class="el" href="group__styles.html#gab47523846a5c5960e07367a28ea9750a">yaml_mapping_style_t</a> style)</td></tr>
+<tr class="memdesc:ga10881b4cc5ba19294dbb70537420dace"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a MAPPING-START event.  <a href="#ga10881b4cc5ba19294dbb70537420dace">More...</a><br /></td></tr>
 <tr class="separator:ga10881b4cc5ba19294dbb70537420dace"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7952fa5fa71a05d1ea85e0fe1d5f2af5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga7952fa5fa71a05d1ea85e0fe1d5f2af5">yaml_mapping_end_event_initialize</a> (<a class="el" href="group__events.html#ga3b392d9716c4920cabefdd29e78dd542">yaml_event_t</a> *event)</td></tr>
+<tr class="memdesc:ga7952fa5fa71a05d1ea85e0fe1d5f2af5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a MAPPING-END event.  <a href="#ga7952fa5fa71a05d1ea85e0fe1d5f2af5">More...</a><br /></td></tr>
 <tr class="separator:ga7952fa5fa71a05d1ea85e0fe1d5f2af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga989c12ed4090ff45698068848d930d08"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga989c12ed4090ff45698068848d930d08">yaml_event_delete</a> (<a class="el" href="group__events.html#ga3b392d9716c4920cabefdd29e78dd542">yaml_event_t</a> *event)</td></tr>
+<tr class="memdesc:ga989c12ed4090ff45698068848d930d08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free any memory allocated for an event object.  <a href="#ga989c12ed4090ff45698068848d930d08">More...</a><br /></td></tr>
 <tr class="separator:ga989c12ed4090ff45698068848d930d08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -138,6 +153,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>The event structure. </p>
 
 </div>
@@ -153,6 +169,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>Event types. </p>
 
 </div>
@@ -169,6 +186,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>Event types. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga454fccebae859c188fe3e7fa3299577caefda9f31823fe534f094f4241d5e5eac"></a>YAML_NO_EVENT&#160;</td><td class="fielddoc"><p>An empty event. </p>
@@ -223,7 +241,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create an ALIAS event.</p>
+
+<p>Create an ALIAS event. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">event</td><td>An empty event object. </td></tr>
@@ -260,7 +279,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create the DOCUMENT-END event.</p>
+
+<p>Create the DOCUMENT-END event. </p>
 <p>The <em>implicit</em> argument is considered as a stylistic parameter and may be ignored by the emitter.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -316,7 +336,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create the DOCUMENT-START event.</p>
+
+<p>Create the DOCUMENT-START event. </p>
 <p>The <em>implicit</em> argument is considered as a stylistic parameter and may be ignored by the emitter.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -347,7 +368,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Free any memory allocated for an event object.</p>
+
+<p>Free any memory allocated for an event object. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">event</td><td>An event object. </td></tr>
@@ -372,7 +394,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create a MAPPING-END event.</p>
+
+<p>Create a MAPPING-END event. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">event</td><td>An empty event object.</td></tr>
@@ -426,7 +449,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create a MAPPING-START event.</p>
+
+<p>Create a MAPPING-START event. </p>
 <p>The <em>style</em> argument may be ignored by the emitter.</p>
 <p>Either the <em>tag</em> attribute or the <em>implicit</em> flag must be set.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -504,7 +528,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create a SCALAR event.</p>
+
+<p>Create a SCALAR event. </p>
 <p>The <em>style</em> argument may be ignored by the emitter.</p>
 <p>Either the <em>tag</em> attribute or one of the <em>plain_implicit</em> and <em>quoted_implicit</em> flags must be set.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -539,7 +564,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create a SEQUENCE-END event.</p>
+
+<p>Create a SEQUENCE-END event. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">event</td><td>An empty event object.</td></tr>
@@ -593,7 +619,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create a SEQUENCE-START event.</p>
+
+<p>Create a SEQUENCE-START event. </p>
 <p>The <em>style</em> argument may be ignored by the emitter.</p>
 <p>Either the <em>tag</em> attribute or the <em>implicit</em> flag must be set.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -625,7 +652,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create the STREAM-END event.</p>
+
+<p>Create the STREAM-END event. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">event</td><td>An empty event object.</td></tr>
@@ -661,7 +689,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create the STREAM-START event.</p>
+
+<p>Create the STREAM-START event. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">event</td><td>An empty event object. </td></tr>

@@ -69,32 +69,47 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa411beaea09ed4c20179abcf815763c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#aa411beaea09ed4c20179abcf815763c0">ResponsePool</a> (<a class="el" href="class_data_schema_pool.html">DataSchemaPool</a> *schemaPool)</td></tr>
+<tr class="memdesc:aa411beaea09ed4c20179abcf815763c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class processes all the Response Object &amp; Response Extension Object of scripts Similar to <a class="el" href="class_data_schema_pool.html">DataSchemaPool</a>.  <a href="#aa411beaea09ed4c20179abcf815763c0">More...</a><br /></td></tr>
 <tr class="separator:aa411beaea09ed4c20179abcf815763c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6864dc11fe682dc306ef3a367120e6ed"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#a6864dc11fe682dc306ef3a367120e6ed">~ResponsePool</a> ()</td></tr>
+<tr class="memitem:a6864dc11fe682dc306ef3a367120e6ed"><td class="memItemLeft" align="right" valign="top"><a id="a6864dc11fe682dc306ef3a367120e6ed"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#a6864dc11fe682dc306ef3a367120e6ed">~ResponsePool</a> ()</td></tr>
+<tr class="memdesc:a6864dc11fe682dc306ef3a367120e6ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
 <tr class="separator:a6864dc11fe682dc306ef3a367120e6ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac53fa20b466d970488c2951863988f42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_response_object.html">ResponseObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#ac53fa20b466d970488c2951863988f42">parseResponse</a> (string filePath, <a class="el" href="class_doc_element.html">DocElement</a> *ele, string responseName=&quot;&quot;)</td></tr>
+<tr class="memdesc:ac53fa20b466d970488c2951863988f42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a doc node which represents a complete Response Object Return whether successfully parsed If it has parsed, also return the object, and increment the ref count.  <a href="#ac53fa20b466d970488c2951863988f42">More...</a><br /></td></tr>
 <tr class="separator:ac53fa20b466d970488c2951863988f42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2eaa8a37dc571b0f9f72e62199d83e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_response_extension_object.html">ResponseExtensionObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#af2eaa8a37dc571b0f9f72e62199d83e1">parseResponseExtension</a> (string filePath, <a class="el" href="class_doc_element.html">DocElement</a> *ele, string responseName=&quot;&quot;)</td></tr>
+<tr class="memdesc:af2eaa8a37dc571b0f9f72e62199d83e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a doc node which represents a comple Response Extension Object Return whether successfully parsed If it has parsed, also return true, and increment the ref count.  <a href="#af2eaa8a37dc571b0f9f72e62199d83e1">More...</a><br /></td></tr>
 <tr class="separator:af2eaa8a37dc571b0f9f72e62199d83e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b7145388309ac7dadd6f4e7e1cd77d9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#a9b7145388309ac7dadd6f4e7e1cd77d9">rename</a> (string oldName, string newName)</td></tr>
+<tr class="memdesc:a9b7145388309ac7dadd6f4e7e1cd77d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rename a response index name Fail if oldName doesn't exist, or newName conflicts.  <a href="#a9b7145388309ac7dadd6f4e7e1cd77d9">More...</a><br /></td></tr>
 <tr class="separator:a9b7145388309ac7dadd6f4e7e1cd77d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0887f7c018df0f018bbe85e88c53e03"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#ab0887f7c018df0f018bbe85e88c53e03">remove</a> (string name)</td></tr>
+<tr class="memdesc:ab0887f7c018df0f018bbe85e88c53e03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove one from the pool by name It will delete the response object, but not affect doc node.  <a href="#ab0887f7c018df0f018bbe85e88c53e03">More...</a><br /></td></tr>
 <tr class="separator:ab0887f7c018df0f018bbe85e88c53e03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a119fb8cced471255080e5df3a29c1637"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#a119fb8cced471255080e5df3a29c1637">touch</a> (<a class="el" href="class_doc_element.html">DocElement</a> *ele)</td></tr>
+<tr class="memdesc:a119fb8cced471255080e5df3a29c1637"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inspect the existence by doc node.  <a href="#a119fb8cced471255080e5df3a29c1637">More...</a><br /></td></tr>
 <tr class="separator:a119fb8cced471255080e5df3a29c1637"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0dc4f6da9c1a5a172fc359206fc8a89"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#ad0dc4f6da9c1a5a172fc359206fc8a89">touch</a> (string name)</td></tr>
+<tr class="memdesc:ad0dc4f6da9c1a5a172fc359206fc8a89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inspect the existence by name.  <a href="#ad0dc4f6da9c1a5a172fc359206fc8a89">More...</a><br /></td></tr>
 <tr class="separator:ad0dc4f6da9c1a5a172fc359206fc8a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1dbfa8493fc1438c1dab163136663c9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#ac1dbfa8493fc1438c1dab163136663c9">getRefCount</a> (<a class="el" href="class_doc_element.html">DocElement</a> *ele)</td></tr>
+<tr class="memdesc:ac1dbfa8493fc1438c1dab163136663c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get ref count by doc node.  <a href="#ac1dbfa8493fc1438c1dab163136663c9">More...</a><br /></td></tr>
 <tr class="separator:ac1dbfa8493fc1438c1dab163136663c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7414c9a2dfbce38f016b6a1b8244b439"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#a7414c9a2dfbce38f016b6a1b8244b439">getRefCount</a> (string name)</td></tr>
+<tr class="memdesc:a7414c9a2dfbce38f016b6a1b8244b439"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get ref count by name.  <a href="#a7414c9a2dfbce38f016b6a1b8244b439">More...</a><br /></td></tr>
 <tr class="separator:a7414c9a2dfbce38f016b6a1b8244b439"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4e8fc160a4ccfbaf9f3d3e95f02b3dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#ac4e8fc160a4ccfbaf9f3d3e95f02b3dd">setRefCount</a> (<a class="el" href="class_doc_element.html">DocElement</a> *ele, int ref)</td></tr>
+<tr class="memdesc:ac4e8fc160a4ccfbaf9f3d3e95f02b3dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set ref count by doc node.  <a href="#ac4e8fc160a4ccfbaf9f3d3e95f02b3dd">More...</a><br /></td></tr>
 <tr class="separator:ac4e8fc160a4ccfbaf9f3d3e95f02b3dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9101f27cb22e56987f035f3a0844d6b7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#a9101f27cb22e56987f035f3a0844d6b7">setRefCount</a> (string name, int ref)</td></tr>
+<tr class="memdesc:a9101f27cb22e56987f035f3a0844d6b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set ref count by name.  <a href="#a9101f27cb22e56987f035f3a0844d6b7">More...</a><br /></td></tr>
 <tr class="separator:a9101f27cb22e56987f035f3a0844d6b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11bdc5a89d4303da42047cb930f8fee8"><td class="memItemLeft" align="right" valign="top">const map&lt; string, <a class="el" href="class_doc_element.html">DocElement</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#a11bdc5a89d4303da42047cb930f8fee8">getNameMap</a> ()</td></tr>
+<tr class="memdesc:a11bdc5a89d4303da42047cb930f8fee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the name map.  <a href="#a11bdc5a89d4303da42047cb930f8fee8">More...</a><br /></td></tr>
 <tr class="separator:a11bdc5a89d4303da42047cb930f8fee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9b8e8ef30d66733ff3a5cc66e68c99f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_abstract_response_object.html">AbstractResponseObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_response_pool.html#ab9b8e8ef30d66733ff3a5cc66e68c99f">getResponseByName</a> (string name)</td></tr>
+<tr class="memdesc:ab9b8e8ef30d66733ff3a5cc66e68c99f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get parameter by name.  <a href="#ab9b8e8ef30d66733ff3a5cc66e68c99f">More...</a><br /></td></tr>
 <tr class="separator:ab9b8e8ef30d66733ff3a5cc66e68c99f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -113,25 +128,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This class processes all the Response Object &amp; Response Extension Object of scripts Similar to <a class="el" href="class_data_schema_pool.html">DataSchemaPool</a> Constructor </p>
 
-</div>
-</div>
-<a id="a6864dc11fe682dc306ef3a367120e6ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6864dc11fe682dc306ef3a367120e6ed">&#9670;&nbsp;</a></span>~ResponsePool()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ResponsePool::~ResponsePool </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Destructor </p>
+<p>This class processes all the Response Object &amp; Response Extension Object of scripts Similar to <a class="el" href="class_data_schema_pool.html">DataSchemaPool</a>. </p>
+<p>Constructor </p>
 
 </div>
 </div>
@@ -150,7 +149,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the name map </p><dl class="section return"><dt>Returns</dt><dd>the name map </dd></dl>
+
+<p>Get the name map. </p>
+<dl class="section return"><dt>Returns</dt><dd>the name map </dd></dl>
 
 </div>
 </div>
@@ -169,7 +170,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get ref count by doc node </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get ref count by doc node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ele</td><td></td></tr>
   </table>
@@ -194,7 +197,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get ref count by name </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get ref count by name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td></td></tr>
   </table>
@@ -219,7 +224,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get parameter by name </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get parameter by name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td></td></tr>
   </table>
@@ -260,7 +267,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parse a doc node which represents a complete Response Object Return whether successfully parsed If it has parsed, also return the object, and increment the ref count </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Parse a doc node which represents a complete Response Object Return whether successfully parsed If it has parsed, also return the object, and increment the ref count. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ele</td><td>doc node to be parsed </td></tr>
     <tr><td class="paramname">nodeName</td><td>enabling customized schema name </td></tr>
@@ -302,7 +311,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parse a doc node which represents a comple Response Extension Object Return whether successfully parsed If it has parsed, also return true, and increment the ref count </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Parse a doc node which represents a comple Response Extension Object Return whether successfully parsed If it has parsed, also return true, and increment the ref count. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ele</td><td>doc node to be parsed </td></tr>
     <tr><td class="paramname">nodeName</td><td>enabling customized schema name </td></tr>
@@ -328,7 +339,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Remove one from the pool by name It will delete the response object, but not affect doc node </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Remove one from the pool by name It will delete the response object, but not affect doc node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>name to delete </td></tr>
   </table>
@@ -363,7 +376,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Rename a response index name Fail if oldName doesn't exist, or newName conflicts </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Rename a response index name Fail if oldName doesn't exist, or newName conflicts. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">oldName</td><td>oldName </td></tr>
     <tr><td class="paramname">newName</td><td>newName </td></tr>
@@ -399,7 +414,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set ref count by doc node </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Set ref count by doc node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ele</td><td></td></tr>
     <tr><td class="paramname">ref</td><td></td></tr>
@@ -435,7 +452,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set ref count by name </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Set ref count by name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td></td></tr>
     <tr><td class="paramname">ref</td><td></td></tr>
@@ -461,7 +480,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Inspect the existence by doc node </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Inspect the existence by doc node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ele</td><td>doc node </td></tr>
   </table>
@@ -486,7 +507,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Inspect the existence by name </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Inspect the existence by name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>name </td></tr>
   </table>

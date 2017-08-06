@@ -102,6 +102,27 @@ bool addXMLDocFromFile(string filePath, string docName) {
     return true;
 }
 
+bool addDoc(BaseDataObject *obj, string docName) {
+    if (obj == NULL) return false;
+    cleanToDocStage();
+    map<string, DocElement *> &docMap = DocElement::docs;
+    if (docMap.count(docName) != 0) {
+        delete docMap[docName];
+        docMap.erase(docName);
+    }
+    docMap[docName] = DataObjectAdapter::toDocElement(obj);
+    return true;
+}
+
+BaseDataObject *getDoc(string docName) {
+    cleanToDocStage();
+    map<string, DocElement *> &docMap = DocElement::docs;
+    if (docMap.count(docName) != 0) {
+        return DataObjectAdapter::defaultFromDocElement(docMap[docName]);
+    } else
+        return NULL;
+}
+
 bool removeDoc(string docName) {
     map<string, DocElement*> &docMap = DocElement::docs;
     if (docMap.count(docName) == 0)
@@ -150,18 +171,6 @@ bool saveAsXML(string destFileName, string docName) {
 }
 
 /** --- API Subitem Editor --- **/
-
-bool addDoc(BaseDataObject *obj, string docName) {
-    if (obj == NULL) return false;
-    cleanToDocStage();
-    map<string, DocElement *> &docMap = DocElement::docs;
-    if (docMap.count(docName) != 0) {
-        delete docMap[docName];
-        docMap.erase(docName);
-    }
-    docMap[docName] = DataObjectAdapter::toDocElement(obj);
-    return true;
-}
 
 bool reservedFieldsInit(string docName) {
     cleanToDocStage();

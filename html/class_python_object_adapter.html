@@ -66,17 +66,22 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Adapter for DataObject classes and PyObject class.  
+ <a href="class_python_object_adapter.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_python_object_adapter_8h_source.html">PythonObjectAdapter.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a67604a3e9827a262140f8cb9e70b465c"><td class="memItemLeft" align="right" valign="top">static PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_python_object_adapter.html#a67604a3e9827a262140f8cb9e70b465c">fromDataObject</a> (<a class="el" href="struct_base_data_object.html">BaseDataObject</a> *obj)</td></tr>
+<tr class="memdesc:a67604a3e9827a262140f8cb9e70b465c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translate DataObject to PyObject CAUTION: for BYTEFILE or CUSTOMIZED data object, it will be a Dict: {type: "file"/"customized", data: <em>ByteArray</em>}.  <a href="#a67604a3e9827a262140f8cb9e70b465c">More...</a><br /></td></tr>
 <tr class="separator:a67604a3e9827a262140f8cb9e70b465c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abefc1b8b19e2fe3339d01ed6f32d04a7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_base_data_object.html">BaseDataObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_python_object_adapter.html#abefc1b8b19e2fe3339d01ed6f32d04a7">toDataObject</a> (PyObject *obj)</td></tr>
+<tr class="memdesc:abefc1b8b19e2fe3339d01ed6f32d04a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translate PyObject to DataObject CAUTION: it will view {type: "file"/"customized", data: <em>ByteArray</em>} as corresponding types.  <a href="#abefc1b8b19e2fe3339d01ed6f32d04a7">More...</a><br /></td></tr>
 <tr class="separator:abefc1b8b19e2fe3339d01ed6f32d04a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Adapter for DataObject classes and PyObject class </p>
+<div class="textblock"><p>Adapter for DataObject classes and PyObject class. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a67604a3e9827a262140f8cb9e70b465c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a67604a3e9827a262140f8cb9e70b465c">&#9670;&nbsp;</a></span>fromDataObject()</h2>
@@ -101,7 +106,9 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Translate DataObject to PyObject CAUTION: for BYTEFILE or CUSTOMIZED data object, it will be a Dict: {type: "file"/"customized", data: <em>ByteArray</em>} </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Translate DataObject to PyObject CAUTION: for BYTEFILE or CUSTOMIZED data object, it will be a Dict: {type: "file"/"customized", data: <em>ByteArray</em>}. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">obj</td><td></td></tr>
   </table>
@@ -134,7 +141,9 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Translate PyObject to DataObject CAUTION: it will view {type: "file"/"customized", data: <em>ByteArray</em>} as corresponding types </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Translate PyObject to DataObject CAUTION: it will view {type: "file"/"customized", data: <em>ByteArray</em>} as corresponding types. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">obj</td><td></td></tr>
   </table>

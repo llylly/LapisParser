@@ -22,6 +22,10 @@ PyObject *wrap_addYAMLDocFromFile
         (PyObject *self, PyObject *args);
 PyObject *wrap_addXMLDocFromFile
         (PyObject *self, PyObject *args);
+PyObject *wrap_addDoc
+        (PyObject *self, PyObject *args);
+PyObject *wrap_getDoc
+        (PyObject *self, PyObject *args);
 PyObject *wrap_removeDoc
         (PyObject *self, PyObject *args);
 PyObject *wrap_getDocList
@@ -29,8 +33,6 @@ PyObject *wrap_getDocList
 PyObject *wrap_saveAsYAML
         (PyObject *self, PyObject *args);
 PyObject *wrap_saveAsXML
-        (PyObject *self, PyObject *args);
-PyObject *wrap_addDoc
         (PyObject *self, PyObject *args);
 PyObject *wrap_reservedFieldsInit
         (PyObject *self, PyObject *args);

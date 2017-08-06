@@ -28,9 +28,13 @@ if __name__ == '__main__':
 
     addDocFromFile('../../official_demo.yaml', 'default')
     print(getDocList())
+    print(getDoc())
     print(parseAPI())
     print(getInfo())
     print(getHost())
+    print(getBasePath())
+    print(removeBasePath())
+    parseAPI()
     print(getBasePath())
     print(getSchemes())
     print(getConsumes())

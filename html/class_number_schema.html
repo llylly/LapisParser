@@ -80,16 +80,22 @@ Inheritance diagram for NumberSchema:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2e5d8a59101bcb8f9e428de9a438491a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_base_data_object.html">BaseDataObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_number_schema.html#a2e5d8a59101bcb8f9e428de9a438491a">toDataObject</a> () override</td></tr>
+<tr class="memdesc:a2e5d8a59101bcb8f9e428de9a438491a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transform Schema Object to corresponding Data Object storing schema info.  <a href="#a2e5d8a59101bcb8f9e428de9a438491a">More...</a><br /></td></tr>
 <tr class="separator:a2e5d8a59101bcb8f9e428de9a438491a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a790247e0897ef3d0f90e405d145c11"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_number_schema.html#a5a790247e0897ef3d0f90e405d145c11">check</a> (<a class="el" href="struct_base_data_object.html">BaseDataObject</a> *obj) override</td></tr>
+<tr class="memdesc:a5a790247e0897ef3d0f90e405d145c11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use Schema info to check whether a data instance satisfies schema requirement.  <a href="#a5a790247e0897ef3d0f90e405d145c11">More...</a><br /></td></tr>
 <tr class="separator:a5a790247e0897ef3d0f90e405d145c11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab565311cfe777dfd7868ca97831dfb45"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_base_data_object.html">BaseDataObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_number_schema.html#ab565311cfe777dfd7868ca97831dfb45">transform</a> (<a class="el" href="class_doc_element.html">DocElement</a> *ele) override</td></tr>
+<tr class="memdesc:ab565311cfe777dfd7868ca97831dfb45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use schema info to transform legal data to Data Object.  <a href="#ab565311cfe777dfd7868ca97831dfb45">More...</a><br /></td></tr>
 <tr class="separator:ab565311cfe777dfd7868ca97831dfb45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37bb4b866754ef367c2ef0012b229ed5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_base_data_object.html">BaseDataObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_number_schema.html#a37bb4b866754ef367c2ef0012b229ed5">generate</a> () override</td></tr>
+<tr class="memdesc:a37bb4b866754ef367c2ef0012b229ed5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use random policy to generate an instance of the datatype For base class, when has enum elements constraint, randomly pick one from enum elements.  <a href="#a37bb4b866754ef367c2ef0012b229ed5">More...</a><br /></td></tr>
 <tr class="separator:a37bb4b866754ef367c2ef0012b229ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7ec7370563aa69fed7a7daa3ca44b49"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_number_schema.html#aa7ec7370563aa69fed7a7daa3ca44b49">init</a> (string filePath, <a class="el" href="class_doc_object_element.html">DocObjectElement</a> *obj, int schemaType) override</td></tr>
+<tr class="memdesc:aa7ec7370563aa69fed7a7daa3ca44b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build up the Schema Object from <a class="el" href="class_doc_object_element.html">DocObjectElement</a> It implements detailed checks for each specified type of schema.  <a href="#aa7ec7370563aa69fed7a7daa3ca44b49">More...</a><br /></td></tr>
 <tr class="separator:aa7ec7370563aa69fed7a7daa3ca44b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b658aa28240fabc512596508d8be39b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_data_schema_object.html">DataSchemaObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_number_schema.html#a5b658aa28240fabc512596508d8be39b">findField</a> (const vector&lt; string &gt; &amp;fieldVec, int index) override</td></tr>
+<tr class="memdesc:a5b658aa28240fabc512596508d8be39b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the required field schema object.  <a href="#a5b658aa28240fabc512596508d8be39b">More...</a><br /></td></tr>
 <tr class="separator:a5b658aa28240fabc512596508d8be39b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -154,9 +160,11 @@ vector&lt; <a class="el" href="struct_base_data_object.html">BaseDataObject</a> 
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_methods_class_data_schema_object"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_data_schema_object')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_data_schema_object.html">DataSchemaObject</a></td></tr>
 <tr class="memitem:a86413a02006882e58e7331154f97675c inherit pub_static_methods_class_data_schema_object"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_object.html#a86413a02006882e58e7331154f97675c">randomReal</a> ()</td></tr>
+<tr class="memdesc:a86413a02006882e58e7331154f97675c inherit pub_static_methods_class_data_schema_object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a random real number in [0,1].  <a href="class_data_schema_object.html#a86413a02006882e58e7331154f97675c">More...</a><br /></td></tr>
 <tr class="separator:a86413a02006882e58e7331154f97675c inherit pub_static_methods_class_data_schema_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_data_schema_object"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_data_schema_object')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_data_schema_object.html">DataSchemaObject</a></td></tr>
 <tr class="memitem:abe3e7aa0ff5033d5387a9380884add21 inherit pub_static_attribs_class_data_schema_object"><td class="memItemLeft" align="right" valign="top">static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_schema_object.html#abe3e7aa0ff5033d5387a9380884add21">TYPE_BASE</a> = 0</td></tr>
+<tr class="memdesc:abe3e7aa0ff5033d5387a9380884add21 inherit pub_static_attribs_class_data_schema_object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for all schema related fields.  <a href="class_data_schema_object.html#abe3e7aa0ff5033d5387a9380884add21">More...</a><br /></td></tr>
 <tr class="separator:abe3e7aa0ff5033d5387a9380884add21 inherit pub_static_attribs_class_data_schema_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfd2287ef0d870a9f97f717398506712 inherit pub_static_attribs_class_data_schema_object"><td class="memItemLeft" align="right" valign="top"><a id="abfd2287ef0d870a9f97f717398506712"></a>
 static const int&#160;</td><td class="memItemRight" valign="bottom"><b>TYPE_STRING</b> = 1</td></tr>
@@ -207,7 +215,9 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><b>TYPE_CUST
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Use Schema info to check whether a data instance satisfies schema requirement </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Use Schema info to check whether a data instance satisfies schema requirement. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">obj</td><td>data instance to check </td></tr>
   </table>
@@ -253,7 +263,9 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><b>TYPE_CUST
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Find the required field schema object </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Find the required field schema object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fieldVec</td><td>the field name vector: {fieldVec[0]}.{fieldVec[1]}. ... . {fieldVec[len-1]} </td></tr>
     <tr><td class="paramname">index</td><td>start index for current search </td></tr>
@@ -288,7 +300,9 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><b>TYPE_CUST
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Use random policy to generate an instance of the datatype For base class, when has enum elements constraint, randomly pick one from enum elements. Otherwise, return NULL </p><dl class="section return"><dt>Returns</dt><dd>for valid schema object: generated data instance for invalid shema object: NULL </dd></dl>
+
+<p>Use random policy to generate an instance of the datatype For base class, when has enum elements constraint, randomly pick one from enum elements. </p>
+<p>Otherwise, return NULL </p><dl class="section return"><dt>Returns</dt><dd>for valid schema object: generated data instance for invalid shema object: NULL </dd></dl>
 <p>To prevent overflow, when the range is too large and comparable to double range, we generate by bit-wise random. Otherwise use uniform distribution in the interval.</p>
 
 <p>Reimplemented from <a class="el" href="class_data_schema_object.html#a87c44a1526cccbf7878ceb77c04211bb">DataSchemaObject</a>.</p>
@@ -334,7 +348,9 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><b>TYPE_CUST
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Build up the Schema Object from <a class="el" href="class_doc_object_element.html">DocObjectElement</a> It implements detailed checks for each specified type of schema </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Build up the Schema Object from <a class="el" href="class_doc_object_element.html">DocObjectElement</a> It implements detailed checks for each specified type of schema. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">filePath</td><td>file path where the <a class="el" href="class_doc_element.html">DocElement</a> from, used for building error messages </td></tr>
     <tr><td class="paramname">obj</td><td>the meta <a class="el" href="class_doc_object_element.html">DocObjectElement</a> </td></tr>
@@ -370,7 +386,9 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><b>TYPE_CUST
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Transform Schema Object to corresponding Data Object storing schema info </p><dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="struct_object_data_object.html">ObjectDataObject</a> </dd></dl>
+
+<p>Transform Schema Object to corresponding Data Object storing schema info. </p>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="struct_object_data_object.html">ObjectDataObject</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_data_schema_object.html#ac6e3332a313f89001f50aa5640f48be3">DataSchemaObject</a>.</p>
 
@@ -399,7 +417,9 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><b>TYPE_CUST
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Use schema info to transform legal data to Data Object </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Use schema info to transform legal data to Data Object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ele</td><td><a class="el" href="class_doc_element.html">DocElement</a> node to transform </td></tr>
   </table>

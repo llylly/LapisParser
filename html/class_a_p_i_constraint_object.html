@@ -78,13 +78,18 @@ Inheritance diagram for APIConstraintObject:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7a645cfe49ea254eb7d007a575f590b2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_constraint_object.html#a7a645cfe49ea254eb7d007a575f590b2">APIConstraintObject</a> ()</td></tr>
+<tr class="memitem:a7a645cfe49ea254eb7d007a575f590b2"><td class="memItemLeft" align="right" valign="top"><a id="a7a645cfe49ea254eb7d007a575f590b2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_constraint_object.html#a7a645cfe49ea254eb7d007a575f590b2">APIConstraintObject</a> ()</td></tr>
+<tr class="memdesc:a7a645cfe49ea254eb7d007a575f590b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
 <tr class="separator:a7a645cfe49ea254eb7d007a575f590b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0917e3a1c9bf1bfc7b53a79e406a3f40"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_constraint_object.html#a0917e3a1c9bf1bfc7b53a79e406a3f40">create</a> (string filePath, <a class="el" href="class_doc_element.html">DocElement</a> *ele)</td></tr>
+<tr class="memdesc:a0917e3a1c9bf1bfc7b53a79e406a3f40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create it from <a class="el" href="class_doc_element.html">DocElement</a> INVALID -&gt; BAKED.  <a href="#a0917e3a1c9bf1bfc7b53a79e406a3f40">More...</a><br /></td></tr>
 <tr class="separator:a0917e3a1c9bf1bfc7b53a79e406a3f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dafbeab51fb6426e92e4432d3138caa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_constraint_object.html#a9dafbeab51fb6426e92e4432d3138caa">findGuest</a> (<a class="el" href="class_a_p_i_pool.html">APIPool</a> *pool)</td></tr>
+<tr class="memdesc:a9dafbeab51fb6426e92e4432d3138caa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the guestName &amp; guestMethod by APIObject* from the pool BAKED -&gt; VALID.  <a href="#a9dafbeab51fb6426e92e4432d3138caa">More...</a><br /></td></tr>
 <tr class="separator:a9dafbeab51fb6426e92e4432d3138caa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e87a43099c8f503605c588c5de97d25"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_base_data_object.html">BaseDataObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_constraint_object.html#a5e87a43099c8f503605c588c5de97d25">toDataObject</a> () override</td></tr>
+<tr class="memdesc:a5e87a43099c8f503605c588c5de97d25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output interface.  <a href="#a5e87a43099c8f503605c588c5de97d25">More...</a><br /></td></tr>
 <tr class="separator:a5e87a43099c8f503605c588c5de97d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -110,33 +115,18 @@ APIConstraintType&#160;</td><td class="memItemRight" valign="bottom"><b>type</b>
 <tr class="memitem:ae6a42d9bc181c8ea36391f5cd844e467"><td class="memItemLeft" align="right" valign="top"><a id="ae6a42d9bc181c8ea36391f5cd844e467"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>minInterval</b></td></tr>
 <tr class="separator:ae6a42d9bc181c8ea36391f5cd844e467"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76904682d293b8053fe1e5a36d1c7f33"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_constraint_object.html#a76904682d293b8053fe1e5a36d1c7f33">maxInterval</a></td></tr>
+<tr class="memitem:a76904682d293b8053fe1e5a36d1c7f33"><td class="memItemLeft" align="right" valign="top"><a id="a76904682d293b8053fe1e5a36d1c7f33"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_constraint_object.html#a76904682d293b8053fe1e5a36d1c7f33">maxInterval</a></td></tr>
+<tr class="memdesc:a76904682d293b8053fe1e5a36d1c7f33"><td class="mdescLeft">&#160;</td><td class="mdescRight">-1 means infinity <br /></td></tr>
 <tr class="separator:a76904682d293b8053fe1e5a36d1c7f33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac377b714bd0a589785bcccca5d99cfdc"><td class="memItemLeft" align="right" valign="top"><a id="ac377b714bd0a589785bcccca5d99cfdc"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>minTimes</b></td></tr>
 <tr class="separator:ac377b714bd0a589785bcccca5d99cfdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91bf9a20bf8d5fa03d7356995cced5c0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_constraint_object.html#a91bf9a20bf8d5fa03d7356995cced5c0">maxTimes</a></td></tr>
+<tr class="memitem:a91bf9a20bf8d5fa03d7356995cced5c0"><td class="memItemLeft" align="right" valign="top"><a id="a91bf9a20bf8d5fa03d7356995cced5c0"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_constraint_object.html#a91bf9a20bf8d5fa03d7356995cced5c0">maxTimes</a></td></tr>
+<tr class="memdesc:a91bf9a20bf8d5fa03d7356995cced5c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">-1 means infinity <br /></td></tr>
 <tr class="separator:a91bf9a20bf8d5fa03d7356995cced5c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a7a645cfe49ea254eb7d007a575f590b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a645cfe49ea254eb7d007a575f590b2">&#9670;&nbsp;</a></span>APIConstraintObject()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">APIConstraintObject::APIConstraintObject </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Constructor </p>
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0917e3a1c9bf1bfc7b53a79e406a3f40"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0917e3a1c9bf1bfc7b53a79e406a3f40">&#9670;&nbsp;</a></span>create()</h2>
@@ -163,7 +153,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>minTimes</b></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create it from <a class="el" href="class_doc_element.html">DocElement</a> INVALID -&gt; BAKED </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Create it from <a class="el" href="class_doc_element.html">DocElement</a> INVALID -&gt; BAKED. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">filePath</td><td>parse file path </td></tr>
     <tr><td class="paramname">ele</td><td>the doc node </td></tr>
@@ -195,7 +187,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>minTimes</b></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Find the guestName &amp; guestMethod by APIObject* from the pool BAKED -&gt; VALID </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Find the guestName &amp; guestMethod by APIObject* from the pool BAKED -&gt; VALID. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pool</td><td>the pool </td></tr>
   </table>
@@ -227,40 +221,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>minTimes</b></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Output interface </p><dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Output interface. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 <p>Implements <a class="el" href="class_base_object.html">BaseObject</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a76904682d293b8053fe1e5a36d1c7f33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76904682d293b8053fe1e5a36d1c7f33">&#9670;&nbsp;</a></span>maxInterval</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int APIConstraintObject::maxInterval</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>-1 means infinity </p>
-
-</div>
-</div>
-<a id="a91bf9a20bf8d5fa03d7356995cced5c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91bf9a20bf8d5fa03d7356995cced5c0">&#9670;&nbsp;</a></span>maxTimes</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int APIConstraintObject::maxTimes</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>-1 means infinity </p>
 
 </div>
 </div>

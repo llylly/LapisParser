@@ -69,22 +69,32 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:abea7e33cb769f1e8743a98e32f669df8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_pool.html#abea7e33cb769f1e8743a98e32f669df8">APIPool</a> (<a class="el" href="class_parameter_pool.html">ParameterPool</a> *paramPool, <a class="el" href="class_response_pool.html">ResponsePool</a> *responsePool)</td></tr>
+<tr class="memdesc:abea7e33cb769f1e8743a98e32f669df8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class processes all the Operation Object of scripts Operation Object are indexed by their name and request method Similar to <a class="el" href="class_data_schema_pool.html">DataSchemaPool</a>.  <a href="#abea7e33cb769f1e8743a98e32f669df8">More...</a><br /></td></tr>
 <tr class="separator:abea7e33cb769f1e8743a98e32f669df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f7d12163facf55f6f68dc65e5f01a20"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_pool.html#a7f7d12163facf55f6f68dc65e5f01a20">~APIPool</a> ()</td></tr>
+<tr class="memitem:a7f7d12163facf55f6f68dc65e5f01a20"><td class="memItemLeft" align="right" valign="top"><a id="a7f7d12163facf55f6f68dc65e5f01a20"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_pool.html#a7f7d12163facf55f6f68dc65e5f01a20">~APIPool</a> ()</td></tr>
+<tr class="memdesc:a7f7d12163facf55f6f68dc65e5f01a20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
 <tr class="separator:a7f7d12163facf55f6f68dc65e5f01a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8624232f9872416ef7b1b87d3ba7b778"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_a_p_i_object.html">APIObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_pool.html#a8624232f9872416ef7b1b87d3ba7b778">parseAPI</a> (string filePath, <a class="el" href="class_doc_element.html">DocElement</a> *ele, string name, APIRequestMethod method, <a class="el" href="struct_schemes_object.html">SchemesObject</a> *rootSchemes, vector&lt; <a class="el" href="class_parameter_object.html">ParameterObject</a> *&gt; *commonParams)</td></tr>
+<tr class="memdesc:a8624232f9872416ef7b1b87d3ba7b778"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a doc node which represents a complete Operation Object Return whether successfully parsed If it has parsed, also return the object, and increment the ref count.  <a href="#a8624232f9872416ef7b1b87d3ba7b778">More...</a><br /></td></tr>
 <tr class="separator:a8624232f9872416ef7b1b87d3ba7b778"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28aeb19b5681a146b2ee0e495240830b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_pool.html#a28aeb19b5681a146b2ee0e495240830b">touch</a> (<a class="el" href="class_doc_element.html">DocElement</a> *ele)</td></tr>
+<tr class="memdesc:a28aeb19b5681a146b2ee0e495240830b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inspect the existence by doc node.  <a href="#a28aeb19b5681a146b2ee0e495240830b">More...</a><br /></td></tr>
 <tr class="separator:a28aeb19b5681a146b2ee0e495240830b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a315c506dfad7f72a1cf7019e1c8e2abb"><td class="memItemLeft" align="right" valign="top">pair&lt; string, APIRequestMethod &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_pool.html#a315c506dfad7f72a1cf7019e1c8e2abb">getNameByElement</a> (<a class="el" href="class_doc_element.html">DocElement</a> *ele)</td></tr>
+<tr class="memdesc:a315c506dfad7f72a1cf7019e1c8e2abb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the API Name &amp; Method by the doc element.  <a href="#a315c506dfad7f72a1cf7019e1c8e2abb">More...</a><br /></td></tr>
 <tr class="separator:a315c506dfad7f72a1cf7019e1c8e2abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad53d3d47c65465dd00134a348ca2a6af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_doc_element.html">DocElement</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_pool.html#ad53d3d47c65465dd00134a348ca2a6af">getElementByName</a> (pair&lt; string, APIRequestMethod &gt; name)</td></tr>
+<tr class="memdesc:ad53d3d47c65465dd00134a348ca2a6af"><td class="mdescLeft">&#160;</td><td class="mdescRight">CAUTION: Time-Consuming! CAN BE OPTIMIZED if needed Get the doc element from API Name &amp; Method.  <a href="#ad53d3d47c65465dd00134a348ca2a6af">More...</a><br /></td></tr>
 <tr class="separator:ad53d3d47c65465dd00134a348ca2a6af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a154b1c43ac12ca9eb40d1e3801054573"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_a_p_i_object.html">APIObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_pool.html#a154b1c43ac12ca9eb40d1e3801054573">getObjectByName</a> (pair&lt; string, APIRequestMethod &gt; name)</td></tr>
+<tr class="memdesc:a154b1c43ac12ca9eb40d1e3801054573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the API object by the doc element.  <a href="#a154b1c43ac12ca9eb40d1e3801054573">More...</a><br /></td></tr>
 <tr class="separator:a154b1c43ac12ca9eb40d1e3801054573"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45d47270d280f9c59ed4e465efb48e65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_a_p_i_object.html">APIObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_pool.html#a45d47270d280f9c59ed4e465efb48e65">getObjectByElement</a> (<a class="el" href="class_doc_element.html">DocElement</a> *ele)</td></tr>
+<tr class="memdesc:a45d47270d280f9c59ed4e465efb48e65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the API Object by the doc element.  <a href="#a45d47270d280f9c59ed4e465efb48e65">More...</a><br /></td></tr>
 <tr class="separator:a45d47270d280f9c59ed4e465efb48e65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae587926bb4c3b8c91239e96e0c857f8d"><td class="memItemLeft" align="right" valign="top">map&lt; pair&lt; string, APIRequestMethod &gt;, <a class="el" href="class_a_p_i_object.html">APIObject</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i_pool.html#ae587926bb4c3b8c91239e96e0c857f8d">getNameObjectMap</a> ()</td></tr>
+<tr class="memdesc:ae587926bb4c3b8c91239e96e0c857f8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pool.  <a href="#ae587926bb4c3b8c91239e96e0c857f8d">More...</a><br /></td></tr>
 <tr class="separator:ae587926bb4c3b8c91239e96e0c857f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -113,25 +123,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This class processes all the Operation Object of scripts Operation Object are indexed by their name and request method Similar to <a class="el" href="class_data_schema_pool.html">DataSchemaPool</a> Constructor </p>
 
-</div>
-</div>
-<a id="a7f7d12163facf55f6f68dc65e5f01a20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f7d12163facf55f6f68dc65e5f01a20">&#9670;&nbsp;</a></span>~APIPool()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">APIPool::~APIPool </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Destructor </p>
+<p>This class processes all the Operation Object of scripts Operation Object are indexed by their name and request method Similar to <a class="el" href="class_data_schema_pool.html">DataSchemaPool</a>. </p>
+<p>Constructor </p>
 
 </div>
 </div>
@@ -151,7 +145,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>CAUTION: Time-Consuming! CAN BE OPTIMIZED if needed Get the doc element from API Name &amp; Method </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>CAUTION: Time-Consuming! CAN BE OPTIMIZED if needed Get the doc element from API Name &amp; Method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>the pair of API Name &amp; Method </td></tr>
   </table>
@@ -176,7 +172,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the API Name &amp; Method by the doc element </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get the API Name &amp; Method by the doc element. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ele</td><td>the doc element </td></tr>
   </table>
@@ -200,7 +198,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the pool </p><dl class="section return"><dt>Returns</dt><dd>the pool </dd></dl>
+
+<p>Get the pool. </p>
+<dl class="section return"><dt>Returns</dt><dd>the pool </dd></dl>
 
 </div>
 </div>
@@ -219,7 +219,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the API Object by the doc element </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get the API Object by the doc element. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ele</td><td>the doc element </td></tr>
   </table>
@@ -244,7 +246,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the API object by the doc element </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get the API object by the doc element. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>the pair of API Name &amp; Method </td></tr>
   </table>
@@ -303,7 +307,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parse a doc node which represents a complete Operation Object Return whether successfully parsed If it has parsed, also return the object, and increment the ref count </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Parse a doc node which represents a complete Operation Object Return whether successfully parsed If it has parsed, also return the object, and increment the ref count. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">filePath</td><td>file name of the <a class="el" href="class_doc_element.html">DocElement</a> </td></tr>
     <tr><td class="paramname">ele</td><td>the <a class="el" href="class_doc_element.html">DocElement</a> to be parsed </td></tr>
@@ -333,7 +339,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Inspect the existence by doc node </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Inspect the existence by doc node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ele</td><td>doc node </td></tr>
   </table>

@@ -1,8 +1,13 @@
 var searchData=
 [
   ['abstractresponseobject',['AbstractResponseObject',['../class_abstract_response_object.html',1,'']]],
+  ['addapi',['addAPI',['../_interface_8h.html#a7c8715e3b3458f5e039d49e0bce93f8c',1,'Interface.cpp']]],
+  ['addapisharedparameter',['addAPISharedParameter',['../_interface_8h.html#a0acc4531aeaeba4b1831bf852e1c5b0f',1,'Interface.cpp']]],
+  ['adddataschema',['addDataSchema',['../_interface_8h.html#a87f14a4685eedcfe177fce41fb03922a',1,'Interface.cpp']]],
   ['adddoc',['addDoc',['../_interface_8h.html#a6221a910bab49b27fde1aa69d104b4e4',1,'Interface.cpp']]],
   ['adddocfromfile',['addDocFromFile',['../_interface_8h.html#a8d5312d957cb7aeae679b3e03febd11c',1,'Interface.cpp']]],
+  ['addparameter',['addParameter',['../_interface_8h.html#aca014edaec684381d836f791bf8f5376',1,'Interface.cpp']]],
+  ['addresponse',['addResponse',['../_interface_8h.html#a249e1e7d882e7c0add790f6a19baa167',1,'Interface.cpp']]],
   ['addxmldocfromfile',['addXMLDocFromFile',['../_interface_8h.html#a631b0592554c6ae4df610abb86de014e',1,'Interface.cpp']]],
   ['addyamldocfromfile',['addYAMLDocFromFile',['../_interface_8h.html#a2a4a1037d6006b17efa99a6c19f150d4',1,'Interface.cpp']]],
   ['alias',['alias',['../structyaml__token__s.html#a1f942353efa1972a38a0763afefabe0c',1,'yaml_token_s::alias()'],['../structyaml__event__s.html#ac21f0f1e12207b8fd4f02496259f6c0b',1,'yaml_event_s::alias()'],['../structyaml__emitter__s.html#a1129c6f9ae5cd3b437b8ab8767324f03',1,'yaml_emitter_s::alias()']]],

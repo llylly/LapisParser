@@ -90,6 +90,7 @@ virtual <a class="el" href="struct_base_data_object.html">BaseDataObject</a> *&#
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>createRaw</b> (string filePath, <a class="el" href="class_doc_object_element.html">DocObjectElement</a> *ele, <a class="el" href="class_data_schema_pool.html">DataSchemaPool</a> *pool)=0</td></tr>
 <tr class="separator:ad26f9cf6452f0fe61ee6de2b7ca24c72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9702d9cb251854a577ff9a9cf902f7fa"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_abstract_response_object.html#a9702d9cb251854a577ff9a9cf902f7fa">checkResponse</a> (<a class="el" href="class_doc_element.html">DocElement</a> *data)=0</td></tr>
+<tr class="memdesc:a9702d9cb251854a577ff9a9cf902f7fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the response data conforms to the response schema CAUTION: we don't check the response code here.  <a href="#a9702d9cb251854a577ff9a9cf902f7fa">More...</a><br /></td></tr>
 <tr class="separator:a9702d9cb251854a577ff9a9cf902f7fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -134,7 +135,9 @@ ResponseStage&#160;</td><td class="memItemRight" valign="bottom"><b>stage</b></t
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Check whether the response data conforms to the response schema CAUTION: we don't check the response code here </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Check whether the response data conforms to the response schema CAUTION: we don't check the response code here. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td></td></tr>
   </table>
