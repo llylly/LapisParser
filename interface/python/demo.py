@@ -26,38 +26,37 @@ if __name__ == '__main__':
 
     absPath = os.path.abspath('.')
 
-    addDocFromFile('../../official_demo.yaml', 'default')
-    print(getDocList())
-    print(getDoc())
-    print(parseAPI())
-    print(getInfo())
-    print(getHost())
-    print(getBasePath())
-    print(removeBasePath())
-    parseAPI()
-    print(getBasePath())
-    print(getSchemes())
-    print(getConsumes())
-    print(getProduces())
-    print(getAPINames())
-    print(getDataSchemaNames())
-    print(getParameterNames())
-    print(getResponseNames())
-    print(getTags())
-    print(getExternalDocs())
-
-    api_name = getAPINames()[3]
-    print(getAPI(api_name['name'], api_name['method']))
-
-    print(generateRandomDataFromDataSchema('Error'))
-
-    print(getInfo())
-    info = getInfo()
-    info['description'] = 'I modified it!'
-    print(setInfo(info))
-    print(parseAPI())
-    print(getInfo())
-
-    print(getErrors())
+    addDocFromFile('../../scaling.yaml', 'default')
+    print('DocList: {}'.format(getDocList()))
+    print('Doc: {}'.format(getDoc()))
+    print('-------')
+    print('Parse API status: {}'.format(parseAPI()))
+    print('-------')
+    print('info: {}'.format(getInfo()))
+    print('host: {}'.format(getHost()))
+    print('basePath: {}'.format(getBasePath()))
+    print('-------')
+    print('errors: {}'.format(getErrors()))
+    print('-------')
+    print('consumes: {}'.format(getConsumes()))
+    print('produces: {}'.format(getProduces()))
+    print('API names: {}'.format(getAPINames()))
+    # parseAPI()
+    #
+    # print(getErrors())
+    #
+    # print(getBasePath())
+    # print(getSchemes())
+    # print(getConsumes())
+    # print(getProduces())
+    # print(getAPINames())
+    # print(getDataSchemaNames())
+    # print(getParameterNames())
+    # print(getResponseNames())
+    # print(getTags())
+    # print(getExternalDocs())
+    #
+    # print(getAPINames())
+    # print(getErrors())
 
 

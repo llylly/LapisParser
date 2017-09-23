@@ -3,8 +3,10 @@
 //
 
 #include "Interface.h"
+#include "../error/NotScenarioParsedError.h"
 
 Controller *controller = NULL;
+Scenarios *scenarios = NULL;
 InterfaceState state = InterfaceState::DOC_TREE;
 
 
@@ -1186,6 +1188,62 @@ BaseDataObject *getExternalDocs() {
         return controller->externalDocs->toDataObject();
     else
         return NULL;
+}
+
+/** --- Scenario Subitem Editor --- **/
+
+/** --- Parse to Scenario --- **/
+
+bool parseScenario() {
+    if (state == DOC_TREE || controller == NULL) {
+        Error::addError(
+                new NotParsedError()
+        );
+        return false;
+    }
+    if (state == SCENARIO_PARSED)
+        return true;
+
+    scenarios = new Scenarios();
+    if (!scenarios->work(controller)) {
+        delete scenarios;
+        scenarios = NULL;
+        return false;
+    }
+
+    state = SCENARIO_PARSED;
+    return true;
+}
+
+/** --- Scenario Info Acquire --- **/
+
+BaseDataObject *getScenarioNames() {
+    if (scenarios == NULL || state != SCENARIO_PARSED) {
+        Error::addError(
+                new NotScenarioParsedError()
+        );
+        return NULL;
+    }
+    const set<string> &nameSet = scenarios->getTitleSet();
+    SequenceDataObject *ans = new SequenceDataObject();
+    for (set<string>::iterator ite = nameSet.cbegin(); ite != nameSet.cend(); ++ite) {
+        ans->push(new StringDataObject(*ite));
+    }
+    return ans;
+}
+
+BaseDataObject *getScenario(string name) {
+    if (scenarios == NULL || state != SCENARIO_PARSED) {
+        Error::addError(
+                new NotScenarioParsedError()
+        );
+        return NULL;
+    }
+    Scenario *s = scenarios->getScenarioByTitle(name);
+    if (s == NULL)
+        return NULL;
+    else
+        return s->toDataObject();
 }
 
 /** --- Locals --- **/

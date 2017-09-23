@@ -35,12 +35,14 @@ int DocSequenceElement::getLength() {
 
 void DocSequenceElement::printTo(std::ostream &os) {
     for (int i=0; i<level; ++i) os << "  ";
-    os << "[array]" << endl;
+    os << "[" << endl;
     for (std::vector<DocElement*>::iterator ite = this->arr.begin();
             ite != this->arr.end();
             ++ite) {
         (*ite)->printTo(os);
     }
+    for (int i=0; i<level; ++i) os << "  ";
+    os << "]" << endl;
 }
 
 DocSequenceElement::~DocSequenceElement() {

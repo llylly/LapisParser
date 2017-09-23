@@ -34,7 +34,7 @@ public:
     static pair<long long, bool> parseToInt(DocElement *ele);
     static pair<double, bool> parseToDouble(DocElement *ele);
     static pair<string, bool> parseToString(DocElement *ele);
-    static pair<bool, bool> parserToBool(DocElement *ele, string trueString = "true", string falseString = "false");
+    static pair<bool, bool> parseToBool(DocElement *ele, string trueString = "true", string falseString = "false");
 };
 
 

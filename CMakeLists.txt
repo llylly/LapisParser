@@ -28,8 +28,7 @@ set(SOURCE_FILES
         error/InvalidSwaggerSymbolError.h error/InvalidXVeeSymbolError.h
         error/RootFieldDuplicateError.h
         error/InvalidRootNodeError.h error/FieldMissError.h
-        error/FieldInvalidError.h error/InvalidSchemeError.h schema/ScenarioPool.cpp
-        schema/ScenarioPool.h data/BaseDataObject.cpp data/BaseDataObject.h
+        error/FieldInvalidError.h error/InvalidSchemeError.h data/BaseDataObject.cpp data/BaseDataObject.h
         schema/DataSchemaObject.cpp schema/DataSchemaObject.h data/NumberDataObject.cpp data/NumberDataObject.h
         data/IntegerDataObject.cpp data/IntegerDataObject.h data/BooleanDataObject.cpp data/BooleanDataObject.h
         data/StringDataObject.cpp data/StringDataObject.h data/FileDataObject.cpp data/FileDataObject.h
@@ -50,7 +49,10 @@ set(SOURCE_FILES
         schema/response/ResponseExtensionObject.cpp schema/response/ResponseExtensionObject.h schema/APIObject.cpp schema/APIObject.h
         schema/api/APIConstraintObject.cpp schema/api/APIConstraintObject.h error/IllegalPathParameterError.h
         error/IllegalConsumesForFormData.h error/FormDataAndBodyConflictError.h error/IllegalFileParameterError.h
-        error/IllegalMIMEListError.h error/DuplicateParameterNameError.h error/TooManyBodyParamError.h interface/Interface.cpp interface/Interface.h error/FileNotExistError.h error/DocNodeNotExistError.h error/NotParsedError.h)
+        error/IllegalMIMEListError.h error/DuplicateParameterNameError.h error/TooManyBodyParamError.h interface/Interface.cpp
+        interface/Interface.h error/FileNotExistError.h error/DocNodeNotExistError.h error/NotParsedError.h scenario/Scenarios.cpp
+        scenario/Scenarios.h scenario/Scenario.cpp scenario/Scenario.h scenario/ScenarioInfoObject.cpp scenario/ScenarioInfoObject.h
+        error/DuplicateScenarioNamesError.h error/NotScenarioParsedError.h scenario/ScenarioStateObject.cpp scenario/ScenarioStateObject.h error/DuplicateScenarioElementError.h error/ScenarioInitialStateError.h scenario/ScenarioSetObject.cpp scenario/ScenarioSetObject.h scenario/ScenarioModuleObject.cpp scenario/ScenarioModuleObject.h scenario/module/ModuleRepeatObject.cpp scenario/module/ModuleRepeatObject.h scenario/module/ModuleInputConstraintObject.cpp scenario/module/ModuleInputConstraintObject.h scenario/module/ModuleCheckpointObject.cpp scenario/module/ModuleCheckpointObject.h scenario/module/ModuleSetEffectObject.cpp scenario/module/ModuleSetEffectObject.h scenario/module/ModuleTransStateObject.cpp scenario/module/ModuleTransStateObject.h error/ScenarioStartModuleError.h)
 
 add_executable(VParser ${SOURCE_FILES} interface/CXX/demo.cpp)
 

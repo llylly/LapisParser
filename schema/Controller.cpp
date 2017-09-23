@@ -386,7 +386,7 @@ bool Controller::work() {
                 }
             }
 
-            /** x-scenario (working on...) **/
+            /** x-scenario (implemented in scenario/Scecarios) **/
 
         } else {
             /** Doc root node is NOT of DocObject type */

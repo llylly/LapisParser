@@ -1,0 +1,14 @@
+//
+// Created by lly on 23/09/2017.
+//
+
+#ifndef VPARSER_MODULECHECKPOINTOBJECT_H
+#define VPARSER_MODULECHECKPOINTOBJECT_H
+
+
+class ModuleCheckpointObject {
+
+};
+
+
+#endif //VPARSER_MODULECHECKPOINTOBJECT_H

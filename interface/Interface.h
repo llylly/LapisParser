@@ -25,12 +25,14 @@
 #include "../error/FileNotExistError.h"
 #include "../error/DocNodeNotExistError.h"
 #include "../error/NotParsedError.h"
+#include "../scenario/Scenarios.h"
 
 enum InterfaceState {
     DOC_TREE, API_PARSED, SCENARIO_PARSED
 };
 
 extern Controller *controller;
+extern Scenarios *scenarios;
 extern InterfaceState state;
 
 /** @cond --- Init --- @endcond **/
@@ -695,9 +697,28 @@ extern InterfaceState state;
 
 /** @cond --- Parse to Scenario --- @endcond **/
 
+    /**
+     * Parse the doc forest to inner class representation.
+     *
+     * It inspects all scenario-related fields carefully.
+     *
+     * It gets fail when there's any error in error list, \
+     no matter whether it's from other operation or from this parsing operation. \
+     So please call cleanErrors() before calling this API.
+     *
+     * Should call parseAPI() before to parse the APIs. Then can you parse the scenario.
+     *
+     * @see parseAPI()
+     * @return success or fail
+     */
+    bool parseScenario();
+
 
 /** @cond --- Scenario Info Acquire --- @endcond **/
 
+    BaseDataObject *getScenarioNames();
+
+    BaseDataObject *getScenario(string name);
 
 /** @cond --- Run Single API --- @endcond **/
 

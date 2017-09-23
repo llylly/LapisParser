@@ -93,7 +93,7 @@ XMLObject *XMLObjectFactory::create(string filePath, string fieldName, DocObject
     /* attribute */
     DocElement *attributeEle = ele->get("attribute");
     if (attributeEle) {
-        pair<bool, bool> attributeRes = DocElementHelper::parserToBool(attributeEle);
+        pair<bool, bool> attributeRes = DocElementHelper::parseToBool(attributeEle);
         if (attributeRes.second) {
             ans->attribute = attributeRes.first;
         } else {
@@ -110,7 +110,7 @@ XMLObject *XMLObjectFactory::create(string filePath, string fieldName, DocObject
     /* wrapped */
     DocElement *wrappedEle = ele->get("wrapped");
     if (wrappedEle) {
-        pair<bool, bool> wrappedRes = DocElementHelper::parserToBool(wrappedEle);
+        pair<bool, bool> wrappedRes = DocElementHelper::parseToBool(wrappedEle);
         if (wrappedRes.second) {
             ans->wrapped = wrappedRes.first;
         } else {

@@ -23,7 +23,7 @@ private:
     static int MAX_RECURSIVE_TIME;
 
     bool visit(string currentDoc, DocElement **ele);
-    DocElement *findByPath(string currentDoc, string path, int line, int col);
+    static DocElement *findByPath(string currentDoc, string path, int line, int col);
 
     vector<string> pathStack;
     vector<DocElement*> eleStack;

@@ -28,7 +28,7 @@ using namespace std;
  */
 class DataObjectAdapter {
 public:
-    static DocElement *toDocElement(BaseDataObject *origin);
+    static DocElement *toDocElement(BaseDataObject *origin, int level = 0);
 
     /**
      * Default version to transform DocElement to DataObject

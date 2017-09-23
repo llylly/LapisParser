@@ -65,7 +65,7 @@ pair<string, bool> DocElementHelper::parseToString(DocElement *ele) {
     return make_pair(string(), false);
 }
 
-pair<bool, bool> DocElementHelper::parserToBool(DocElement *ele, string trueString, string falseString) {
+pair<bool, bool> DocElementHelper::parseToBool(DocElement *ele, string trueString, string falseString) {
     if (ele->type == DOC_SCALAR) {
         string str = ((DocScalarElement*)ele)->getValue();
         if (str == trueString)

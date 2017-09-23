@@ -208,7 +208,7 @@ DataSchemaObject *DataSchemaObjectFactory::create(string filePath, DocObjectElem
     if ((schemaType == NORMAL_SCHEMA) || (schemaType == PARAMETER_SCHEMA)) {
         DocElement *allowEmptyValueEle = obj->get("allowEmptyValue");
         if (allowEmptyValueEle) {
-            pair<bool, bool> parseRes = DocElementHelper::parserToBool(allowEmptyValueEle);
+            pair<bool, bool> parseRes = DocElementHelper::parseToBool(allowEmptyValueEle);
             bool allowEmptyValue = parseRes.first, legal = parseRes.second;
             if (!legal) {
                 Error::addError(

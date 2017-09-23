@@ -14,7 +14,6 @@
 #include "ResponsePool.h"
 #include "TagsObject.h"
 #include "ExternalDocObject.h"
-#include "ScenarioPool.h"
 #include <string>
 
 using namespace std;
@@ -47,8 +46,7 @@ public:
     ParameterPool *parameters;
     /** responses(Optional) **/
     ResponsePool *responses;
-    /** x-scenario(Optional) **/
-    ScenarioPool *scenario;
+    /** x-scenario is in a separate Scenarios class **/
 
     /** tags([Tag Object], Optional) **/
     TagsObject *tags;
