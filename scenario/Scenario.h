@@ -8,10 +8,13 @@
 #include <string>
 #include "../schema/BaseObject.h"
 #include "../schema/Controller.h"
+#include "../error/InvalidSetError.h"
+#include "../error/InvalidStateError.h"
 #include "ScenarioInfoObject.h"
 #include "ScenarioStateObject.h"
 #include "ScenarioSetObject.h"
 #include "ScenarioModuleObject.h"
+#include "ScenarioConnectionObject.h"
 
 using namespace std;
 
@@ -28,6 +31,7 @@ public:
     map<string, ScenarioSetObject*> sets;
     map<string, ScenarioModuleObject*> modules;
     string startModule;
+    vector<ScenarioConnectionObject*> connections;
 };
 
 struct ScenarioFactory {

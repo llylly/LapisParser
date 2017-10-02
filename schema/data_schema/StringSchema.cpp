@@ -234,6 +234,7 @@ string StringSchema::generateDate(string pattern, int minLength, int maxLength) 
     /**
      * TODO
      */
+    return "1970-1-1";
     return "TODO: generate Date";
 }
 
@@ -241,6 +242,7 @@ string StringSchema::generateDateTime(string pattern, int minLength, int maxLeng
     /**
      * TODO
      */
+    return "1970-1-1 00:00:00";
     return "TODO: generate DateTime";
 }
 
@@ -248,6 +250,7 @@ string StringSchema::generateFromPattern(string pattern, int minLength, int maxL
     /**
      * TODO
      */
+    return "";
     return "TODO: generate from pattern";
 }
 

@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
     absPath = os.path.abspath('.')
 
-    addDocFromFile('../../scaling.yaml', 'default')
+    addDocFromFile('../../official_demo.yaml', 'default')
     print('DocList: {}'.format(getDocList()))
     print('Doc: {}'.format(getDoc()))
     print('-------')
@@ -41,6 +41,7 @@ if __name__ == '__main__':
     print('consumes: {}'.format(getConsumes()))
     print('produces: {}'.format(getProduces()))
     print('API names: {}'.format(getAPINames()))
+    print(getAPI('estimates/price', 'get')['parameters'])
     # parseAPI()
     #
     # print(getErrors())

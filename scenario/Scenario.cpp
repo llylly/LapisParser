@@ -64,9 +64,18 @@ BaseDataObject *Scenario::toDataObject() {
              ite != this->modules.end(); ++ite) {
             modulesSeq->push(ite->second->toDataObject());
         }
+        (*obj)["modules"] = modulesSeq;
     }
 
-    /** TODO */
+    if (this->connections.size() > 0) {
+        SequenceDataObject *connSeq = new SequenceDataObject();
+        for (vector<ScenarioConnectionObject*>::iterator ite = this->connections.begin();
+                ite != this->connections.end(); ++ite) {
+            connSeq->push((*ite)->toDataObject());
+        }
+        (*obj)["connections"] = connSeq;
+    }
+
     return obj;
 }
 
@@ -185,6 +194,72 @@ Scenario *ScenarioFactory::create(string filePath, DocObjectElement *ele, Contro
         }
     }
 
+    /** check legality of set names in module definitions **/
+    for (map<string, ScenarioModuleObject*>::iterator ite = res->modules.begin();
+            ite != res->modules.end();
+            ++ite) {
+        ScenarioModuleObject *now = ite->second;
+        bool legal = true;
+        string field = "";
+        string setName = "";
+        /** modules.inputs **/
+        for (vector<ModuleInputConstraintObject*>::iterator iite = now->inputs.begin();
+                iite != now->inputs.end();
+                ++iite) {
+            ModuleInputConstraintObject *noww = *iite;
+            if (noww->type == FROMSET_INPUTCONSTRAINT)
+                if (res->sets.count(noww->setName) == 0)
+                    legal = false, field = "x-scenario.modules.inputs.setName", setName = noww->setName;
+        }
+        /** modules.checkpoint **/
+        for (vector<ModuleCheckpointObject*>::iterator iite = now->checkpoints.begin();
+                iite != now->checkpoints.end();
+                ++iite) {
+            ModuleCheckpointObject *noww = *iite;
+            if ((noww->type == INSET_CHECKPOINT) || (noww->type == OUTSET_CHECKPOINT))
+                if (res->sets.count(noww->setName) == 0)
+                    legal = false, field = "x-scenario.modules.checkpoint.setName", setName = noww->setName;
+        }
+        /** modules.setEffects **/
+        for (vector<ModuleSetEffectObject*>::iterator iite = now->setEffects.begin();
+                iite != now->setEffects.end();
+                ++iite) {
+            ModuleSetEffectObject *noww = *iite;
+            if (res->sets.count(noww->setName) == 0)
+                legal = false, field = "x-scenario.modules.setEffects.set", setName = noww->setName;
+        }
+        if (!legal) {
+            Error::addError(new InvalidSetError(filePath, ele->line, ele->col, field, setName));
+            delete res;
+            return NULL;
+        }
+    }
+
+    /** check state quoted in module.transState definitions **/
+    for (map<string, ScenarioModuleObject*>::iterator ite = res->modules.begin();
+            ite != res->modules.end();
+            ++ite) {
+        ScenarioModuleObject *now = ite->second;
+        for (vector<ModuleTransStateObject*>::iterator iite = now->transStates.begin();
+                iite != now->transStates.end();
+                ++iite) {
+            ModuleTransStateObject *noww = *iite;
+            if (noww->preState != "default")
+                if (res->states.count(noww->preState) == 0) {
+                    Error::addError(new InvalidStateError(filePath, ele->line, ele->col,
+                                                          "x-scenario.modules.transState.preState", noww->preState));
+                    delete res;
+                    return NULL;
+                }
+            if (res->states.count(noww->nexState) == 0) {
+                Error::addError(new InvalidStateError(filePath, ele->line, ele->col,
+                                                      "x-scenario.modules.transState.nexState", noww->nexState));
+                delete res;
+                return NULL;
+            }
+        }
+    }
+
     /** Check Uniqueness of Start Module **/
     int startModuleCnt = 0;
     for (map<string, ScenarioModuleObject*>::iterator ite = res->modules.begin();
@@ -202,7 +277,33 @@ Scenario *ScenarioFactory::create(string filePath, DocObjectElement *ele, Contro
     }
 
     /** connections (optional) **/
-
+    DocElement *connEle = ele->get("connections");
+    if (connEle != NULL) {
+        if (connEle->type != DOC_SEQUENCE) {
+            Error::addError(
+                    new FieldInvalidError(filePath, connEle->line, connEle->col, "x-scenario.connections",
+                                          connEle->type, DOC_SEQUENCE)
+            );
+            delete res;
+            return NULL;
+        } else {
+            DocSequenceElement *seqConn = (DocSequenceElement*)connEle;
+            int len = seqConn->getLength();
+            for (int i=0; i<len; ++i) {
+                DocElement *nowEle = seqConn->get(i);
+                ScenarioConnectionObject *nowObj = ScenarioConnectionObjectFactory::create(filePath, nowEle);
+                if (nowObj == NULL) {
+                    delete res;
+                    return NULL;
+                }
+                /** check module name of 'from' and 'to' **/
+                /** TODO **/
+                /** check 'including' and 'excluding' **/
+                /** TODO **/
+                res->connections.push_back(nowObj);
+            }
+        }
+    }
 
     return res;
 }

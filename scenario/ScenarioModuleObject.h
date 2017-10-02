@@ -13,7 +13,10 @@
 #include "module/ModuleCheckpointObject.h"
 #include "module/ModuleSetEffectObject.h"
 #include "module/ModuleTransStateObject.h"
+#include "../error/InvalidResponseTypeError.h"
+#include "../error/InvalidAPIReferenceError.h"
 #include "../schema/Controller.h"
+#include "../ref_expand/RefExpand.h"
 #include <string>
 
 using namespace std;
@@ -31,6 +34,7 @@ public:
     string name;
     ScenarioModuleType type;
 
+        string apiTypeStr;
         /* Caution: this API is only a reference of real API object, which is stored by APIPool
          * So DO NOT delete the API object here */
         APIObject *api;
