@@ -6,7 +6,7 @@
 #define VPARSER_YAMLADAPTER_H
 
 #include <cstdio>
-#include "../parser/libyaml/yaml.h"
+#include "../lib/libyaml/yaml.h"
 #include "../error/Error.h"
 #include "DocElement.h"
 #include "DocScalarElement.h"

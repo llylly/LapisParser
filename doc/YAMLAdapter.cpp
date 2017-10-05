@@ -5,7 +5,7 @@
 #include "YAMLAdapter.h"
 #include "../error/YAMLParserInitError.h"
 #include "../error/YAMLFormatError.h"
-#include "../parser/libyaml/yaml.h"
+#include "../lib/libyaml/yaml.h"
 #include "../error/YAMLEmitterInitError.h"
 #include "../error/YAMLEmitterError.h"
 

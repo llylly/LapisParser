@@ -12,6 +12,8 @@ ConfigObject::ConfigObject() {
     this->vitalModules.clear();
     this->maxLength = 32768;
     this->timeout = 2000;
+    this->isAli = false;
+    this->aliKeySecret = "";
 }
 
 ConfigObject::~ConfigObject() {
@@ -68,6 +70,12 @@ BaseDataObject *ConfigObject::toDataObject() {
 
     (*obj)["maxLength"] = new IntegerDataObject(this->maxLength);
     (*obj)["timeout"] = new IntegerDataObject(this->timeout);
+
+    if (this->isAli) {
+        (*obj)["x-custom"] = new StringDataObject("ali");
+        (*obj)["x-keySecret"] = new StringDataObject(this->aliKeySecret);
+    }
+
     return obj;
 }
 
@@ -224,6 +232,40 @@ bool ConfigObject::work(Controller *controller, Scenarios *scenarios) {
                                 this->timeout = (int)parseRes.first;
                             }
                         }
+
+                        /** beginning of customizations **/
+                        {
+                            /** ALI **/
+                            DocElement *customEle = rootObjEle->get("x-custom");
+                            if (customEle) {
+                                pair<string, bool> parseRes = DocElementHelper::parseToString(customEle);
+                                if (!parseRes.second) {
+                                    Error::addError(new FieldInvalidError(filePath, customEle->line, customEle->col, "x-config.x-custom",
+                                                                          customEle->type, DOC_SCALAR));
+                                    return false;
+                                } else {
+                                    if (parseRes.first == "ali") {
+                                        this->isAli = true;
+                                        DocElement *secretEle = rootObjEle->get("x-keySecret");
+                                        if (secretEle == NULL) {
+                                            Error::addError(new FieldMissError(filePath, rootEle->line, rootEle->col, "x-config.x-keySecret"));
+                                            return false;
+                                        } else {
+                                            pair<string, bool> keyParseRes = DocElementHelper::parseToString(secretEle);
+                                            if (!keyParseRes.second) {
+                                                Error::addError(new FieldInvalidError(filePath, secretEle->line, secretEle->col, "x-config.x-keySecret",
+                                                                                      secretEle->type, DOC_SCALAR));
+                                                return false;
+                                            } else {
+                                                this->aliKeySecret = keyParseRes.first;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                        /** ending of customizations **/
                     }
                 }
             }

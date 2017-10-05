@@ -6,9 +6,9 @@
 #define VPARSER_XMLADAPTER_H
 
 #include "DocElement.h"
-#include "../parser/libxml/libxml/parser.h"
-#include "../parser/libxml/libxml/xmlmemory.h"
-#include "../parser/libxml/libxml/xmlstring.h"
+#include "../lib/libxml/libxml/parser.h"
+#include "../lib/libxml/libxml/xmlmemory.h"
+#include "../lib/libxml/libxml/xmlstring.h"
 #include "../error/Error.h"
 #include "../error/XMLFormatError.h"
 #include "DocScalarElement.h"

@@ -31,7 +31,7 @@ typedef xmlParserInputBuffer *xmlParserInputBufferPtr;
 typedef struct _xmlOutputBuffer xmlOutputBuffer;
 typedef xmlOutputBuffer *xmlOutputBufferPtr;
 
-/* parser.h */
+/* lib.h */
 typedef struct _xmlParserInput xmlParserInput;
 typedef xmlParserInput *xmlParserInputPtr;
 
@@ -532,7 +532,7 @@ struct _xmlNode {
 typedef enum {
     XML_DOC_WELLFORMED		= 1<<0, /* document is XML well formed */
     XML_DOC_NSVALID		= 1<<1, /* document is Namespace valid */
-    XML_DOC_OLD10		= 1<<2, /* parsed with old XML-1.0 parser */
+    XML_DOC_OLD10		= 1<<2, /* parsed with old XML-1.0 lib */
     XML_DOC_DTDVALID		= 1<<3, /* DTD validation was successful */
     XML_DOC_XINCLUDE		= 1<<4, /* XInclude substitution was done */
     XML_DOC_USERBUILT		= 1<<5, /* Document was built using the API

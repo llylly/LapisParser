@@ -34,6 +34,9 @@ public:
     vector<string> vitalModules;
     int maxLength;
     int timeout;
+
+    bool isAli;
+    string aliKeySecret;
 };
 
 

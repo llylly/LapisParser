@@ -9,15 +9,21 @@ A useful parser for Lapis scripts. Provides Python API as interface.
 
 #### Environment: g++, cmake, python
 
-#### Libraries dependencies:
+#### Library dependencies:
 
-+ libxml
++ libxml (should be contained in the proj)
 
-    `parser/libxml`
+    `lib/libxml`
 
-+ libyaml
++ libyaml (should be contained in the proj)
 
-    `parser/libyaml`
+    `lib/libyaml`
+
++ libcurl (should be contained in the proj)
+
+    `lib/libcurl`
+
++ openssl (should be installed in OS)
 
 #### Build instructions:
 
@@ -85,8 +91,6 @@ Then enjoy it :)
 
 
 *TODO:*
-
-+ Scenario Parse
 
 + API Request
 

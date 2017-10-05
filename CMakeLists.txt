@@ -67,13 +67,18 @@ add_executable(VParser ${SOURCE_FILES} interface/CXX/demo.cpp)
 
 add_library(VParserPy SHARED ${SOURCE_FILES})
 
-link_libraries(parser/libyaml/)
+link_libraries(lib/libyaml/)
 target_link_libraries(VParser yaml)
 target_link_libraries(VParserPy yaml)
 
-link_libraries(parser/libxml/)
+link_libraries(lib/libxml/)
 target_link_libraries(VParser xml2)
 target_link_libraries(VParserPy xml2)
+
+link_libraries(lib/libcurl/)
+target_link_libraries(VParser curl)
+target_link_libraries(VParserPy curl)
+link_directories(lib/libcurl/curl)
 
 link_libraries(usr/include/python2.7)
 target_link_libraries(VParser python)

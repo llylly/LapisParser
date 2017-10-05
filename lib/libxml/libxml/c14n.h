@@ -43,7 +43,7 @@ extern "C" {
  *    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
  *    xmlSubstituteEntitiesDefault(1);
  *
- * or corresponding parser context setting:
+ * or corresponding lib context setting:
  *    xmlParserCtxtPtr ctxt;
  *
  *    ...

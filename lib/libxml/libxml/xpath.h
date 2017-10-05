@@ -159,7 +159,7 @@ struct _xmlXPathVariable {
 
 /**
  * xmlXPathEvalFunc:
- * @ctxt: an XPath parser context
+ * @ctxt: an XPath lib context
  * @nargs: the number of arguments passed to the function
  *
  * An XPath evaluation function, the parameters are on the XPath context stack.
@@ -364,7 +364,7 @@ typedef xmlXPathCompExpr *xmlXPathCompExprPtr;
 /**
  * xmlXPathParserContext:
  *
- * An XPath parser context. It contains pure parsing informations,
+ * An XPath lib context. It contains pure parsing informations,
  * an xmlXPathContext, and the stack of objects.
  */
 struct _xmlXPathParserContext {
