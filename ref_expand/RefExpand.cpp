@@ -119,14 +119,6 @@ DocElement* RefExpand::findByPath(string currentDoc, string path, int line, int 
     }
     if (pathVec.size() <= 0) return NULL;
 
-    // ------ DEBUG -------
-
-    cout << "***RefExpand::findByPath()" << endl;
-    for (int i=0; i<pathVec.size(); ++i)
-        cout << "***    " << pathVec[i] << endl;
-
-    // --------------------
-
     string doc = currentDoc;
     string fileName = pathVec[0];
     while ((fileName.length() > 0) && (fileName[fileName.length()-1] == '#')) {

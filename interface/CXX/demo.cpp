@@ -25,10 +25,15 @@ int main(int argc, char** argv) {
         print_obj(cout, getErrors());
         return 0;
     } else {
-        DataObjectAdapter::toDocElement(getErrors())->printTo(cout);
+        cerr << "Scenario success." << endl;
     }
-    print_obj(cout, getScenarioNames());
-    print_obj(cout, getScenario("a"));
-    print_obj(cout, getScenario("b"));
+    if (!parseConfig()) {
+        cerr << "Config parse failed." << endl;
+        print_obj(cout, getErrors());
+        return 0;
+    } else {
+        cerr << "Config success" << endl;
+    }
+    print_obj(cout, getConfig());
     return 0;
 }

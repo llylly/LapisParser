@@ -8,6 +8,16 @@
 
 #include "../schema/BaseObject.h"
 #include "../doc/DocElement.h"
+#include "../doc/DocObjectElement.h"
+#include "../doc/DocScalarElement.h"
+#include "../doc/DocSequenceElement.h"
+#include "../data/ObjectDataObject.h"
+#include "../data/StringDataObject.h"
+#include "../data/SequenceDataObject.h"
+#include "../data/NumberDataObject.h"
+#include "../error/FieldIllegalError.h"
+#include "../error/FieldMissError.h"
+#include "../error/FieldInvalidError.h"
 #include <string>
 #include <vector>
 

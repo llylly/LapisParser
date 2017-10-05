@@ -7,6 +7,7 @@
 
 Controller *controller = NULL;
 Scenarios *scenarios = NULL;
+ConfigObject *config = NULL;
 InterfaceState state = InterfaceState::DOC_TREE;
 
 
@@ -1246,11 +1247,88 @@ BaseDataObject *getScenario(string name) {
         return s->toDataObject();
 }
 
+/** --- Config Subitem Editor --- **/
+
+/** --- Parse to Config --- **/
+
+bool parseConfig() {
+    if ((state == DOC_TREE) || (state == API_PARSED) ||
+            (controller == NULL) || (scenarios == NULL)) {
+        Error::addError(new NotScenarioParsedError());
+        return false;
+    }
+    if (state == CONFIG_PARSED)
+        return true;
+
+    config = new ConfigObject();
+    if (!config->work(controller, scenarios)){
+        delete config;
+        config = NULL;
+        return false;
+    }
+
+    state = CONFIG_PARSED;
+    return true;
+}
+
+/** --- Config Info Acquire --- **/
+
+BaseDataObject *getConfig() {
+    if ((config == NULL) || (state != CONFIG_PARSED)) {
+        Error::addError(new NotConfigParsedError());
+        return NULL;
+    }
+    return config->toDataObject();
+}
+
 /** --- Locals --- **/
 void cleanToDocStage() {
-    if (state == SCENARIO_PARSED)
-        /** TODO **/;
-    if (state == API_PARSED)
-        if (controller != NULL) delete controller;
-    state = DOC_TREE;
+    if (state == CONFIG_PARSED) {
+        if (config != NULL) {
+            delete config;
+            config = NULL;
+        }
+        state = SCENARIO_PARSED;
+    }
+    if (state == SCENARIO_PARSED) {
+        if (scenarios != NULL) {
+            delete scenarios;
+            scenarios = NULL;
+        }
+        state = API_PARSED;
+    }
+    if (state == API_PARSED) {
+        if (controller != NULL) {
+            delete controller;
+            controller = NULL;
+        }
+        state = DOC_TREE;
+    }
+}
+
+void cleanToAPIStage() {
+    if (state == CONFIG_PARSED) {
+        if (config != NULL) {
+            delete config;
+            config = NULL;
+        }
+        state = SCENARIO_PARSED;
+    }
+    if (state == SCENARIO_PARSED) {
+        if (scenarios != NULL) {
+            delete scenarios;
+            scenarios = NULL;
+        }
+        state = API_PARSED;
+    }
+}
+
+void cleanToScenarioStage() {
+    if (state == CONFIG_PARSED) {
+        if (config != NULL) {
+            delete config;
+            config = NULL;
+        }
+        state = SCENARIO_PARSED;
+    }
 }

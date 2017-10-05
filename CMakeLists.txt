@@ -52,7 +52,16 @@ set(SOURCE_FILES
         error/IllegalMIMEListError.h error/DuplicateParameterNameError.h error/TooManyBodyParamError.h interface/Interface.cpp
         interface/Interface.h error/FileNotExistError.h error/DocNodeNotExistError.h error/NotParsedError.h scenario/Scenarios.cpp
         scenario/Scenarios.h scenario/Scenario.cpp scenario/Scenario.h scenario/ScenarioInfoObject.cpp scenario/ScenarioInfoObject.h
-        error/DuplicateScenarioNamesError.h error/NotScenarioParsedError.h scenario/ScenarioStateObject.cpp scenario/ScenarioStateObject.h error/DuplicateScenarioElementError.h error/ScenarioInitialStateError.h scenario/ScenarioSetObject.cpp scenario/ScenarioSetObject.h scenario/ScenarioModuleObject.cpp scenario/ScenarioModuleObject.h scenario/module/ModuleRepeatObject.cpp scenario/module/ModuleRepeatObject.h scenario/module/ModuleInputConstraintObject.cpp scenario/module/ModuleInputConstraintObject.h scenario/module/ModuleCheckpointObject.cpp scenario/module/ModuleCheckpointObject.h scenario/module/ModuleSetEffectObject.cpp scenario/module/ModuleSetEffectObject.h scenario/module/ModuleTransStateObject.cpp scenario/module/ModuleTransStateObject.h error/ScenarioStartModuleError.h error/InvalidAPIReferenceError.h error/InvalidResponseTypeError.h error/InvalidExpressionError.h error/InvalidSetError.h error/InvalidStateError.h scenario/ScenarioConnectionObject.cpp scenario/ScenarioConnectionObject.h)
+        error/DuplicateScenarioNamesError.h error/NotScenarioParsedError.h scenario/ScenarioStateObject.cpp
+        scenario/ScenarioStateObject.h error/DuplicateScenarioElementError.h error/ScenarioInitialStateError.h
+        scenario/ScenarioSetObject.cpp scenario/ScenarioSetObject.h scenario/ScenarioModuleObject.cpp
+        scenario/ScenarioModuleObject.h scenario/module/ModuleRepeatObject.cpp scenario/module/ModuleRepeatObject.h
+        scenario/module/ModuleInputConstraintObject.cpp scenario/module/ModuleInputConstraintObject.h
+        scenario/module/ModuleCheckpointObject.cpp scenario/module/ModuleCheckpointObject.h scenario/module/ModuleSetEffectObject.cpp
+        scenario/module/ModuleSetEffectObject.h scenario/module/ModuleTransStateObject.cpp scenario/module/ModuleTransStateObject.h
+        error/ScenarioStartModuleError.h error/InvalidAPIReferenceError.h error/InvalidResponseTypeError.h error/InvalidExpressionError.h
+        error/InvalidSetError.h error/InvalidStateError.h scenario/ScenarioConnectionObject.cpp scenario/ScenarioConnectionObject.h
+        error/InvalidModuleError.h config/ConfigObject.cpp config/ConfigObject.h error/DuplicateTestConfigError.h error/NotConfigParsedError.h error/InvalidScenarioError.h)
 
 add_executable(VParser ${SOURCE_FILES} interface/CXX/demo.cpp)
 

@@ -105,7 +105,7 @@ public:
      *  Otherwise, return NULL
      * @return
      *   for valid schema object: generated data instance
-     *   for invalid shema object: NULL
+     *   for invalid schema object: NULL
      */
     virtual BaseDataObject *generate();
 

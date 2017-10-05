@@ -28,7 +28,8 @@ DocElement *DataObjectAdapter::toDocElement(BaseDataObject *origin, int level) {
     }
     if (origin->type == BOOLEAN) {
         stringstream s;
-        s << ((BooleanDataObject*)(origin))->value;
+        bool value = ((BooleanDataObject*)(origin))->value;
+        if (value) s << "true"; else s << "false";
         s.flush();
         return new DocScalarElement(1, 1, s.str(), level + 1);
     }

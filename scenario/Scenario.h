@@ -10,6 +10,7 @@
 #include "../schema/Controller.h"
 #include "../error/InvalidSetError.h"
 #include "../error/InvalidStateError.h"
+#include "../error/InvalidModuleError.h"
 #include "ScenarioInfoObject.h"
 #include "ScenarioStateObject.h"
 #include "ScenarioSetObject.h"

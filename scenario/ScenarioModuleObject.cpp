@@ -219,8 +219,9 @@ ScenarioModuleObject *ScenarioModuleObjectFactory::create(string filePath, DocEl
                 for (vector<string>::iterator ite = o->excluding.begin(); ite != o->excluding.end(); ++ite) {
                     if (res->api->responses.count(*ite) + res->api->responseExtensions.count(*ite) == 0) {
                         Error::addError(
-                                new InvalidResponseTypeError(filePath, repeatEle->line, repeatEle->col, "x-scenario.modules.repeat.excluding",
-                                *ite)
+                                new InvalidResponseTypeError(filePath, repeatEle->line, repeatEle->col,
+                                                             "x-scenario.modules.repeat.excluding",
+                                                             *ite)
                         );
                         delete res;
                         return NULL;
@@ -229,13 +230,15 @@ ScenarioModuleObject *ScenarioModuleObjectFactory::create(string filePath, DocEl
                 for (vector<string>::iterator ite = o->including.begin(); ite != o->including.end(); ++ite) {
                     if (res->api->responses.count(*ite) + res->api->responseExtensions.count(*ite) == 0) {
                         Error::addError(
-                                new InvalidResponseTypeError(filePath, repeatEle->line, repeatEle->col, "x-scenario.modules.repeat.including",
-                                *ite)
+                                new InvalidResponseTypeError(filePath, repeatEle->line, repeatEle->col,
+                                                             "x-scenario.modules.repeat.including",
+                                                             *ite)
                         );
                         delete res;
                         return NULL;
                     }
                 }
+                res->repeat = o;
             }
         } else
             res->repeat = ModuleRepeatObjectFactory::createDefault();
@@ -423,6 +426,29 @@ ScenarioModuleObject *ScenarioModuleObjectFactory::create(string filePath, DocEl
                     delete res;
                     return NULL;
                 }
+
+                /** including & excluding state check **/
+                for (vector<string>::iterator iite = nowObj->excluding.begin(); iite != nowObj->excluding.end(); ++iite) {
+                    if (res->api->responses.count(*iite) + res->api->responseExtensions.count(*iite) == 0) {
+                        Error::addError(
+                                new InvalidResponseTypeError(filePath, nowEle->line, nowEle->col, "x-scenario.modules.transState.excluding",
+                                                             *iite)
+                        );
+                        delete res;
+                        return NULL;
+                    }
+                }
+                for (vector<string>::iterator iite = nowObj->including.begin(); iite != nowObj->including.end(); ++iite) {
+                    if (res->api->responses.count(*iite) + res->api->responseExtensions.count(*iite) == 0) {
+                        Error::addError(
+                                new InvalidResponseTypeError(filePath, nowEle->line, nowEle->col, "x-scenario.modules.transState.including",
+                                                             *iite)
+                        );
+                        delete res;
+                        return NULL;
+                    }
+                }
+
                 res->transStates.push_back(nowObj);
             }
         } else {

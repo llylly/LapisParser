@@ -297,9 +297,44 @@ Scenario *ScenarioFactory::create(string filePath, DocObjectElement *ele, Contro
                     return NULL;
                 }
                 /** check module name of 'from' and 'to' **/
-                /** TODO **/
+                if (res->modules.count(nowObj->from) == 0) {
+                    Error::addError(new InvalidModuleError(filePath, nowEle->line, nowEle->col,
+                                                           "x-scenario.connections.from", nowObj->from));
+                    delete res;
+                    return NULL;
+                }
+                if (res->modules.count(nowObj->to) == 0) {
+                    Error::addError(new InvalidModuleError(filePath, nowEle->line, nowEle->col,
+                                                           "x-scenario.connections.to", nowObj->to));
+                    delete res;
+                    return NULL;
+                }
+
                 /** check 'including' and 'excluding' **/
-                /** TODO **/
+                if (res->modules[nowObj->from]->type == SCENARIO_NORMAL_MODULE) {
+                    APIObject *api = res->modules[nowObj->from]->api;
+                    for (vector<string>::iterator iite = nowObj->excluding.begin(); iite != nowObj->excluding.end(); ++iite) {
+                        if (api->responses.count(*iite) + api->responseExtensions.count(*iite) == 0) {
+                            Error::addError(
+                                    new InvalidResponseTypeError(filePath, nowEle->line, nowEle->col, "x-scenario.modules.connections.excluding",
+                                                                 *iite)
+                            );
+                            delete res;
+                            return NULL;
+                        }
+                    }
+                    for (vector<string>::iterator iite = nowObj->including.begin(); iite != nowObj->including.end(); ++iite) {
+                        if (api->responses.count(*iite) + api->responseExtensions.count(*iite) == 0) {
+                            Error::addError(
+                                    new InvalidResponseTypeError(filePath, nowEle->line, nowEle->col, "x-scenario.modules.connections.including",
+                                                                 *iite)
+                            );
+                            delete res;
+                            return NULL;
+                        }
+                    }
+                }
+
                 res->connections.push_back(nowObj);
             }
         }

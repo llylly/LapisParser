@@ -25,14 +25,17 @@
 #include "../error/FileNotExistError.h"
 #include "../error/DocNodeNotExistError.h"
 #include "../error/NotParsedError.h"
+#include "../error/NotConfigParsedError.h"
 #include "../scenario/Scenarios.h"
+#include "../config/ConfigObject.h"
 
 enum InterfaceState {
-    DOC_TREE, API_PARSED, SCENARIO_PARSED
+    DOC_TREE, API_PARSED, SCENARIO_PARSED, CONFIG_PARSED
 };
 
 extern Controller *controller;
 extern Scenarios *scenarios;
+extern ConfigObject *config;
 extern InterfaceState state;
 
 /** @cond --- Init --- @endcond **/
@@ -706,7 +709,7 @@ extern InterfaceState state;
      no matter whether it's from other operation or from this parsing operation. \
      So please call cleanErrors() before calling this API.
      *
-     * Should call parseAPI() before to parse the APIs. Then can you parse the scenario.
+     * Should call parseAPI() before. Then can you parse the scenario.
      *
      * @see parseAPI()
      * @return success or fail
@@ -716,11 +719,69 @@ extern InterfaceState state;
 
 /** @cond --- Scenario Info Acquire --- @endcond **/
 
+    /**
+     * Get the scenario name list.
+     *
+     * Should call parseScenario() before to get parsed results
+     *
+     * If not parsed, return NULL(None for Python) instead of the object and add an error to error list
+     * @see parseScenario()
+     * @see getScenario(string name)
+     * @return the scenario name(in string type) sequence
+     */
     BaseDataObject *getScenarioNames();
 
+    /**
+     * Get the parameter object from name.
+     *
+     * name should be an element of getParameterNames()
+     *
+     * Should call parseScenario() before to get parsed results
+     *
+     * If not parsed, return NULL(None for Python) instead of the object and add an error to error list
+     * @see parseScenario()
+     * @see getScenarioNames()
+     * @param name: the scenario name
+     * @return the object (derived from inner representation, may differ slightly from the input)
+     */
     BaseDataObject *getScenario(string name);
 
+/** @cond --- Config Subitem Editor --- @endcond **/
+
+/** @cond --- Parse to Config --- @endcond **/
+
+    /**
+     * Parse the doc forest to inner class representation.
+     *
+     * It inspects "x-config" field carefully.
+     *
+     * It gets fail when there's any error in error list, \
+     no matter whether it's from other operation or from this parsing operation. \
+     So please call cleanErrors() before calling this API.
+     *
+     * Should call parseScenario() before. Then can you parse the configs with existing API and scenario definitions.
+     *
+     * @see parseAPI()
+     * @see parseConfig()
+     * @return success or fail
+     */
+    bool parseConfig();
+
+/** @cond --- Config Info Acquire --- @endcond **/
+
+    /**
+     * Get the TestConfigObject
+     *
+     * Should call parseConfig() before to get parsed results
+     *
+     * If not parsed, return NULL(None for Python) instead of the object and add an error to error list
+     * @see parseConfig()
+     * @return the object (derived from inner representation, may differ slightly from the input)
+     */
+    BaseDataObject *getConfig();
+
 /** @cond --- Run Single API --- @endcond **/
+
 
 
 /** @cond --- Run Scenario ---- @endcond **/
@@ -732,5 +793,15 @@ extern InterfaceState state;
      * Back to DOC_TREE stage, to prepare for reparsing to class representation
      */
     static void cleanToDocStage();
+
+    /**
+     * Back to API stage, to prepare for reparsing scenario fields
+     */
+    static void cleanToAPIStage();
+
+    /**
+     * Back to Scenario stage, to prepare for reparsing config fields
+     */
+    static void cleanToScenarioStage();
 
 #endif //VPARSER_INTERFACE_H
