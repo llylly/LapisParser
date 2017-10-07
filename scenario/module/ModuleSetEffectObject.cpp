@@ -73,7 +73,7 @@ BaseDataObject *ModuleSetEffectObject::toDataObject() {
 }
 
 bool ModuleSetEffectObject::needDelete(string condition, BaseDataObject *in, BaseDataObject *out,
-                                       BaseDataObject *now) {
+                                       DocElement *now) {
     /** TODO **/
     /** Now random delete with 1/4 probability **/
     srand(time(0));

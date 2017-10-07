@@ -28,6 +28,7 @@
 #include "../error/NotConfigParsedError.h"
 #include "../scenario/Scenarios.h"
 #include "../config/ConfigObject.h"
+#include "../exec/request/SingleRequester.h"
 
 enum InterfaceState {
     DOC_TREE, API_PARSED, SCENARIO_PARSED, CONFIG_PARSED
@@ -782,11 +783,39 @@ extern InterfaceState state;
 
 /** @cond --- Run Single API --- @endcond **/
 
+    /**
+     * Run a single API
+     *
+     * If it runs successfully,
+     *  the return data is {response: response type (string), data: response data}
+     * Otherwise,
+     *  the return data is NULL
+     *
+     * @param api: the API Name
+     * @param method: the method
+     * @return the object or NULL (see description above)
+     */
+    BaseDataObject *runSingleAPI(string api, string method);
+
+    /**
+     * The same API interface for Ali API
+     * @param api: the API Name
+     * @param method: the method
+     * @param secretKey: Ali Secret Key
+     * @return the object or NULL (see description above)
+     */
+    BaseDataObject *runSingleAPIforAli(string api, string method, string secretKey);
 
 
 /** @cond --- Run Scenario ---- @endcond **/
 
+    bool runScenario();
 
+/** @cond --- Errors & Report --- @endcond **/
+
+    SequenceDataObject *getRuntimeErrors();
+
+    SequenceDataObject *getReport();
 
 /** @cond --- Locals --- @endcond **/
     /**

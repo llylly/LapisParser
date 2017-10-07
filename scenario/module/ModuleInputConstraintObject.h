@@ -45,6 +45,8 @@ struct ModuleInputConstraintObjectFactory {
     static ModuleInputConstraintObject *create(string filePath, string key, DocElement *ele, Controller *controller);
 
     static bool expressionValidate(string exp);
+
+    static BaseDataObject *expEval(string exp, BaseDataObject *dollar);
 };
 
 

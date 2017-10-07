@@ -44,6 +44,7 @@ XMLObject *XMLObjectFactory::create(string filePath, string fieldName, DocObject
     if (nameEle) {
         pair<string, bool> nameRes = DocElementHelper::parseToString(nameEle);
         if (nameRes.second) {
+            ans->hasName = true;
             ans->name = nameRes.first;
         } else {
             Error::addError(
@@ -61,6 +62,7 @@ XMLObject *XMLObjectFactory::create(string filePath, string fieldName, DocObject
     if (namespaceEle) {
         pair<string, bool> namespaceRes = DocElementHelper::parseToString(namespaceEle);
         if (namespaceRes.second) {
+            ans->hasNameSpace = true;
             ans->_namespace = namespaceRes.first;
         } else {
             Error::addError(
@@ -78,6 +80,7 @@ XMLObject *XMLObjectFactory::create(string filePath, string fieldName, DocObject
     if (prefixEle) {
         pair<string, bool> prefixRes = DocElementHelper::parseToString(prefixEle);
         if (prefixRes.second) {
+            ans->hasPrefix = true;
             ans->prefix = prefixRes.first;
         } else {
             Error::addError(

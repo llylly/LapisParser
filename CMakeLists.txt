@@ -61,7 +61,13 @@ set(SOURCE_FILES
         scenario/module/ModuleSetEffectObject.h scenario/module/ModuleTransStateObject.cpp scenario/module/ModuleTransStateObject.h
         error/ScenarioStartModuleError.h error/InvalidAPIReferenceError.h error/InvalidResponseTypeError.h error/InvalidExpressionError.h
         error/InvalidSetError.h error/InvalidStateError.h scenario/ScenarioConnectionObject.cpp scenario/ScenarioConnectionObject.h
-        error/InvalidModuleError.h config/ConfigObject.cpp config/ConfigObject.h error/DuplicateTestConfigError.h error/NotConfigParsedError.h error/InvalidScenarioError.h)
+        error/InvalidModuleError.h config/ConfigObject.cpp config/ConfigObject.h error/DuplicateTestConfigError.h
+        error/NotConfigParsedError.h error/InvalidScenarioError.h exec/request/BaseRequester.cpp
+        exec/request/BaseRequester.h exec/err/RuntimeError.h exec/err/RuntimeError.cpp exec/err/InvalidURLPatternError.h
+        exec/err/IllegalResponseError.h exec/log/Logger.cpp exec/log/Logger.h exec/log/StrLog.h exec/log/DataLog.h
+        exec/err/RequestTimeoutError.h exec/request/SingleRequester.cpp exec/request/SingleRequester.h
+        exec/request/ModuleRequester.cpp exec/request/ModuleRequester.h exec/err/IllegalInputConstraintError.h
+        exec/err/SetEmptyTerminate.h exec/transformer/ExecTransformer.cpp exec/transformer/ExecTransformer.h exec/err/UnknownRequestError.h exec/err/IllegalResponseCodeError.h exec/err/IllegalResponseFormatError.h)
 
 add_executable(VParser ${SOURCE_FILES} interface/CXX/demo.cpp)
 

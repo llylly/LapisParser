@@ -250,3 +250,8 @@ bool ModuleInputConstraintObjectFactory::expressionValidate(string exp) {
     /** TODO: expression validation **/
     return true;
 }
+
+BaseDataObject *ModuleInputConstraintObjectFactory::expEval(string exp, BaseDataObject *dollar) {
+    /** TODO: expression eval **/
+    return dollar;
+}

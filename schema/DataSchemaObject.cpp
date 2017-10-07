@@ -400,5 +400,6 @@ BaseDataObject *DataSchemaObject::generate() {
 }
 
 double DataSchemaObject::randomReal() {
-    return (double)(rand()) / (double)(RAND_MAX);
+    return (double)(rand() & 0xFFF) / (double)(0x1000);
+//    return (double)(rand()) / (double)(RAND_MAX);
 }

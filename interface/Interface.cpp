@@ -1281,6 +1281,68 @@ BaseDataObject *getConfig() {
     return config->toDataObject();
 }
 
+/** --- Run Single API --- **/
+
+BaseDataObject *runSingleAPI(string name, string method) {
+    if (state == DOC_TREE || controller == NULL) {
+        Error::addError(
+                new NotParsedError()
+        );
+        return NULL;
+    }
+    if (controller->paths != NULL) {
+        pair<string, APIRequestMethod> requestName;
+        requestName.first = name;
+        if ((method == "get") || (method == "GET"))
+            requestName.second = APIRequestMethod::GET;
+        else if ((method == "post") || (method == "POST"))
+            requestName.second = APIRequestMethod::POST;
+        else
+            return NULL;
+        APIObject *obj = controller->paths->getObjectByName(requestName);
+        if (obj != NULL) {
+            string host = ((StringDataObject*)getHost())->str;
+            string basePath = ((StringDataObject*)getBasePath())->str;
+            SingleRequester *requester = new SingleRequester(host, basePath);
+            if (requester->init(obj)) {
+                pair<string, BaseDataObject*> *res = requester->work();
+                if (res == NULL)
+                    return NULL;
+                else {
+                    ObjectDataObject *ans = new ObjectDataObject();
+                    (*ans)["response"] = new StringDataObject(res->first);
+                    (*ans)["data"] = res->second;
+                    return ans;
+                }
+            } else
+                return NULL;
+        } else
+            return NULL;
+    } else
+        return NULL;
+}
+
+BaseDataObject *runSingleAPIforAli(string api, string method, string secretKey) {
+    return NULL;
+}
+
+/** --- Run Scenario --- **/
+
+bool runScenario() {
+
+}
+
+
+/** --- Errors & Report --- **/
+
+SequenceDataObject *getRuntimeErrors() {
+
+}
+
+SequenceDataObject *getReport() {
+
+}
+
 /** --- Locals --- **/
 void cleanToDocStage() {
     if (state == CONFIG_PARSED) {
