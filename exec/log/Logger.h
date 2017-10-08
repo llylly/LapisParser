@@ -8,6 +8,10 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "../../data/BaseDataObject.h"
+#include "../../data/IntegerDataObject.h"
+#include "../../data/ObjectDataObject.h"
+#include "../../data/StringDataObject.h"
 
 class Logger {
 
@@ -18,11 +22,12 @@ public:
 
     Logger();
 
+    BaseDataObject *toDataObject();
+
     static void addLog(Logger *_log);
     static void cleanLog();
     static void printLog(std::ostream &os, int level=0);
     static std::vector<Logger*> *getLogs();
-
 
 private:
     static std::vector<Logger*> logs;

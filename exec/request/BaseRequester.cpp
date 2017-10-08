@@ -19,8 +19,10 @@ static size_t writeMemoryCallback(void *contents, size_t size, size_t nmemb, voi
 BaseRequester::BaseRequester(
         string host,
         string basePath,
+        RequesterReport *report,
         map<string, string> *(*middleware_func)(map<string, string>*, void*),
         int timeout) {
+    this->report = report;
     this->err = NULL;
     this->host = host;
     this->basePath = basePath;
@@ -33,22 +35,28 @@ void BaseRequester::setUserP(void *p) {
     this->userP = p;
 }
 
-pair<string, BaseDataObject*> *BaseRequester::work() {
+void *BaseRequester::work() {
     if (this->err != NULL) {
         delete this->err;
     }
+
+    if (this->report)
+        this->report->startTime = time(0);
+
+    /***----stage 1--------***/
+    // this guy saved to report
     map<string, BaseDataObject*> *dataParam = this->dataGen();
 
-    cout << "***----stage 1--------" << endl;
-    for (map<string, BaseDataObject*>::iterator ite = dataParam->begin();
-            ite != dataParam->end();
-            ++ite) {
-        cout << "key: " << ite->first << endl;
-        DataObjectAdapter::toDocElement(ite->second)->printTo(cout);
+    if (this->report) {
+        for (map<string, BaseDataObject*>::iterator ite = dataParam->begin();
+             ite != dataParam->end();
+             ++ite)
+            this->report->request[ite->first] = ite->second;
     }
-    cout << "***----stage 1 end----" << endl;
 
     if (this->err != NULL) {
+        if (this->report)
+            this->report->err = this->err, this->report->endTime = time(0);
         if (dataParam != NULL) {
             for (map<string, BaseDataObject*>::iterator ite = dataParam->begin();
                     ite != dataParam->end();
@@ -59,67 +67,98 @@ pair<string, BaseDataObject*> *BaseRequester::work() {
         }
         return NULL;
     }
+    /***----stage 1 end----***/
+
+    /***----stage 2--------***/
+    // tmp guy
     map<string, string> *strParam = this->serialize(dataParam);
+
     if (this->err != NULL) {
+        if (this->report)
+            this->report->err = this->err, this->report->endTime = time(0);
         if (strParam != NULL) {
             delete strParam;
         }
         return NULL;
     }
+    /***----stage 2 end----***/
 
-    cout << "***----stage 2--------" << endl;
-    for (map<string, string>::iterator ite = strParam->begin();
-         ite != strParam->end();
-         ++ite) {
-        cout << "key  : " << ite->first << endl;
-        cout << "value: " << ite->second << endl;
-    }
-    cout << "***----stage 2 end----" << endl;
-
+    /***----stage 3--------***/
+    // tmp guy
     map<string, string> *middledStrParam = this->middleware(strParam);
+
     if (this->err != NULL) {
+        if (this->report)
+            this->report->err = this->err, this->report->endTime = time(0);
         if (middledStrParam != NULL) {
             delete middledStrParam;
         }
         return NULL;
     }
+    /***----stage 3 end----***/
+
+    /***----stage 4--------***/
+    // tmp guy
     pair<long long, string> *rawResponse = this->emit(middledStrParam);
+
+    // recycle temp guy
+    if (strParam != middledStrParam) {
+        delete strParam;
+        delete middledStrParam;
+    } else
+        delete strParam;
+
     if (this->err != NULL) {
+        if (this->report)
+            this->report->err = this->err, this->report->endTime = time(0);
         if (rawResponse != NULL) {
             delete rawResponse;
         }
         return NULL;
     }
+    /***----stage 4 end----***/
 
-    cout << "***----stage 3--------" << endl;
-    cout << "response Code  : " << rawResponse->first << endl;
-    cout << "response string: " << rawResponse->second << endl;
-    cout << "***----stage 3 end----" << endl;
-
+    /***----stage 5--------***/
+    // tmp guy
     pair<long long, DocElement*> *docResponse = this->responsePartition(rawResponse);
+
+    // recycle temp guy
+    delete rawResponse;
+
     if (this->err != NULL) {
+        if (this->report)
+            this->report->err = this->err, this->report->endTime = time(0);
         if (docResponse != NULL) {
             delete docResponse->second;
             delete docResponse;
         }
         return NULL;
     }
+    /***----stage 5 end----***/
 
-    cout << "***----stage 4--------" << endl;
-    cout << "response Code    : " << docResponse->first << endl;
-    cout << "response Response: " << endl;
-    docResponse->second->printTo(cout);
-    cout << "***----stage 4 end----" << endl;
-
+    /***----stage 6--------***/
     pair<string, BaseDataObject*> *objResponse = this->responseParse(docResponse);
+
+    // recycle tmp guy
+    if (docResponse->second)
+        delete docResponse->second;
+    delete docResponse;
+
     if (this->err != NULL) {
+        if (this->report)
+            this->report->err = this->err, this->report->endTime = time(0);
         if (objResponse != NULL) {
             delete objResponse->second;
             delete objResponse;
         }
         return NULL;
     }
-    return objResponse;
+    /***----stage 6 end----***/
+    if (this->report) {
+        this->report->responseType = objResponse->first;
+        this->report->response = objResponse->second;
+        this->report->endTime = time(0);
+    }
 }
 
 map<string, string> *BaseRequester::serialize(
@@ -299,11 +338,26 @@ pair<long long, string> *BaseRequester::emit(
 
         res = curl_easy_perform(curl);
 
-        cout << "URL: " << url << endl;
+        if (this->report)
+            this->report->url = url;
+
+        /** Logger head **/
+        Logger::addLog(new StrLog("URL: " + url));
+        for (map<string, string>::iterator ite = strParam->begin();
+                ite != strParam->end();
+                ++ite) {
+            Logger::addLog(new StrLog("Request Param \"" + ite->first + "\": " + ite->second));
+        }
+        /** Logger tail **/
 
         if (res == CURLE_OK) {
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &responseCode);
             responseStr = string(recvBuf);
+            /** Logger head **/
+            Logger::addLog(new StrLog("Code: " + to_string(responseCode)));
+            Logger::addLog(new StrLog("Response: " + responseStr));
+            Logger::addLog(new StrLog("------splitter------"));
+            /** Logger tail **/
         } else {
             stringstream err_s;
             err_s.clear();

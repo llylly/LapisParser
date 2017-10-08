@@ -4,11 +4,12 @@
 
 #include "SingleRequester.h"
 
-SingleRequester::SingleRequester(
-        string host,
-        string basePath,
-        map<string, string> *(*middleware_func)(map<string, string>*, void*), int timeout):
-        BaseRequester(host, basePath, middleware_func, timeout) { }
+SingleRequester::SingleRequester(string host,
+                                 string basePath,
+                                 RequesterReport *report,
+                                 map<string, string> *(*middleware_func)(map<string, string>*, void*),
+                                 int timeout):
+        BaseRequester(host, basePath, report, middleware_func, timeout) { }
 
 map<string, BaseDataObject*> *SingleRequester::dataGen() {
     srand(time(0));

@@ -12,6 +12,14 @@ Logger::Logger() {
     this->msg = "";
 }
 
+BaseDataObject *Logger::toDataObject() {
+    ObjectDataObject *obj = new ObjectDataObject();
+    (*obj)["timestamp"] = new IntegerDataObject(this->timestamp);
+    (*obj)["level"] = new IntegerDataObject(this->level);
+    (*obj)["msg"] = new StringDataObject(this->msg);
+    return obj;
+}
+
 void Logger::addLog(Logger *_log) {
     Logger::logs.push_back(_log);
 }

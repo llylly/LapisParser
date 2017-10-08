@@ -9,6 +9,14 @@ std::vector<RuntimeError*> RuntimeError::errorPool;
 RuntimeError::RuntimeError(): type(RUNTIME_BASE), timestamp(-1), msg("") {
 }
 
+BaseDataObject *RuntimeError::toDataObject() {
+    ObjectDataObject *obj = new ObjectDataObject();
+    (*obj)["errNo"] = new IntegerDataObject((int)this->type);
+    (*obj)["timestamp"] = new IntegerDataObject(this->timestamp);
+    (*obj)["msg"] = new StringDataObject(this->msg);
+    return obj;
+}
+
 void RuntimeError::addError(RuntimeError *_err) {
     RuntimeError::errorPool.push_back(_err);
 }

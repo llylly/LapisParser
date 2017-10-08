@@ -1283,64 +1283,108 @@ BaseDataObject *getConfig() {
 
 /** --- Run Single API --- **/
 
-BaseDataObject *runSingleAPI(string name, string method) {
+BaseDataObject *runSingleAPI(string name, string method, int timeout) {
+    BaseDataObject *ret = NULL;
+
     if (state == DOC_TREE || controller == NULL) {
-        Error::addError(
-                new NotParsedError()
-        );
+        RuntimeError::addError(new APINotParsedError());
         return NULL;
     }
-    if (controller->paths != NULL) {
-        pair<string, APIRequestMethod> requestName;
-        requestName.first = name;
-        if ((method == "get") || (method == "GET"))
-            requestName.second = APIRequestMethod::GET;
-        else if ((method == "post") || (method == "POST"))
-            requestName.second = APIRequestMethod::POST;
-        else
-            return NULL;
-        APIObject *obj = controller->paths->getObjectByName(requestName);
-        if (obj != NULL) {
-            string host = ((StringDataObject*)getHost())->str;
-            string basePath = ((StringDataObject*)getBasePath())->str;
-            SingleRequester *requester = new SingleRequester(host, basePath);
-            if (requester->init(obj)) {
-                pair<string, BaseDataObject*> *res = requester->work();
-                if (res == NULL)
-                    return NULL;
-                else {
-                    ObjectDataObject *ans = new ObjectDataObject();
-                    (*ans)["response"] = new StringDataObject(res->first);
-                    (*ans)["data"] = res->second;
-                    return ans;
-                }
-            } else
-                return NULL;
-        } else
-            return NULL;
-    } else
+
+    if (controller->paths == NULL) {
+        RuntimeError::addError(new APINotFoundError());
         return NULL;
+    }
+
+    pair<string, APIRequestMethod> requestName;
+    requestName.first = name;
+    if ((method == "get") || (method == "GET"))
+        requestName.second = APIRequestMethod::GET;
+    else if ((method == "post") || (method == "POST"))
+        requestName.second = APIRequestMethod::POST;
+    else {
+        RuntimeError::addError(new APINotFoundError());
+        return NULL;
+    }
+
+    APIObject *obj = controller->paths->getObjectByName(requestName);
+    if (obj == NULL) {
+        RuntimeError::addError(new APINotFoundError());
+    }
+
+    string host = ((StringDataObject*)getHost())->str;
+    string basePath = ((StringDataObject*)getBasePath())->str;
+    SingleAPIReport *report = new SingleAPIReport();
+    SingleRequester *requester = new SingleRequester(host, basePath, report, NULL, timeout);
+    if (!requester->init(obj)) {
+        RuntimeError::addError(new RequesterInitError());
+        delete requester;
+    }
+
+    requester->work();
+    if (requester->err != NULL) {
+        RuntimeError::addError(requester->err);
+    }
+    ret = report->toDataObject();
+
+    delete requester;
+    delete report;
+    return ret;
 }
 
-BaseDataObject *runSingleAPIforAli(string api, string method, string secretKey) {
+BaseDataObject *runSingleAPIforAli(string api, string method, string secretKey, int timeout) {
     return NULL;
 }
 
 /** --- Run Scenario --- **/
 
-bool runScenario() {
+BaseDataObject *runScenario() {
 
 }
 
 
-/** --- Errors & Report --- **/
+/** --- Errors --- **/
 
 SequenceDataObject *getRuntimeErrors() {
-
+    vector<RuntimeError*> *errorVec = RuntimeError::getErrors();
+    SequenceDataObject *ans = new SequenceDataObject();
+    if (errorVec != NULL) {
+        for (vector<RuntimeError*>::iterator ite = errorVec->begin();
+             ite != errorVec->end(); ++ite) {
+            RuntimeError &item = **ite;
+            ans->push(item.toDataObject());
+        }
+    }
+    return ans;
 }
 
-SequenceDataObject *getReport() {
+void cleanRuntimeErrors() {
+    vector<RuntimeError*> *errorVec = RuntimeError::getErrors();
+    for (vector<RuntimeError*>::iterator ite = errorVec->begin();
+         ite != errorVec->end();
+         ++ite)
+        delete *ite;
+    errorVec->clear();
+}
 
+/** --- Logs --- **/
+
+SequenceDataObject *getRuntimeLogs(int level) {
+    SequenceDataObject *seq = new SequenceDataObject();
+    vector<Logger*> *logVec = Logger::getLogs();
+    for (vector<Logger*>::iterator ite = logVec->begin();
+            ite != logVec->end();
+            ++ite) {
+        Logger *log = *ite;
+        if (log->level >= level) {
+            seq->push(log->toDataObject());
+        }
+    }
+    return seq;
+}
+
+void cleanRuntimeLogs() {
+    Logger::cleanLog();
 }
 
 /** --- Locals --- **/

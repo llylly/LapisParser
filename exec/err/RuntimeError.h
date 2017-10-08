@@ -8,11 +8,16 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "../../data/BaseDataObject.h"
+#include "../../data/ObjectDataObject.h"
+#include "../../data/IntegerDataObject.h"
+#include "../../data/StringDataObject.h"
 
 
 enum RUNTIME_ERROR_TYPE {
     RUNTIME_BASE, INVALID_URLPATTERN, REQUEST_TIMEOUT, ILLEGAL_RESPONSE, ILLEGAL_INPUTCONSTRAINT,
     UNKNOWN_REQUEST_ERR, ILLEGAL_RESPONSE_CODE, ILLEGAL_RESPONSE_FORMAT,
+    API_NOT_FOUND, API_NOT_PARSED, REQUESTER_INIT_ERR,
     SET_EMPTY_TERMINATE
 };
 
@@ -24,6 +29,8 @@ public:
     std::string msg;
 
     RuntimeError();
+
+    BaseDataObject *toDataObject();
 
     static void addError(RuntimeError *_err);
     static bool hasError();

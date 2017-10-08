@@ -16,6 +16,7 @@
 #include "../err/IllegalResponseCodeError.h"
 #include "../err/IllegalResponseFormatError.h"
 #include "../transformer/ExecTransformer.h"
+#include "../report/RequesterReport.h"
 #include "../../lib/libcurl/curl/curl.h"
 
 using namespace std;
@@ -40,12 +41,15 @@ public:
     BaseRequester(
             string host,
             string basePath,
+            RequesterReport *report,
             map<string, string> *(*middleware_func)(map<string, string>*, void*) = NULL,
             int timeout = 2000);
 
     void setUserP(void *p);
 
-    pair<string, BaseDataObject*> *work();
+    void *work();
+
+    RequesterReport *report;
 
     RuntimeError *err;
 

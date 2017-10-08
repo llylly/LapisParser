@@ -26,9 +26,14 @@
 #include "../error/DocNodeNotExistError.h"
 #include "../error/NotParsedError.h"
 #include "../error/NotConfigParsedError.h"
+#include "../exec/err/APINotFoundError.h"
+#include "../exec/err/APINotParsedError.h"
+#include "../exec/err/RequesterInitError.h"
 #include "../scenario/Scenarios.h"
 #include "../config/ConfigObject.h"
 #include "../exec/request/SingleRequester.h"
+#include "../exec/report/SingleAPIReport.h"
+#include "../exec/log/Logger.h"
 
 enum InterfaceState {
     DOC_TREE, API_PARSED, SCENARIO_PARSED, CONFIG_PARSED
@@ -787,15 +792,18 @@ extern InterfaceState state;
      * Run a single API
      *
      * If it runs successfully,
-     *  the return data is {response: response type (string), data: response data}
+     *  the return data is the report.
+     * But there may still some request errors, they can be accessed by "err" if exist.
      * Otherwise,
-     *  the return data is NULL
+     *  return NULL. In this case, detailed error msg can be obtained by getRuntimeErrors()
+     *
+     * @see getRuntimeErrors()
      *
      * @param api: the API Name
      * @param method: the method
      * @return the object or NULL (see description above)
      */
-    BaseDataObject *runSingleAPI(string api, string method);
+    BaseDataObject *runSingleAPI(string api, string method, int timeout=2000);
 
     /**
      * The same API interface for Ali API
@@ -804,18 +812,41 @@ extern InterfaceState state;
      * @param secretKey: Ali Secret Key
      * @return the object or NULL (see description above)
      */
-    BaseDataObject *runSingleAPIforAli(string api, string method, string secretKey);
+    BaseDataObject *runSingleAPIforAli(string api, string method, string secretKey, int timeout=2000);
 
 
 /** @cond --- Run Scenario ---- @endcond **/
 
-    bool runScenario();
+    BaseDataObject *runScenario();
 
-/** @cond --- Errors & Report --- @endcond **/
+/** @cond --- Errors --- @endcond **/
 
+    /**
+     * Get runtime errors array in Data Object format.
+     *
+     * @return the errors array
+     */
     SequenceDataObject *getRuntimeErrors();
 
-    SequenceDataObject *getReport();
+    /**
+     * Clean the inner runtime errors array.
+     */
+    void cleanRuntimeErrors();
+
+/** @cond --- Logs --- @endcond **/
+
+    /**
+     * Get logs in sequence format.
+     *
+     * @param level: level threshold
+     * @return the logs array
+     */
+    SequenceDataObject *getRuntimeLogs(int level=0);
+
+    /**
+     * Clean the inner log records array.
+     */
+    void cleanRuntimeLogs();
 
 /** @cond --- Locals --- @endcond **/
     /**
