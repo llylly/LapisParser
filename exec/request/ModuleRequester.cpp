@@ -12,7 +12,6 @@ ModuleRequester::ModuleRequester(string host,
         BaseRequester(host, basePath, report, middleware_func, timeout) { }
 
 map<string, BaseDataObject*> *ModuleRequester::dataGen() {
-    srand(time(0));
     map<string, BaseDataObject*> *ans = new map<string, BaseDataObject*>();
     for (map<string, ParameterObject*>::iterator ite = api->parameters.begin();
          ite != api->parameters.end();
@@ -165,7 +164,8 @@ map<string, BaseDataObject*> *ModuleRequester::dataGen() {
                         newValue = nowCons->from->generate();
                     }
                     if (nowCons->type == FROMSET_INPUTCONSTRAINT) {
-                        if ((this->sets == NULL) || (this->sets->count(nowCons->setName) == 0)) {
+                        if ((this->sets == NULL) || (this->sets->count(nowCons->setName) == 0)
+                                || ((*(this->sets))[nowCons->setName].size() == 0)) {
                             if (nowCons->setPolicy == SIZE_SETPOLICY)
                                 newValue = new IntegerDataObject(0);
                             if (nowCons->setPolicy == MEMBER_SETPOLICY) {
@@ -244,4 +244,7 @@ bool ModuleRequester::init(
     if (module == NULL) return false;
     this->module = module;
     this->sets = sets;
+    if (this->module->type == SCENARIO_NORMAL_MODULE)
+        this->api = this->module->api;
+    return true;
 }

@@ -29,7 +29,9 @@ public:
     BaseDataObject *response;
     long long startTime;
     long long endTime;
+    long long requestMilliTime;
     // below is processed but not owned
+    DataSchemaObject *schema; // a hidden field, only used for scenario check things
     RuntimeError *err;
 };
 

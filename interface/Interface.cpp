@@ -1310,6 +1310,7 @@ BaseDataObject *runSingleAPI(string name, string method, int timeout) {
     APIObject *obj = controller->paths->getObjectByName(requestName);
     if (obj == NULL) {
         RuntimeError::addError(new APINotFoundError());
+        return NULL;
     }
 
     string host = ((StringDataObject*)getHost())->str;
@@ -1319,6 +1320,7 @@ BaseDataObject *runSingleAPI(string name, string method, int timeout) {
     if (!requester->init(obj)) {
         RuntimeError::addError(new RequesterInitError());
         delete requester;
+        return NULL;
     }
 
     requester->work();
@@ -1332,14 +1334,82 @@ BaseDataObject *runSingleAPI(string name, string method, int timeout) {
     return ret;
 }
 
-BaseDataObject *runSingleAPIforAli(string api, string method, string secretKey, int timeout) {
-    return NULL;
+BaseDataObject *runSingleAPIforAli(string name, string method, string secretKey, int timeout) {
+    BaseDataObject *ret = NULL;
+
+    if (state == DOC_TREE || controller == NULL) {
+        RuntimeError::addError(new APINotParsedError());
+        return NULL;
+    }
+
+    if (controller->paths == NULL) {
+        RuntimeError::addError(new APINotFoundError());
+        return NULL;
+    }
+
+    pair<string, APIRequestMethod> requestName;
+    requestName.first = name;
+    if ((method == "get") || (method == "GET"))
+        requestName.second = APIRequestMethod::GET;
+    else if ((method == "post") || (method == "POST"))
+        requestName.second = APIRequestMethod::POST;
+    else {
+        RuntimeError::addError(new APINotFoundError());
+        return NULL;
+    }
+
+    APIObject *obj = controller->paths->getObjectByName(requestName);
+    if (obj == NULL) {
+        RuntimeError::addError(new APINotFoundError());
+        return NULL;
+    }
+
+    string host = ((StringDataObject*)getHost())->str;
+    string basePath = ((StringDataObject*)getBasePath())->str;
+    SingleAPIReport *report = new SingleAPIReport();
+    SingleRequester *requester = new SingleRequester(host, basePath, report, &(AliMiddleware::main), timeout);
+    requester->setUserP(&secretKey);
+    if (!requester->init(obj)) {
+        RuntimeError::addError(new RequesterInitError());
+        delete requester;
+        return NULL;
+    }
+
+    requester->work();
+    if (requester->err != NULL) {
+        RuntimeError::addError(requester->err);
+    }
+    report->useAliMiddleware = true;
+    ret = report->toDataObject();
+
+    delete requester;
+    delete report;
+    return ret;
 }
 
 /** --- Run Scenario --- **/
 
-BaseDataObject *runScenario() {
+BaseDataObject *runScenario(bool verbose) {
+    BaseDataObject *ret = NULL;
 
+    if ((state != CONFIG_PARSED) || (config == NULL) ||
+            (scenarios == NULL) || (controller == NULL)) {
+        RuntimeError::addError(new ScenarioConfigNotParsedError());
+        return NULL;
+    }
+
+    string host = ((StringDataObject*)getHost())->str;
+    string basePath = ((StringDataObject*)getBasePath())->str;
+
+    ScenarioReport *report = new ScenarioReport();
+    ScenarioController *scenarioController = new ScenarioController(config, scenarios, report, host, basePath,
+                                                                    verbose, clog);
+    scenarioController->run();
+    ret = report->toDataObject();
+
+    delete scenarioController;
+    delete report;
+    return ret;
 }
 
 

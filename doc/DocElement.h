@@ -35,6 +35,8 @@ public:
     static pair<double, bool> parseToDouble(DocElement *ele);
     static pair<string, bool> parseToString(DocElement *ele);
     static pair<bool, bool> parseToBool(DocElement *ele, string trueString = "true", string falseString = "false");
+
+    static DocElement *deepCopy(const DocElement *source);
 };
 
 

@@ -67,7 +67,17 @@ set(SOURCE_FILES
         exec/err/IllegalResponseError.h exec/log/Logger.cpp exec/log/Logger.h exec/log/StrLog.h exec/log/DataLog.h
         exec/err/RequestTimeoutError.h exec/request/SingleRequester.cpp exec/request/SingleRequester.h
         exec/request/ModuleRequester.cpp exec/request/ModuleRequester.h exec/err/IllegalInputConstraintError.h
-        exec/err/SetEmptyTerminate.h exec/transformer/ExecTransformer.cpp exec/transformer/ExecTransformer.h exec/err/UnknownRequestError.h exec/err/IllegalResponseCodeError.h exec/err/IllegalResponseFormatError.h exec/err/APINotParsedError.h exec/err/APINotFoundError.h exec/err/RequesterInitError.h exec/report/BaseReport.h exec/report/RequesterReport.cpp exec/report/RequesterReport.h exec/report/SingleAPIReport.cpp exec/report/SingleAPIReport.h)
+        exec/err/SetEmptyTerminate.h exec/transformer/ExecTransformer.cpp exec/transformer/ExecTransformer.h
+        exec/err/UnknownRequestError.h exec/err/IllegalResponseCodeError.h exec/err/IllegalResponseFormatError.h
+        exec/err/APINotParsedError.h exec/err/APINotFoundError.h exec/err/RequesterInitError.h exec/report/BaseReport.h
+        exec/report/RequesterReport.cpp exec/report/RequesterReport.h exec/report/SingleAPIReport.cpp
+        exec/report/SingleAPIReport.h exec/scenario/ScenarioController.cpp exec/scenario/ScenarioController.h
+        exec/report/TestCaseReport.cpp exec/report/TestCaseReport.h exec/report/ScenarioReport.cpp
+        exec/report/ScenarioReport.h exec/scenario/TestCaseController.cpp exec/scenario/TestCaseController.h
+        exec/err/ScenarioConfigNotParsedError.h exec/err/CheckpointNotPassTerminate.h exec/err/EndModuleTerminate.h
+        exec/err/NowayTerminate.h exec/err/LengthExceedTerminate.h exec/err/IllegalSetEffectError.h
+        exec/middleware/AliMiddleware.cpp exec/middleware/AliMiddleware.cpp exec/middleware/AliMiddleware.h
+        exec/middleware/HMAC_SHA1/HMAC_SHA1.cpp exec/middleware/HMAC_SHA1/base64.cpp exec/middleware/HMAC_SHA1/SHA1.cpp)
 
 add_executable(VParser ${SOURCE_FILES} interface/CXX/demo.cpp)
 
@@ -85,6 +95,9 @@ link_libraries(lib/libcurl/)
 target_link_libraries(VParser curl)
 target_link_libraries(VParserPy curl)
 link_directories(lib/libcurl/curl)
+
+target_link_libraries(VParser crypto)
+target_link_libraries(VParserPy crypto)
 
 link_libraries(usr/include/python2.7)
 target_link_libraries(VParser python)

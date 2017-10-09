@@ -82,8 +82,8 @@ BaseDataObject *ObjectSchema::transform(DocElement *ele) {
                 ite != m->end();
                 ++ite) {
             if (properties.count(ite->first) != 1) {
-                delete ans;
-                return NULL;
+                // just ignore the member
+                continue;
             }
             BaseDataObject *now = properties[ite->first]->transform(ite->second);
             if (now == NULL) {

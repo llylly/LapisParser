@@ -72,12 +72,12 @@ BaseDataObject *ModuleSetEffectObject::toDataObject() {
     return res;
 }
 
-bool ModuleSetEffectObject::needDelete(string condition, BaseDataObject *in, BaseDataObject *out,
+bool ModuleSetEffectObject::needDelete(string condition, map<string, BaseDataObject*> &in, BaseDataObject *out,
                                        DocElement *now) {
     /** TODO **/
-    /** Now random delete with 1/4 probability **/
-    srand(time(0));
-    if ((time(0) & 7)  <= 1) return true; else return false;
+    return true;
+//    /** Now random delete with 1/4 probability **/
+//    if ((time(0) & 7)  <= 1) return true; else return false;
 }
 
 bool ModuleSetEffectObject::conditionCheck(string condition, APIObject *api) {

@@ -4,13 +4,14 @@
 
 #include "BaseRequester.h"
 
-static size_t writeMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp)
-{
+static size_t writeMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp) {
     size_t realsize = size * nmemb;
-    char **recvP = (char**)userp;
-    *recvP = new char[realsize + 1];
-    memset(*recvP, 0, sizeof(char) * (realsize + 1));
-    memcpy(*recvP, contents, realsize);
+    char *recvP = new char[realsize + 1];
+    memset(recvP, 0, sizeof(char) * (realsize + 1));
+    memcpy(recvP, contents, realsize);
+    string *str = (string*)userp;
+    (*str) += recvP;
+    delete[] recvP;
     return realsize;
 }
 
@@ -35,7 +36,7 @@ void BaseRequester::setUserP(void *p) {
     this->userP = p;
 }
 
-void *BaseRequester::work() {
+void BaseRequester::work() {
     if (this->err != NULL) {
         delete this->err;
     }
@@ -65,7 +66,7 @@ void *BaseRequester::work() {
             }
             delete dataParam;
         }
-        return NULL;
+        return;
     }
     /***----stage 1 end----***/
 
@@ -79,7 +80,7 @@ void *BaseRequester::work() {
         if (strParam != NULL) {
             delete strParam;
         }
-        return NULL;
+        return;
     }
     /***----stage 2 end----***/
 
@@ -93,7 +94,7 @@ void *BaseRequester::work() {
         if (middledStrParam != NULL) {
             delete middledStrParam;
         }
-        return NULL;
+        return;
     }
     /***----stage 3 end----***/
 
@@ -114,7 +115,7 @@ void *BaseRequester::work() {
         if (rawResponse != NULL) {
             delete rawResponse;
         }
-        return NULL;
+        return;
     }
     /***----stage 4 end----***/
 
@@ -132,7 +133,7 @@ void *BaseRequester::work() {
             delete docResponse->second;
             delete docResponse;
         }
-        return NULL;
+        return;
     }
     /***----stage 5 end----***/
 
@@ -151,7 +152,7 @@ void *BaseRequester::work() {
             delete objResponse->second;
             delete objResponse;
         }
-        return NULL;
+        return;
     }
     /***----stage 6 end----***/
     if (this->report) {
@@ -159,6 +160,7 @@ void *BaseRequester::work() {
         this->report->response = objResponse->second;
         this->report->endTime = time(0);
     }
+    return;
 }
 
 map<string, string> *BaseRequester::serialize(
@@ -177,8 +179,9 @@ map<string, string> *BaseRequester::middleware(
         map<string, string> *strParam) {
     if (this->middleware_func == NULL)
         return strParam;
-    else
+    else {
         return this->middleware_func(strParam, this->userP);
+    }
 }
 
 pair<long long, string> *BaseRequester::emit(
@@ -193,7 +196,6 @@ pair<long long, string> *BaseRequester::emit(
     if (curl) {
         long long responseCode = 0;
         string responseStr = "";
-        char *recvBuf = NULL;
 
         string url;
 
@@ -330,7 +332,7 @@ pair<long long, string> *BaseRequester::emit(
 
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
 
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)(&recvBuf));
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)(&responseStr));
 
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeMemoryCallback);
 
@@ -350,9 +352,13 @@ pair<long long, string> *BaseRequester::emit(
         }
         /** Logger tail **/
 
-        if (res == CURLE_OK) {
+        if ((res == CURLE_OK) && (responseStr.length() > 0)) {
+            if (this->report) {
+                double total;
+                curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &total);
+                this->report->requestMilliTime = (int)(total * 1000. + 0.5);
+            }
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &responseCode);
-            responseStr = string(recvBuf);
             /** Logger head **/
             Logger::addLog(new StrLog("Code: " + to_string(responseCode)));
             Logger::addLog(new StrLog("Response: " + responseStr));
@@ -367,7 +373,6 @@ pair<long long, string> *BaseRequester::emit(
             return NULL;
         }
 
-        if (recvBuf != NULL) free(recvBuf);
         curl_easy_cleanup(curl);
         curl_formfree(post);
         curl_slist_free_all(headerlist);
@@ -397,6 +402,10 @@ pair<long long, DocElement*> *BaseRequester::responsePartition(
     DataSchemaObject *schema = NULL;
     if (api->responses.count(strResponseCode) > 0) {
         schema = api->responses[strResponseCode]->schema;
+        if (schema == NULL) {
+            // means we don't care the response
+            return new pair<long long, DocElement*>(response->first, new DocScalarElement(1, 1, ""));
+        }
     } else {
         if (api->responses.count("default") > 0)
             schema = api->responses["default"]->schema;
@@ -433,6 +442,10 @@ pair<string, BaseDataObject*> *BaseRequester::responseParse(
     DataSchemaObject *schema = NULL;
     if (api->responses.count(strCode) > 0) {
         schema = api->responses[strCode]->schema;
+        if (schema == NULL) {
+            // means we don't care the response
+            return new pair<string, BaseDataObject*>(strCode, new StringDataObject(""));
+        }
     } else {
         if (api->responses.count("default") > 0)
             schema = api->responses["default"]->schema;
@@ -446,6 +459,9 @@ pair<string, BaseDataObject*> *BaseRequester::responseParse(
         this->err = new IllegalResponseFormatError(api->name, code);
         return NULL;
     }
+    // save the schema definition
+    if (this->report)
+        this->report->schema = schema;
     string responseType = strCode;
 
     if (api->responseExtensions.count(strCode) > 0) {

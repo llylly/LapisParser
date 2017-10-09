@@ -7,58 +7,68 @@
 
 #define print_obj(y, x) DataObjectAdapter::toDocElement(x)->printTo(y)
 
+//string secretKey = "U1n9PLXEAvO3jzjAGJeRIxGEhf41N8";
+string secretKey = "BA8FKxajrR9w47fmzala0ifgUcao7G";
+
 using namespace std;
+
+void sendReq(string name, string method) {
+    BaseDataObject *res = runSingleAPI(name, method);
+    if (res == NULL) {
+        cerr << "Request failed" << endl;
+        print_obj(cout, getRuntimeErrors());
+    } else {
+        cerr << "Request success" << endl;
+        print_obj(cout, res);
+    }
+}
 
 int main(int argc, char** argv) {
     init();
 
-    if (addDocFromFile("tiny_server.yaml"))
+//    if (addDocFromFile("tiny_server.yaml"))
+    if (addDocFromFile("ali_sample.yaml"))
         cerr << "Add success." << endl;
     if (parseAPI())
         cerr << "Parse success." << endl;
     else
         print_obj(cout, getErrors());
-    if (!parseScenario()) {
-        cerr << "Scenario parse failed." << endl;
-        print_obj(cout, getErrors());
-        return 0;
-    } else {
-        cerr << "Scenario success." << endl;
-    }
-    if (!parseConfig()) {
-        cerr << "Config parse failed." << endl;
-        print_obj(cout, getErrors());
-        return 0;
-    } else {
-        cerr << "Config success" << endl;
-    }
+//    if (!parseScenario()) {
+//        cerr << "Scenario parse failed." << endl;
+//        print_obj(cout, getErrors());
+//        return 0;
+//    } else {
+//        cerr << "Scenario success." << endl;
+//    }
+//    if (!parseConfig()) {
+//        cerr << "Config parse failed." << endl;
+//        print_obj(cout, getErrors());
+//        return 0;
+//    } else {
+//        cerr << "Config success." << endl;
+//    }
 
     /** -------------------- */
     print_obj(cout, getAPINames());
 
     BaseDataObject *res = NULL;
-//    runSingleAPI("map/gen_test1", "get");
-//    runSingleAPI("add/{op1}/{op2}", "get");
-//    runSingleAPI("DescribeInstanceStatus", "get");
-//    runSingleAPI("test/arrtest", "get");
-//    runSingleAPI("mul/{op1}/{op2}", "get");
-    res = runSingleAPI("map/insert", "get");
+
+//    res = runScenario(true);
+//    if (res == NULL) {
+//        cerr << "Run scenario failed." << endl;
+//        print_obj(cout, getRuntimeErrors());
+//    } else {
+//        cerr << "Run scenario success." << endl;
+//        print_obj(cout , res);
+//    }
+
+    res = runSingleAPIforAli("DescribeInstances", "get", secretKey);
     if (res == NULL) {
-        cerr << "Request failed" << endl;
-        print_obj(cout, getRuntimeErrors());
+        RuntimeError::printError(cerr);
     } else {
-        cerr << "Request success" << endl;
         print_obj(cout, res);
     }
 
-    res = runSingleAPI("map/get_map", "get");
-    if (res == NULL) {
-        cerr << "Request failed" << endl;
-        print_obj(cout, getRuntimeErrors());
-    } else {
-        cerr << "Request success" << endl;
-        print_obj(cout, res);
-    }
     Logger::printLog(cout);
 
     return 0;

@@ -5,6 +5,8 @@
 #include <sstream>
 #include "DocElement.h"
 #include "DocScalarElement.h"
+#include "DocSequenceElement.h"
+#include "DocObjectElement.h"
 
 map <string, DocElement*> DocElement::docs;
 
@@ -74,4 +76,30 @@ pair<bool, bool> DocElementHelper::parseToBool(DocElement *ele, string trueStrin
             return make_pair(false, true);
     }
     return make_pair(false, false);
+}
+
+DocElement *DocElementHelper::deepCopy(const DocElement *source) {
+    if (source == NULL) return NULL;
+    if (source->type == DOC_SCALAR) {
+        return new DocScalarElement(source->line, source->col, ((DocScalarElement*)source)->getValue(), source->level);
+    }
+    if (source->type == DOC_SEQUENCE) {
+        DocSequenceElement *sourceEle = (DocSequenceElement*)source;
+        DocSequenceElement *seqEle = new DocSequenceElement(source->line, source->col, source->level);
+        for (int i=0; i<sourceEle->getLength(); ++i)
+            seqEle->add(DocElementHelper::deepCopy(sourceEle->get(i)));
+        return seqEle;
+    }
+    if (source->type == DOC_OBJECT) {
+        DocObjectElement *sourceEle = (DocObjectElement*)source;
+        DocObjectElement *objEle = new DocObjectElement(source->line, source->col, source->level);
+        map<string, DocElement*> *m = sourceEle->getMemberMap();
+        for (map<string, DocElement*>::iterator ite = m->begin();
+                ite != m->end();
+                ++ite) {
+            objEle->add(ite->first, DocElementHelper::deepCopy(ite->second));
+        }
+        return objEle;
+    }
+    return NULL;
 }

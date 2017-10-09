@@ -29,11 +29,15 @@
 #include "../exec/err/APINotFoundError.h"
 #include "../exec/err/APINotParsedError.h"
 #include "../exec/err/RequesterInitError.h"
+#include "../exec/err/ScenarioConfigNotParsedError.h"
 #include "../scenario/Scenarios.h"
 #include "../config/ConfigObject.h"
 #include "../exec/request/SingleRequester.h"
 #include "../exec/report/SingleAPIReport.h"
+#include "../exec/report/ScenarioReport.h"
+#include "../exec/scenario/ScenarioController.h"
 #include "../exec/log/Logger.h"
+#include "../exec/middleware/AliMiddleware.h"
 
 enum InterfaceState {
     DOC_TREE, API_PARSED, SCENARIO_PARSED, CONFIG_PARSED
@@ -704,6 +708,8 @@ extern InterfaceState state;
 
 /** @cond --- Scenario Subitem Editor --- @endcond **/
 
+    /** TODO (longterm) **/
+
 /** @cond --- Parse to Scenario --- @endcond **/
 
     /**
@@ -754,6 +760,8 @@ extern InterfaceState state;
 
 /** @cond --- Config Subitem Editor --- @endcond **/
 
+    /** TODO (longterm) **/
+
 /** @cond --- Parse to Config --- @endcond **/
 
     /**
@@ -801,23 +809,42 @@ extern InterfaceState state;
      *
      * @param api: the API Name
      * @param method: the method
-     * @return the object or NULL (see description above)
+     * @return the report object or NULL (see description above)
      */
     BaseDataObject *runSingleAPI(string api, string method, int timeout=2000);
 
     /**
      * The same API interface for Ali API
+     * @see getRuntimeErrors()
      * @param api: the API Name
      * @param method: the method
      * @param secretKey: Ali Secret Key
-     * @return the object or NULL (see description above)
+     * @return the report object or NULL (see description above)
      */
     BaseDataObject *runSingleAPIforAli(string api, string method, string secretKey, int timeout=2000);
 
 
 /** @cond --- Run Scenario ---- @endcond **/
 
-    BaseDataObject *runScenario();
+    /**
+     * Run the scenario
+     * The configurations is from Config Object ("x-config" field),
+     *  so before call this, parse the field first using parseConfig().
+     *
+     * @param verbose: whether print debug info to clog
+     *
+     * @see parseConfig()
+     *
+     * If fatal error occurred, it will return NULL, and error message can be gotten from getRuntimeErrors().
+     * In normal cases, the return object is a test report.
+     *
+     * Caution: this function may spend much time.
+     *
+     * @see getRuntimeErrors()
+     *
+     * @return the report object or NULL
+     */
+    BaseDataObject *runScenario(bool verbose = false);
 
 /** @cond --- Errors --- @endcond **/
 
@@ -841,7 +868,7 @@ extern InterfaceState state;
      * @param level: level threshold
      * @return the logs array
      */
-    SequenceDataObject *getRuntimeLogs(int level=0);
+    SequenceDataObject *getRuntimeLogs(int level = 0);
 
     /**
      * Clean the inner log records array.

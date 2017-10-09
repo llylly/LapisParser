@@ -90,7 +90,42 @@ Then enjoy it :)
     + Default parameters are also valid for Python inferfaces
 
 
-*TODO*:
+#### Progress
 
-+ Scenario Execution
+Basic functions, including parse, request and scenario test, all finished.
 
+Some small features and extensions to be done (mainly about expression parse):
+
++  schema/APIObject.cpp
+
+  consumes & produces check
+
++ schema/data_schema/StringSchema.cpp
+
+  String Type:
+
+  'format:date' validation
+
+  'format:dataTime' validation
+
+  'regex' validation (currently always true)
+
+  'regex' generating by pattern (currently return empty string)
+
+  'regex' check by pattern (currently return true)
+
++ scenario/module/ModuleInputConstraintObject.cpp
+
+  Expression support of Input Constraints:
+
+  ​	'expression' field is stored but always ignored
+
+  ​	Only use the value itself
+
++ scenario/module/ModuleSetEffectObject.cpp
+
+  Delete expression support:
+
+  ​	current only store but always ignored
+
+  ​	currently delete all elements

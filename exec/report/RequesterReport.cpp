@@ -11,6 +11,8 @@ RequesterReport::RequesterReport() {
     this->response = NULL;
     this->startTime = 0LL;
     this->endTime = 0LL;
+    this->requestMilliTime = 0LL;
+    this->schema = NULL;
     this->err = NULL;
 }
 
@@ -52,8 +54,10 @@ BaseDataObject *RequesterReport::toDataObject() {
         (*res)["startTime"] = new IntegerDataObject(this->startTime);
     if (this->endTime != 0LL)
         (*res)["endTime"] = new IntegerDataObject(this->endTime);
+    if (this->requestMilliTime != 0LL)
+        (*res)["requestMilliTime"] = new IntegerDataObject(this->requestMilliTime);
 
-    if (this->err != 0LL) {
+    if (this->err != NULL) {
         (*res)["err"] = this->err->toDataObject();
     }
 
@@ -96,6 +100,9 @@ ostream &RequesterReport::printTo(ostream &os) {
 
     if (this->endTime != 0LL)
         os << "EndTime: " << this->endTime << endl;
+
+    if (this->requestMilliTime != 0LL)
+        os << "RequestMilliTime: " << this->requestMilliTime << endl;
 
     if (this->err != 0LL) {
         os << "Err: " << endl;

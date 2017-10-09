@@ -102,8 +102,11 @@ string ExecTransformer::baseSerialize(
                     ++ite)
                 if (objObj->hasKey(ite->first)) {
                     if (needComma) s << ", \n"; else needComma = true;
-                    s << "\"" << ite->first << "\"" << ": "
-                      << ExecTransformer::baseSerialize((*objObj)[ite->first], ite->second, ite->first, 1);
+                    s << "\"" << ite->first << "\"" << ": ";
+                    if ((*objObj)[ite->first]->type == STRING)
+                        s << "\"" << ExecTransformer::baseSerialize((*objObj)[ite->first], ite->second, ite->first, 1) << "\"";
+                    else
+                        s << ExecTransformer::baseSerialize((*objObj)[ite->first], ite->second, ite->first, 1);
                 }
             s << "}";
             s.flush();

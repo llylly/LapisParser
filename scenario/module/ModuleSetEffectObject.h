@@ -29,7 +29,7 @@ public:
 
     /** TODO **/
     /** Check whether the element should be deleted according to the condition, input data and output data **/
-    static bool needDelete(string condition, BaseDataObject *in, BaseDataObject *out, DocElement *now);
+    static bool needDelete(string condition, map<string, BaseDataObject*> &in, BaseDataObject *out, DocElement *now);
 
     /** TODO **/
     /** Check the correctness of condition expression **/

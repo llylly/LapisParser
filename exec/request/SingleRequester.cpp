@@ -12,7 +12,6 @@ SingleRequester::SingleRequester(string host,
         BaseRequester(host, basePath, report, middleware_func, timeout) { }
 
 map<string, BaseDataObject*> *SingleRequester::dataGen() {
-    srand(time(0));
     map<string, BaseDataObject*> *ans = new map<string, BaseDataObject*>();
     for (map<string, ParameterObject*>::iterator ite = api->parameters.begin();
             ite != api->parameters.end();
@@ -20,7 +19,6 @@ map<string, BaseDataObject*> *SingleRequester::dataGen() {
         const string &paramName = ite->first;
         ParameterObject *nowParam = ite->second;
         double ran_v = DataSchemaObject::randomReal();
-        cout << ran_v << endl;
         if (ran_v <= nowParam->nullProbability)
             continue;
         BaseDataObject *nowData = nowParam->schema->generate();

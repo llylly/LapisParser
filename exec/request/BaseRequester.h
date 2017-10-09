@@ -47,7 +47,7 @@ public:
 
     void setUserP(void *p);
 
-    void *work();
+    void work();
 
     RequesterReport *report;
 

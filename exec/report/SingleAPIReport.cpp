@@ -15,8 +15,6 @@ BaseDataObject *SingleAPIReport::toDataObject() {
     BaseDataObject *ret = RequesterReport::toDataObject();
     ObjectDataObject *objRet = (ObjectDataObject*)ret;
     (*objRet)["useAliMiddleware"] = new BooleanDataObject(this->useAliMiddleware);
-    if ((this->startTime != 0LL) && (this->endTime != 0LL))
-        (*objRet)["elapsed"] = new IntegerDataObject(this->endTime - this->startTime);
     return objRet;
 }
 
@@ -57,8 +55,8 @@ ostream &SingleAPIReport::printTo(ostream &os) {
     if (this->endTime != 0LL)
         os << "EndTime: " << this->endTime << endl;
 
-    if ((this->startTime != 0LL) && (this->endTime != 0LL))
-        os << "Elapsed: " << (this->endTime - this->startTime) << endl;
+    if (this->requestMilliTime != 0LL)
+        os << "RequestMilliTime: " << this->requestMilliTime << endl;
 
     if (this->err != 0LL) {
         os << "Err: " << endl;

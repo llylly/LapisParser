@@ -80,6 +80,11 @@
     return rett;                                \
 }
 
+#define PARSE_Ob(func) {                        \
+    bool ret = func();                          \
+    return ret ? Py_True : Py_False;            \
+}
+
 #define PARSE_IsOb(args, func) {                \
     PyObject **arg = parseHelper(args, 0, 1);   \
     if (arg == NULL) return Py_None;            \
@@ -247,6 +252,144 @@
     return rett;                                \
 }
 
+#define PARSE_ssIiOo(args, func) {              \
+    PyObject **arg = parseHelper(args, 2, 3);   \
+    if (arg == NULL) return Py_None;            \
+                                                \
+    string arg0 = "", arg1 = "";                \
+    int arg2 = -1;                              \
+    bool hasArg2 = false;                       \
+    if ((arg[0]) && PyString_Check(arg[0]))     \
+        arg0 = PyString_AsString(arg[0]);       \
+    else {                                      \
+        delete[] arg;                           \
+        return Py_None;                         \
+    }                                           \
+    if ((arg[1]) && PyString_Check(arg[1]))     \
+        arg1 = PyString_AsString(arg[1]);       \
+    else {                                      \
+        delete[] arg;                           \
+        return Py_None;                         \
+    }                                           \
+    if ((arg[2]) && PyInt_Check(arg[2])) {      \
+        hasArg2 = true;                         \
+        arg2 = PyInt_AsLong(arg[2]);            \
+    }                                           \
+    delete[] arg;                               \
+                                                \
+    BaseDataObject *ret = NULL;                 \
+    if (!hasArg2)                               \
+        ret = func(arg0, arg1);                 \
+    else                                        \
+        ret = func(arg0, arg1, arg2);           \
+    PyObject *rett = PythonObjectAdapter::fromDataObject(ret); \
+    if (ret) delete ret;                        \
+    return rett;                                \
+}
+
+#define PARSE_sssIiOo(args, func) {             \
+    PyObject **arg = parseHelper(args, 3, 4);   \
+    if (arg == NULL) return Py_None;            \
+                                                \
+    string arg0 = "", arg1 = "", arg2 = "";     \
+    bool hasArg3 = false;                       \
+    int arg3 = -1;                              \
+    if ((arg[0]) && PyString_Check(arg[0]))     \
+        arg0 = PyString_AsString(arg[0]);       \
+    else {                                      \
+        delete[] arg;                           \
+        return Py_None;                         \
+    }                                           \
+    if ((arg[1]) && PyString_Check(arg[1]))     \
+        arg1 = PyString_AsString(arg[1]);       \
+    else {                                      \
+        delete[] arg;                           \
+        return Py_None;                         \
+    }                                           \
+    if ((arg[2]) && PyInt_Check(arg[2]))        \
+        arg2 = PyInt_AsLong(arg[2]);            \
+    else {                                      \
+        delete[] arg;                           \
+        return Py_None;                         \
+    }                                           \
+    if ((arg[3]) && PyInt_Check(arg[3])) {      \
+        hasArg3 = true;                         \
+        arg3 = PyInt_AsLong(arg[3]);            \
+    }                                           \
+    delete[] arg;                               \
+                                                \
+    BaseDataObject *ret = NULL;                 \
+    if (!hasArg3)                               \
+        ret = func(arg0, arg1, arg2);           \
+    else                                        \
+        ret = func(arg0, arg1, arg2, arg3);     \
+    PyObject *rett = PythonObjectAdapter::fromDataObject(ret); \
+    if (ret) delete ret;                        \
+    return rett;                                \
+}
+
+#define PARSE_sOb(args, func) {                 \
+    PyObject **arg = parseHelper(args, 1, 1);   \
+    if (arg == NULL) return Py_None;            \
+                                                \
+    string arg0 = "";                           \
+    if (PyString_Check(arg[0]))                 \
+        arg0 = PyString_AsString(arg[0]);       \
+    else {                                      \
+        delete[] arg;                           \
+        return Py_None;                         \
+    }                                           \
+    delete[] arg;                               \
+                                                \
+    bool ret;                                   \
+    ret = func(arg0);                           \
+    return ret ? Py_True : Py_False;            \
+}
+
+#define PARSE_IbOo(args, func) {                \
+    PyObject **arg = parseHelper(args, 0, 1);   \
+    if (arg == NULL) return Py_None;            \
+                                                \
+    bool hasArg0 = false;                       \
+    bool arg0 = false;                          \
+    if ((arg[0]) && PyBool_Check(arg[0])) {     \
+        hasArg0 = true;                         \
+        arg0 = (arg[0] == Py_True);             \
+    }                                           \
+    delete[] arg;                               \
+                                                \
+    BaseDataObject *ret = NULL;                 \
+    if (!hasArg0)                               \
+        ret = func();                           \
+    else                                        \
+        ret = func(arg0);                       \
+    PyObject *rett = PythonObjectAdapter::fromDataObject(ret); \
+    if (ret) delete ret;                        \
+    return rett;                                \
+}
+
+#define PARSE_IiOo(args, func) {                \
+    PyObject **arg = parseHelper(args, 0, 1);   \
+    if (arg == NULL) return Py_None;            \
+                                                \
+    bool hasArg0 = false;                       \
+    int arg0 = -1;                              \
+    if ((arg[0]) && PyInt_Check(arg[0])) {      \
+        hasArg0 = true;                         \
+        arg0 = PyInt_AsLong(arg[0]);            \
+    }                                           \
+    delete[] arg;                               \
+                                                \
+    BaseDataObject *ret = NULL;                 \
+    if (!hasArg0)                               \
+        ret = func();                           \
+    else                                        \
+        ret = func(arg0);                       \
+    PyObject *rett = PythonObjectAdapter::fromDataObject(ret); \
+    if (ret) delete ret;                        \
+    return rett;                                \
+}
+
 /* ---------- */
 
 PyObject **parseHelper(PyObject *&args, int min, int max) {
@@ -359,21 +502,7 @@ PyObject *wrap_getDoc
 PyObject *wrap_removeDoc
         (PyObject *self, PyObject *args) {
     /** sOb **/
-    PyObject **arg = parseHelper(args, 1, 1);
-    if (arg == NULL) return Py_None;
-
-    string arg0 = "";
-    if (PyString_Check(arg[0]))
-        arg0 = PyString_AsString(arg[0]);
-    else {
-        delete[] arg;
-        return Py_None;
-    }
-    delete[] arg;
-
-    bool ret;
-    ret = removeDoc(arg0);
-    return ret ? Py_True : Py_False;
+    PARSE_sOb(args, removeDoc)
 }
 
 PyObject *wrap_getDocList
@@ -547,8 +676,7 @@ PyObject *wrap_removeResponse
 PyObject *wrap_parseAPI
         (PyObject *self, PyObject *args) {
     /** Ob **/
-    bool ret = parseAPI();
-    return ret ? Py_True : Py_False;
+    PARSE_Ob(parseAPI)
 }
 
 PyObject *wrap_getInfo
@@ -659,6 +787,81 @@ PyObject *wrap_getExternalDocs
     PARSE_Oo(getExternalDocs)
 }
 
+PyObject *wrap_parseScenario
+        (PyObject *self, PyObject *args) {
+    /** Ob **/
+    PARSE_Ob(parseScenario)
+}
+
+PyObject *wrap_getScenarioNames
+        (PyObject *self, PyObject *args) {
+    /** Oo **/
+    PARSE_Oo(getScenarioNames)
+}
+
+PyObject *wrap_getScenario
+        (PyObject *self, PyObject *args) {
+    /** sOo **/
+    PARSE_sOo(args, getScenario)
+}
+
+
+PyObject *wrap_parseConfig
+        (PyObject *self, PyObject *args) {
+    /** Ob **/
+    PARSE_Ob(parseConfig)
+}
+
+PyObject *wrap_getConfig
+        (PyObject *self, PyObject *args) {
+    /** Oo **/
+    PARSE_Oo(getConfig)
+}
+
+PyObject *wrap_runSingleAPI
+        (PyObject *self, PyObject *args) {
+    /** ssIiOo **/
+    PARSE_ssIiOo(args, runSingleAPI)
+}
+
+PyObject *wrap_runSingleAPIforAli
+        (PyObject *self, PyObject *args) {
+    /** sssIiOo **/
+    PARSE_sssIiOo(args, runSingleAPIforAli)
+}
+
+PyObject *wrap_runScenario
+        (PyObject *self, PyObject *args) {
+    /** IbOo **/
+    PARSE_IbOo(args, runScenario)
+}
+
+PyObject *wrap_getRuntimeErrors
+        (PyObject *self, PyObject *args) {
+    /** Oo **/
+    PARSE_Oo(getRuntimeErrors)
+}
+
+PyObject *wrap_cleanRuntimeErrors
+        (PyObject *self, PyObject *args) {
+    /** O **/
+    cleanRuntimeErrors();
+    return Py_None;
+}
+
+PyObject *wrap_getRuntimeLogs
+        (PyObject *self, PyObject *args) {
+    /** IiOo **/
+    PARSE_IiOo(args, getRuntimeLogs)
+}
+
+PyObject *wrap_cleanRuntimeLogs
+        (PyObject *self, PyObject *args) {
+    /** O **/
+    cleanRuntimeLogs();
+    return Py_None;
+}
+
 /* ---------- */
 
 static PyMethodDef LapisParserMethods[] = {
@@ -717,6 +920,18 @@ static PyMethodDef LapisParserMethods[] = {
         {"getResponse",                      wrap_getResponse,                      METH_VARARGS, "getResponse"},
         {"getTags",                          wrap_getTags,                          METH_VARARGS, "getTags"},
         {"getExternalDocs",                  wrap_getExternalDocs,                  METH_VARARGS, "getExternalDocs"},
+        {"parseScenario",                    wrap_parseScenario,                    METH_VARARGS, "parseScenario"},
+        {"getScenarioNames",                 wrap_getScenarioNames,                 METH_VARARGS, "getScenarioNames"},
+        {"getScenario",                      wrap_getScenario,                      METH_VARARGS, "getScenario"},
+        {"parseConfig",                      wrap_parseConfig,                      METH_VARARGS, "parseConfig"},
+        {"getConfig",                        wrap_getConfig,                        METH_VARARGS, "getConfig"},
+        {"runSingleAPI",                     wrap_runSingleAPI,                     METH_VARARGS, "runSingleAPI"},
+        {"runSingleAPIforAli",               wrap_runSingleAPIforAli,               METH_VARARGS, "runSingleAPIforAli"},
+        {"runScenario",                      wrap_runScenario,                      METH_VARARGS, "runScenario"},
+        {"getRuntimeErrors",                 wrap_getRuntimeErrors,                 METH_VARARGS, "getRuntimeErrors"},
+        {"cleanRuntimeErrors",               wrap_cleanRuntimeErrors,               METH_VARARGS, "cleanRuntimeErrors"},
+        {"getRuntimeLogs",                   wrap_getRuntimeLogs,                   METH_VARARGS, "getRuntimeLogs"},
+        {"cleanRuntimeLogs",                 wrap_cleanRuntimeLogs,                 METH_VARARGS, "cleanRuntimeLogs"},
         {NULL, NULL, 0, NULL}
 };
 
