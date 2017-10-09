@@ -25,12 +25,27 @@
 #include "../error/FileNotExistError.h"
 #include "../error/DocNodeNotExistError.h"
 #include "../error/NotParsedError.h"
+#include "../error/NotConfigParsedError.h"
+#include "../exec/err/APINotFoundError.h"
+#include "../exec/err/APINotParsedError.h"
+#include "../exec/err/RequesterInitError.h"
+#include "../exec/err/ScenarioConfigNotParsedError.h"
+#include "../scenario/Scenarios.h"
+#include "../config/ConfigObject.h"
+#include "../exec/request/SingleRequester.h"
+#include "../exec/report/SingleAPIReport.h"
+#include "../exec/report/ScenarioReport.h"
+#include "../exec/scenario/ScenarioController.h"
+#include "../exec/log/Logger.h"
+#include "../exec/middleware/AliMiddleware.h"
 
 enum InterfaceState {
-    DOC_TREE, API_PARSED, SCENARIO_PARSED
+    DOC_TREE, API_PARSED, SCENARIO_PARSED, CONFIG_PARSED
 };
 
 extern Controller *controller;
+extern Scenarios *scenarios;
+extern ConfigObject *config;
 extern InterfaceState state;
 
 /** @cond --- Init --- @endcond **/
@@ -693,23 +708,187 @@ extern InterfaceState state;
 
 /** @cond --- Scenario Subitem Editor --- @endcond **/
 
+    /** TODO (longterm) **/
+
 /** @cond --- Parse to Scenario --- @endcond **/
+
+    /**
+     * Parse the doc forest to inner class representation.
+     *
+     * It inspects all scenario-related fields carefully.
+     *
+     * It gets fail when there's any error in error list, \
+     no matter whether it's from other operation or from this parsing operation. \
+     So please call cleanErrors() before calling this API.
+     *
+     * Should call parseAPI() before. Then can you parse the scenario.
+     *
+     * @see parseAPI()
+     * @return success or fail
+     */
+    bool parseScenario();
 
 
 /** @cond --- Scenario Info Acquire --- @endcond **/
 
+    /**
+     * Get the scenario name list.
+     *
+     * Should call parseScenario() before to get parsed results
+     *
+     * If not parsed, return NULL(None for Python) instead of the object and add an error to error list
+     * @see parseScenario()
+     * @see getScenario(string name)
+     * @return the scenario name(in string type) sequence
+     */
+    BaseDataObject *getScenarioNames();
+
+    /**
+     * Get the parameter object from name.
+     *
+     * name should be an element of getParameterNames()
+     *
+     * Should call parseScenario() before to get parsed results
+     *
+     * If not parsed, return NULL(None for Python) instead of the object and add an error to error list
+     * @see parseScenario()
+     * @see getScenarioNames()
+     * @param name: the scenario name
+     * @return the object (derived from inner representation, may differ slightly from the input)
+     */
+    BaseDataObject *getScenario(string name);
+
+/** @cond --- Config Subitem Editor --- @endcond **/
+
+    /** TODO (longterm) **/
+
+/** @cond --- Parse to Config --- @endcond **/
+
+    /**
+     * Parse the doc forest to inner class representation.
+     *
+     * It inspects "x-config" field carefully.
+     *
+     * It gets fail when there's any error in error list, \
+     no matter whether it's from other operation or from this parsing operation. \
+     So please call cleanErrors() before calling this API.
+     *
+     * Should call parseScenario() before. Then can you parse the configs with existing API and scenario definitions.
+     *
+     * @see parseAPI()
+     * @see parseConfig()
+     * @return success or fail
+     */
+    bool parseConfig();
+
+/** @cond --- Config Info Acquire --- @endcond **/
+
+    /**
+     * Get the TestConfigObject
+     *
+     * Should call parseConfig() before to get parsed results
+     *
+     * If not parsed, return NULL(None for Python) instead of the object and add an error to error list
+     * @see parseConfig()
+     * @return the object (derived from inner representation, may differ slightly from the input)
+     */
+    BaseDataObject *getConfig();
 
 /** @cond --- Run Single API --- @endcond **/
+
+    /**
+     * Run a single API
+     *
+     * If it runs successfully,
+     *  the return data is the report.
+     * But there may still some request errors, they can be accessed by "err" if exist.
+     * Otherwise,
+     *  return NULL. In this case, detailed error msg can be obtained by getRuntimeErrors()
+     *
+     * @see getRuntimeErrors()
+     *
+     * @param api: the API Name
+     * @param method: the method
+     * @return the report object or NULL (see description above)
+     */
+    BaseDataObject *runSingleAPI(string api, string method, int timeout=2000);
+
+    /**
+     * The same API interface for Ali API
+     * @see getRuntimeErrors()
+     * @param api: the API Name
+     * @param method: the method
+     * @param secretKey: Ali Secret Key
+     * @return the report object or NULL (see description above)
+     */
+    BaseDataObject *runSingleAPIforAli(string api, string method, string secretKey, int timeout=2000);
 
 
 /** @cond --- Run Scenario ---- @endcond **/
 
+    /**
+     * Run the scenario
+     * The configurations is from Config Object ("x-config" field),
+     *  so before call this, parse the field first using parseConfig().
+     *
+     * @param verbose: whether print debug info to clog
+     *
+     * @see parseConfig()
+     *
+     * If fatal error occurred, it will return NULL, and error message can be gotten from getRuntimeErrors().
+     * In normal cases, the return object is a test report.
+     *
+     * Caution: this function may spend much time.
+     *
+     * @see getRuntimeErrors()
+     *
+     * @return the report object or NULL
+     */
+    BaseDataObject *runScenario(bool verbose = false);
 
+/** @cond --- Errors --- @endcond **/
+
+    /**
+     * Get runtime errors array in Data Object format.
+     *
+     * @return the errors array
+     */
+    SequenceDataObject *getRuntimeErrors();
+
+    /**
+     * Clean the inner runtime errors array.
+     */
+    void cleanRuntimeErrors();
+
+/** @cond --- Logs --- @endcond **/
+
+    /**
+     * Get logs in sequence format.
+     *
+     * @param level: level threshold
+     * @return the logs array
+     */
+    SequenceDataObject *getRuntimeLogs(int level = 0);
+
+    /**
+     * Clean the inner log records array.
+     */
+    void cleanRuntimeLogs();
 
 /** @cond --- Locals --- @endcond **/
     /**
      * Back to DOC_TREE stage, to prepare for reparsing to class representation
      */
     static void cleanToDocStage();
+
+    /**
+     * Back to API stage, to prepare for reparsing scenario fields
+     */
+    static void cleanToAPIStage();
+
+    /**
+     * Back to Scenario stage, to prepare for reparsing config fields
+     */
+    static void cleanToScenarioStage();
 
 #endif //VPARSER_INTERFACE_H

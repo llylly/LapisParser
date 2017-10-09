@@ -84,16 +84,39 @@ DocElement* RefExpand::findByPath(string currentDoc, string path, int line, int 
     int lastP = -1;
     vector<string> pathVec;
     pathVec.clear();
+    bool insideQuote = false;
+    int quote1 = -1, quote2 = -1;
     for (int i=0; i<path.length(); ++i) {
         // For constant '/' like "//", we recognize the first '/' as separator and second one as part of name
-        if ((path[i] == '/') && (i > lastP + 1)) {
-            if (i-lastP-1 > 0)
-                pathVec.push_back(path.substr((unsigned)(lastP+1), (unsigned)(i-lastP-1)));
+        // For the entire name inside a quote (' or "), will ignore all '/' inside it
+        if ((path[i] == '\'') || (path[i] == '\"')) {
+            if (!insideQuote) {
+                insideQuote = true;
+                quote1 = i;
+            } else {
+                insideQuote = false;
+                quote2 = i;
+            }
+        }
+        if ((path[i] == '/') && (i > lastP + 1) && (!insideQuote)) {
+            if (i-lastP-1 > 0) {
+                string nowstr = "";
+                for (int j = lastP + 1; j < i; ++j)
+                    if ((j != quote1) and (j != quote2))
+                        nowstr += path[j];
+                pathVec.push_back(nowstr);
+            }
             lastP = i;
         }
     }
-    if (path.length() - lastP > 1)
-        pathVec.push_back(path.substr((unsigned)(lastP+1), (unsigned)(path.length()-lastP-1)));
+    if (path.length() - lastP > 1) {
+        string nowstr = "";
+        for (int j = lastP + 1; j < path.length(); ++j) {
+            if ((j != quote1) and (j != quote2))
+                nowstr += path[j];
+        }
+        pathVec.push_back(nowstr);
+    }
     if (pathVec.size() <= 0) return NULL;
 
     string doc = currentDoc;

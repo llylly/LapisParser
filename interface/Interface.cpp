@@ -3,8 +3,11 @@
 //
 
 #include "Interface.h"
+#include "../error/NotScenarioParsedError.h"
 
 Controller *controller = NULL;
+Scenarios *scenarios = NULL;
+ConfigObject *config = NULL;
 InterfaceState state = InterfaceState::DOC_TREE;
 
 
@@ -1188,11 +1191,320 @@ BaseDataObject *getExternalDocs() {
         return NULL;
 }
 
+/** --- Scenario Subitem Editor --- **/
+
+/** --- Parse to Scenario --- **/
+
+bool parseScenario() {
+    if (state == DOC_TREE || controller == NULL) {
+        Error::addError(
+                new NotParsedError()
+        );
+        return false;
+    }
+    if (state == SCENARIO_PARSED)
+        return true;
+
+    scenarios = new Scenarios();
+    if (!scenarios->work(controller)) {
+        delete scenarios;
+        scenarios = NULL;
+        return false;
+    }
+
+    state = SCENARIO_PARSED;
+    return true;
+}
+
+/** --- Scenario Info Acquire --- **/
+
+BaseDataObject *getScenarioNames() {
+    if (scenarios == NULL || state != SCENARIO_PARSED) {
+        Error::addError(
+                new NotScenarioParsedError()
+        );
+        return NULL;
+    }
+    const set<string> &nameSet = scenarios->getTitleSet();
+    SequenceDataObject *ans = new SequenceDataObject();
+    for (set<string>::iterator ite = nameSet.cbegin(); ite != nameSet.cend(); ++ite) {
+        ans->push(new StringDataObject(*ite));
+    }
+    return ans;
+}
+
+BaseDataObject *getScenario(string name) {
+    if (scenarios == NULL || state != SCENARIO_PARSED) {
+        Error::addError(
+                new NotScenarioParsedError()
+        );
+        return NULL;
+    }
+    Scenario *s = scenarios->getScenarioByTitle(name);
+    if (s == NULL)
+        return NULL;
+    else
+        return s->toDataObject();
+}
+
+/** --- Config Subitem Editor --- **/
+
+/** --- Parse to Config --- **/
+
+bool parseConfig() {
+    if ((state == DOC_TREE) || (state == API_PARSED) ||
+            (controller == NULL) || (scenarios == NULL)) {
+        Error::addError(new NotScenarioParsedError());
+        return false;
+    }
+    if (state == CONFIG_PARSED)
+        return true;
+
+    config = new ConfigObject();
+    if (!config->work(controller, scenarios)){
+        delete config;
+        config = NULL;
+        return false;
+    }
+
+    state = CONFIG_PARSED;
+    return true;
+}
+
+/** --- Config Info Acquire --- **/
+
+BaseDataObject *getConfig() {
+    if ((config == NULL) || (state != CONFIG_PARSED)) {
+        Error::addError(new NotConfigParsedError());
+        return NULL;
+    }
+    return config->toDataObject();
+}
+
+/** --- Run Single API --- **/
+
+BaseDataObject *runSingleAPI(string name, string method, int timeout) {
+    BaseDataObject *ret = NULL;
+
+    if (state == DOC_TREE || controller == NULL) {
+        RuntimeError::addError(new APINotParsedError());
+        return NULL;
+    }
+
+    if (controller->paths == NULL) {
+        RuntimeError::addError(new APINotFoundError());
+        return NULL;
+    }
+
+    pair<string, APIRequestMethod> requestName;
+    requestName.first = name;
+    if ((method == "get") || (method == "GET"))
+        requestName.second = APIRequestMethod::GET;
+    else if ((method == "post") || (method == "POST"))
+        requestName.second = APIRequestMethod::POST;
+    else {
+        RuntimeError::addError(new APINotFoundError());
+        return NULL;
+    }
+
+    APIObject *obj = controller->paths->getObjectByName(requestName);
+    if (obj == NULL) {
+        RuntimeError::addError(new APINotFoundError());
+        return NULL;
+    }
+
+    string host = ((StringDataObject*)getHost())->str;
+    string basePath = ((StringDataObject*)getBasePath())->str;
+    SingleAPIReport *report = new SingleAPIReport();
+    SingleRequester *requester = new SingleRequester(host, basePath, report, NULL, timeout);
+    if (!requester->init(obj)) {
+        RuntimeError::addError(new RequesterInitError());
+        delete requester;
+        return NULL;
+    }
+
+    requester->work();
+    if (requester->err != NULL) {
+        RuntimeError::addError(requester->err);
+    }
+    ret = report->toDataObject();
+
+    delete requester;
+    delete report;
+    return ret;
+}
+
+BaseDataObject *runSingleAPIforAli(string name, string method, string secretKey, int timeout) {
+    BaseDataObject *ret = NULL;
+
+    if (state == DOC_TREE || controller == NULL) {
+        RuntimeError::addError(new APINotParsedError());
+        return NULL;
+    }
+
+    if (controller->paths == NULL) {
+        RuntimeError::addError(new APINotFoundError());
+        return NULL;
+    }
+
+    pair<string, APIRequestMethod> requestName;
+    requestName.first = name;
+    if ((method == "get") || (method == "GET"))
+        requestName.second = APIRequestMethod::GET;
+    else if ((method == "post") || (method == "POST"))
+        requestName.second = APIRequestMethod::POST;
+    else {
+        RuntimeError::addError(new APINotFoundError());
+        return NULL;
+    }
+
+    APIObject *obj = controller->paths->getObjectByName(requestName);
+    if (obj == NULL) {
+        RuntimeError::addError(new APINotFoundError());
+        return NULL;
+    }
+
+    string host = ((StringDataObject*)getHost())->str;
+    string basePath = ((StringDataObject*)getBasePath())->str;
+    SingleAPIReport *report = new SingleAPIReport();
+    SingleRequester *requester = new SingleRequester(host, basePath, report, &(AliMiddleware::main), timeout);
+    requester->setUserP(&secretKey);
+    if (!requester->init(obj)) {
+        RuntimeError::addError(new RequesterInitError());
+        delete requester;
+        return NULL;
+    }
+
+    requester->work();
+    if (requester->err != NULL) {
+        RuntimeError::addError(requester->err);
+    }
+    report->useAliMiddleware = true;
+    ret = report->toDataObject();
+
+    delete requester;
+    delete report;
+    return ret;
+}
+
+/** --- Run Scenario --- **/
+
+BaseDataObject *runScenario(bool verbose) {
+    BaseDataObject *ret = NULL;
+
+    if ((state != CONFIG_PARSED) || (config == NULL) ||
+            (scenarios == NULL) || (controller == NULL)) {
+        RuntimeError::addError(new ScenarioConfigNotParsedError());
+        return NULL;
+    }
+
+    string host = ((StringDataObject*)getHost())->str;
+    string basePath = ((StringDataObject*)getBasePath())->str;
+
+    ScenarioReport *report = new ScenarioReport();
+    ScenarioController *scenarioController = new ScenarioController(config, scenarios, report, host, basePath,
+                                                                    verbose, clog);
+    scenarioController->run();
+    ret = report->toDataObject();
+
+    delete scenarioController;
+    delete report;
+    return ret;
+}
+
+
+/** --- Errors --- **/
+
+SequenceDataObject *getRuntimeErrors() {
+    vector<RuntimeError*> *errorVec = RuntimeError::getErrors();
+    SequenceDataObject *ans = new SequenceDataObject();
+    if (errorVec != NULL) {
+        for (vector<RuntimeError*>::iterator ite = errorVec->begin();
+             ite != errorVec->end(); ++ite) {
+            RuntimeError &item = **ite;
+            ans->push(item.toDataObject());
+        }
+    }
+    return ans;
+}
+
+void cleanRuntimeErrors() {
+    vector<RuntimeError*> *errorVec = RuntimeError::getErrors();
+    for (vector<RuntimeError*>::iterator ite = errorVec->begin();
+         ite != errorVec->end();
+         ++ite)
+        delete *ite;
+    errorVec->clear();
+}
+
+/** --- Logs --- **/
+
+SequenceDataObject *getRuntimeLogs(int level) {
+    SequenceDataObject *seq = new SequenceDataObject();
+    vector<Logger*> *logVec = Logger::getLogs();
+    for (vector<Logger*>::iterator ite = logVec->begin();
+            ite != logVec->end();
+            ++ite) {
+        Logger *log = *ite;
+        if (log->level >= level) {
+            seq->push(log->toDataObject());
+        }
+    }
+    return seq;
+}
+
+void cleanRuntimeLogs() {
+    Logger::cleanLog();
+}
+
 /** --- Locals --- **/
 void cleanToDocStage() {
-    if (state == SCENARIO_PARSED)
-        /** TODO **/;
-    if (state == API_PARSED)
-        if (controller != NULL) delete controller;
-    state = DOC_TREE;
+    if (state == CONFIG_PARSED) {
+        if (config != NULL) {
+            delete config;
+            config = NULL;
+        }
+        state = SCENARIO_PARSED;
+    }
+    if (state == SCENARIO_PARSED) {
+        if (scenarios != NULL) {
+            delete scenarios;
+            scenarios = NULL;
+        }
+        state = API_PARSED;
+    }
+    if (state == API_PARSED) {
+        if (controller != NULL) {
+            delete controller;
+            controller = NULL;
+        }
+        state = DOC_TREE;
+    }
+}
+
+void cleanToAPIStage() {
+    if (state == CONFIG_PARSED) {
+        if (config != NULL) {
+            delete config;
+            config = NULL;
+        }
+        state = SCENARIO_PARSED;
+    }
+    if (state == SCENARIO_PARSED) {
+        if (scenarios != NULL) {
+            delete scenarios;
+            scenarios = NULL;
+        }
+        state = API_PARSED;
+    }
+}
+
+void cleanToScenarioStage() {
+    if (state == CONFIG_PARSED) {
+        if (config != NULL) {
+            delete config;
+            config = NULL;
+        }
+        state = SCENARIO_PARSED;
+    }
 }

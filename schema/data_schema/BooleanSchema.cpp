@@ -46,7 +46,7 @@ BaseDataObject *BooleanSchema::transform(DocElement *ele) {
     if (!this->valid) return NULL;
     if (ele == NULL) return NULL;
     // --- above are routine ---
-    pair<bool, bool> parseRes = DocElementHelper::parserToBool(ele, this->trueString, this->falseString);
+    pair<bool, bool> parseRes = DocElementHelper::parseToBool(ele, this->trueString, this->falseString);
     if (parseRes.second) {
         bool x = parseRes.first;
         if (x) {

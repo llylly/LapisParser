@@ -168,7 +168,7 @@ ParameterObject* ParameterObjectFactory::create(string filePath, DocElement *ele
     /* required */
     DocElement *reqEle = o->get("required");
     if (reqEle) {
-        pair<bool, bool> reqRes = DocElementHelper::parserToBool(reqEle);
+        pair<bool, bool> reqRes = DocElementHelper::parseToBool(reqEle);
         if (reqRes.second) {
             res->required = reqRes.first;
         } else {

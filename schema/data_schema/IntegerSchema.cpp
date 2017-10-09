@@ -154,7 +154,7 @@ bool IntegerSchema::init(string filePath, DocObjectElement *obj, int schemaType)
     /* exclusiveMaximum */
     DocElement *exclusiveMaxEle = obj->get("exclusiveMaximum");
     if (exclusiveMaxEle) {
-        pair<bool, bool> res = DocElementHelper::parserToBool(exclusiveMaxEle);
+        pair<bool, bool> res = DocElementHelper::parseToBool(exclusiveMaxEle);
         if (res.second) {
             this->exclusiveMaximum = res.first;
         } else {
@@ -168,7 +168,7 @@ bool IntegerSchema::init(string filePath, DocObjectElement *obj, int schemaType)
     /* exclusiveMinimum */
     DocElement *exclusiveMinEle = obj->get("exclusiveMinimum");
     if (exclusiveMinEle) {
-        pair<bool, bool> res = DocElementHelper::parserToBool(exclusiveMinEle);
+        pair<bool, bool> res = DocElementHelper::parseToBool(exclusiveMinEle);
         if (res.second) {
             this->exclusiveMinimum = res.first;
         } else {

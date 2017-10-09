@@ -5,9 +5,81 @@
 #include "YAMLAdapter.h"
 #include "../error/YAMLParserInitError.h"
 #include "../error/YAMLFormatError.h"
-#include "../parser/libyaml/yaml.h"
 #include "../error/YAMLEmitterInitError.h"
 #include "../error/YAMLEmitterError.h"
+
+DocElement *YAMLAdapter::parseStr(const unsigned char *string, int length) {
+    yaml_parser_t parser;
+    yaml_event_t event;
+
+    DocElement *doc = NULL;
+    YAMLFormatError *err = NULL;
+
+    bool done = false;
+
+    if (!yaml_parser_initialize(&parser)) {
+        Error::addError(new YAMLParserInitError(1, 1));
+        goto error;
+        return NULL;
+    }
+    yaml_parser_set_input_string(&parser, string, (size_t)length);
+
+    while (!done) {
+        if (!yaml_parser_parse(&parser, &event)) {
+            addFormatErrorFromParser(parser);
+            goto error;
+        }
+        switch (event.type) {
+            case YAML_STREAM_START_EVENT:
+                break;
+
+            case YAML_STREAM_END_EVENT:
+                break;
+
+            case YAML_DOCUMENT_START_EVENT:
+                doc = parseDocument(parser, 0);
+                if (doc == NULL) {
+                    yaml_event_delete(&event);
+                    goto error;
+                }
+                break;
+
+                // Illegal States in this context
+            case YAML_DOCUMENT_END_EVENT:
+            case YAML_SCALAR_EVENT:
+            case YAML_SEQUENCE_START_EVENT:
+            case YAML_SEQUENCE_END_EVENT:
+            case YAML_MAPPING_START_EVENT:
+            case YAML_MAPPING_END_EVENT:
+                err = new YAMLFormatError((int) parser.mark.line, (int) parser.mark.column);
+                err->msg += "\n Root node parse error.";
+                Error::addError(err);
+                yaml_event_delete(&event);
+                goto error;
+
+                // Ignored Events
+            case YAML_NO_EVENT:
+            case YAML_ALIAS_EVENT:
+            default:
+                break;
+        }
+        done = (event.type == YAML_STREAM_END_EVENT);
+        yaml_event_delete(&event);
+    }
+
+    yaml_parser_delete(&parser);
+
+    return doc;
+
+    error:
+    if (doc != NULL) delete doc;
+    yaml_parser_delete(&parser);
+    /** Important: this function is used for parsing API response.
+     * Therefore we should insure no errors added to the error list.
+     */
+    Error::getErrors()->clear();
+    return NULL;
+}
 
 DocElement *YAMLAdapter::parseDoc(const char *fileName) {
 

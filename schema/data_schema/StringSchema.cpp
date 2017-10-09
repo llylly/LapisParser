@@ -103,8 +103,13 @@ BaseDataObject *StringSchema::generate() {
     int len = this->minLength + (rand() & 0x7FFFFFFF) % (this->maxLength - this->minLength + 1);
     string s;
     s.clear();
-    for (int i=0; i<len; ++i)
-        s.append(1, (char)(rand() & 0x7F));
+    for (int i=0; i<len; ++i) {
+        char c;
+        do {
+            c = (char)(rand() & 0x7F);
+        } while (!(((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')) || ((c >= '0') & (c <= '9'))));
+        s += c;
+    }
     return new StringDataObject(s);
 }
 
@@ -234,6 +239,13 @@ string StringSchema::generateDate(string pattern, int minLength, int maxLength) 
     /**
      * TODO
      */
+    stringstream stream;
+    stream.clear();
+    stream << (1970 + rand() % 100) << '-' <<(rand() % 12 + 1) << '-' << (rand() % 28 + 1);
+    stream.flush();
+    return stream.str();
+
+    return "1970-1-1";
     return "TODO: generate Date";
 }
 
@@ -241,6 +253,19 @@ string StringSchema::generateDateTime(string pattern, int minLength, int maxLeng
     /**
      * TODO
      */
+    char str[50];
+    memset(str, 0, sizeof(str) * 50);
+    sprintf(str, "%d-%d-%d %02d:%02d:%02d",
+           1970 + rand() % 100,
+           rand() % 12 + 1,
+           rand() % 28 + 1,
+           rand() % 24,
+           rand() % 60,
+           rand() % 60);
+    string ret = str;
+    return ret;
+
+    return "1970-1-1 00:00:00";
     return "TODO: generate DateTime";
 }
 
@@ -248,6 +273,7 @@ string StringSchema::generateFromPattern(string pattern, int minLength, int maxL
     /**
      * TODO
      */
+    return "";
     return "TODO: generate from pattern";
 }
 

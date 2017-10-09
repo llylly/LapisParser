@@ -5,6 +5,7 @@ var searchData=
   ['getapi',['getAPI',['../_interface_8h.html#a4a3c74d59e390452c6627c21d448f08c',1,'Interface.cpp']]],
   ['getapinames',['getAPINames',['../_interface_8h.html#a8ba3829522ede81785b6a1c48035d91e',1,'Interface.cpp']]],
   ['getbasepath',['getBasePath',['../_interface_8h.html#ad5e71316547351c5ce58cea9aedc93f6',1,'Interface.cpp']]],
+  ['getconfig',['getConfig',['../_interface_8h.html#a329d4f6344e5e0e5b719f428ba0a99c3',1,'Interface.cpp']]],
   ['getconsumes',['getConsumes',['../_interface_8h.html#aabf76c78cbb66e48714a6ba6dded74f6',1,'Interface.cpp']]],
   ['getdataschema',['getDataSchema',['../_interface_8h.html#ab33dc35193127e9190055ff3821a6e3e',1,'Interface.cpp']]],
   ['getdataschemanames',['getDataSchemaNames',['../_interface_8h.html#ad79594d0e60a4df4d4cb6d1f093963b7',1,'Interface.cpp']]],
@@ -28,6 +29,10 @@ var searchData=
   ['getresponse',['getResponse',['../_interface_8h.html#a668569747151c1564746c567b74651c9',1,'Interface.cpp']]],
   ['getresponsebyname',['getResponseByName',['../class_response_pool.html#ab9b8e8ef30d66733ff3a5cc66e68c99f',1,'ResponsePool']]],
   ['getresponsenames',['getResponseNames',['../_interface_8h.html#ab5c84c89ff05043169c0192acece8a87',1,'Interface.cpp']]],
+  ['getruntimeerrors',['getRuntimeErrors',['../_interface_8h.html#a465a75b4afbe36237fe4115bc423d669',1,'Interface.cpp']]],
+  ['getruntimelogs',['getRuntimeLogs',['../_interface_8h.html#a9bc26142f5d227e6003a4145a98ce2db',1,'Interface.cpp']]],
+  ['getscenario',['getScenario',['../_interface_8h.html#a0017afaed78304fbd544ec88631fbd35',1,'Interface.cpp']]],
+  ['getscenarionames',['getScenarioNames',['../_interface_8h.html#aa11191cecd0ecc1b04e786bc40e132c1',1,'Interface.cpp']]],
   ['getschemabyname',['getSchemaByName',['../class_data_schema_pool.html#af499ca6337bf67550dbd3fc9a85f5246',1,'DataSchemaPool']]],
   ['getschemes',['getSchemes',['../_interface_8h.html#a88376c4165126e9d0c97699027e4dd47',1,'Interface.cpp']]],
   ['gettags',['getTags',['../_interface_8h.html#a6af8a4e97e5c4f1e2c75ff893b33801a',1,'Interface.cpp']]]

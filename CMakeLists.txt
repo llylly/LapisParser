@@ -28,8 +28,7 @@ set(SOURCE_FILES
         error/InvalidSwaggerSymbolError.h error/InvalidXVeeSymbolError.h
         error/RootFieldDuplicateError.h
         error/InvalidRootNodeError.h error/FieldMissError.h
-        error/FieldInvalidError.h error/InvalidSchemeError.h schema/ScenarioPool.cpp
-        schema/ScenarioPool.h data/BaseDataObject.cpp data/BaseDataObject.h
+        error/FieldInvalidError.h error/InvalidSchemeError.h data/BaseDataObject.cpp data/BaseDataObject.h
         schema/DataSchemaObject.cpp schema/DataSchemaObject.h data/NumberDataObject.cpp data/NumberDataObject.h
         data/IntegerDataObject.cpp data/IntegerDataObject.h data/BooleanDataObject.cpp data/BooleanDataObject.h
         data/StringDataObject.cpp data/StringDataObject.h data/FileDataObject.cpp data/FileDataObject.h
@@ -50,19 +49,57 @@ set(SOURCE_FILES
         schema/response/ResponseExtensionObject.cpp schema/response/ResponseExtensionObject.h schema/APIObject.cpp schema/APIObject.h
         schema/api/APIConstraintObject.cpp schema/api/APIConstraintObject.h error/IllegalPathParameterError.h
         error/IllegalConsumesForFormData.h error/FormDataAndBodyConflictError.h error/IllegalFileParameterError.h
-        error/IllegalMIMEListError.h error/DuplicateParameterNameError.h error/TooManyBodyParamError.h interface/Interface.cpp interface/Interface.h error/FileNotExistError.h error/DocNodeNotExistError.h error/NotParsedError.h)
+        error/IllegalMIMEListError.h error/DuplicateParameterNameError.h error/TooManyBodyParamError.h interface/Interface.cpp
+        interface/Interface.h error/FileNotExistError.h error/DocNodeNotExistError.h error/NotParsedError.h scenario/Scenarios.cpp
+        scenario/Scenarios.h scenario/Scenario.cpp scenario/Scenario.h scenario/ScenarioInfoObject.cpp scenario/ScenarioInfoObject.h
+        error/DuplicateScenarioNamesError.h error/NotScenarioParsedError.h scenario/ScenarioStateObject.cpp
+        scenario/ScenarioStateObject.h error/DuplicateScenarioElementError.h error/ScenarioInitialStateError.h
+        scenario/ScenarioSetObject.cpp scenario/ScenarioSetObject.h scenario/ScenarioModuleObject.cpp
+        scenario/ScenarioModuleObject.h scenario/module/ModuleRepeatObject.cpp scenario/module/ModuleRepeatObject.h
+        scenario/module/ModuleInputConstraintObject.cpp scenario/module/ModuleInputConstraintObject.h
+        scenario/module/ModuleCheckpointObject.cpp scenario/module/ModuleCheckpointObject.h scenario/module/ModuleSetEffectObject.cpp
+        scenario/module/ModuleSetEffectObject.h scenario/module/ModuleTransStateObject.cpp scenario/module/ModuleTransStateObject.h
+        error/ScenarioStartModuleError.h error/InvalidAPIReferenceError.h error/InvalidResponseTypeError.h error/InvalidExpressionError.h
+        error/InvalidSetError.h error/InvalidStateError.h scenario/ScenarioConnectionObject.cpp scenario/ScenarioConnectionObject.h
+        error/InvalidModuleError.h config/ConfigObject.cpp config/ConfigObject.h error/DuplicateTestConfigError.h
+        error/NotConfigParsedError.h error/InvalidScenarioError.h exec/request/BaseRequester.cpp
+        exec/request/BaseRequester.h exec/err/RuntimeError.h exec/err/RuntimeError.cpp exec/err/InvalidURLPatternError.h
+        exec/err/IllegalResponseError.h exec/log/Logger.cpp exec/log/Logger.h exec/log/StrLog.h exec/log/DataLog.h
+        exec/err/RequestTimeoutError.h exec/request/SingleRequester.cpp exec/request/SingleRequester.h
+        exec/request/ModuleRequester.cpp exec/request/ModuleRequester.h exec/err/IllegalInputConstraintError.h
+        exec/err/SetEmptyTerminate.h exec/transformer/ExecTransformer.cpp exec/transformer/ExecTransformer.h
+        exec/err/UnknownRequestError.h exec/err/IllegalResponseCodeError.h exec/err/IllegalResponseFormatError.h
+        exec/err/APINotParsedError.h exec/err/APINotFoundError.h exec/err/RequesterInitError.h exec/report/BaseReport.h
+        exec/report/RequesterReport.cpp exec/report/RequesterReport.h exec/report/SingleAPIReport.cpp
+        exec/report/SingleAPIReport.h exec/scenario/ScenarioController.cpp exec/scenario/ScenarioController.h
+        exec/report/TestCaseReport.cpp exec/report/TestCaseReport.h exec/report/ScenarioReport.cpp
+        exec/report/ScenarioReport.h exec/scenario/TestCaseController.cpp exec/scenario/TestCaseController.h
+        exec/err/ScenarioConfigNotParsedError.h exec/err/CheckpointNotPassTerminate.h exec/err/EndModuleTerminate.h
+        exec/err/NowayTerminate.h exec/err/LengthExceedTerminate.h exec/err/IllegalSetEffectError.h
+        exec/middleware/AliMiddleware.cpp exec/middleware/AliMiddleware.cpp exec/middleware/AliMiddleware.h
+        exec/middleware/HMAC_SHA1/HMAC_SHA1.cpp exec/middleware/HMAC_SHA1/base64.cpp exec/middleware/HMAC_SHA1/SHA1.cpp)
 
 add_executable(VParser ${SOURCE_FILES} interface/CXX/demo.cpp)
 
 add_library(VParserPy SHARED ${SOURCE_FILES})
 
-link_libraries(parser/libyaml/)
+link_libraries(lib/libyaml/)
 target_link_libraries(VParser yaml)
 target_link_libraries(VParserPy yaml)
 
-link_libraries(parser/libxml/)
+link_libraries(lib/libxml/)
 target_link_libraries(VParser xml2)
 target_link_libraries(VParserPy xml2)
+
+link_libraries(lib/libcurl/)
+target_link_libraries(VParser curl)
+target_link_libraries(VParserPy curl)
+link_directories(lib/libcurl/curl)
+
+target_link_libraries(VParser crypto)
+target_link_libraries(VParserPy crypto)
+
+include_directories(lib/libxml/)
 
 link_libraries(usr/include/python2.7)
 target_link_libraries(VParser python)

@@ -83,6 +83,19 @@ $(function() {
 <code>#include &quot;../error/FileNotExistError.h&quot;</code><br />
 <code>#include &quot;../error/DocNodeNotExistError.h&quot;</code><br />
 <code>#include &quot;../error/NotParsedError.h&quot;</code><br />
+<code>#include &quot;../error/NotConfigParsedError.h&quot;</code><br />
+<code>#include &quot;../exec/err/APINotFoundError.h&quot;</code><br />
+<code>#include &quot;../exec/err/APINotParsedError.h&quot;</code><br />
+<code>#include &quot;../exec/err/RequesterInitError.h&quot;</code><br />
+<code>#include &quot;../exec/err/ScenarioConfigNotParsedError.h&quot;</code><br />
+<code>#include &quot;../scenario/Scenarios.h&quot;</code><br />
+<code>#include &quot;../config/ConfigObject.h&quot;</code><br />
+<code>#include &quot;../exec/request/SingleRequester.h&quot;</code><br />
+<code>#include &quot;../exec/report/SingleAPIReport.h&quot;</code><br />
+<code>#include &quot;../exec/report/ScenarioReport.h&quot;</code><br />
+<code>#include &quot;../exec/scenario/ScenarioController.h&quot;</code><br />
+<code>#include &quot;../exec/log/Logger.h&quot;</code><br />
+<code>#include &quot;../exec/middleware/AliMiddleware.h&quot;</code><br />
 </div>
 <p><a href="_interface_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -90,7 +103,8 @@ $(function() {
 Enumerations</h2></td></tr>
 <tr class="memitem:a66ba893871a366d88f1b2b505c9d9458"><td class="memItemLeft" align="right" valign="top"><a id="a66ba893871a366d88f1b2b505c9d9458"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>InterfaceState</b> { <b>DOC_TREE</b>, 
 <b>API_PARSED</b>, 
-<b>SCENARIO_PARSED</b>
+<b>SCENARIO_PARSED</b>, 
+<b>CONFIG_PARSED</b>
  }</td></tr>
 <tr class="separator:a66ba893871a366d88f1b2b505c9d9458"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -264,12 +278,56 @@ Functions</h2></td></tr>
 <tr class="memitem:a6406146f10ce19c877a3af13eb180759"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_base_data_object.html">BaseDataObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_8h.html#a6406146f10ce19c877a3af13eb180759">getExternalDocs</a> ()</td></tr>
 <tr class="memdesc:a6406146f10ce19c877a3af13eb180759"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the External Docs Object.  <a href="#a6406146f10ce19c877a3af13eb180759">More...</a><br /></td></tr>
 <tr class="separator:a6406146f10ce19c877a3af13eb180759"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7e7a77feb7d4af68863236a8049e6a3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_8h.html#ab7e7a77feb7d4af68863236a8049e6a3">parseScenario</a> ()</td></tr>
+<tr class="memdesc:ab7e7a77feb7d4af68863236a8049e6a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO (longterm)  <a href="#ab7e7a77feb7d4af68863236a8049e6a3">More...</a><br /></td></tr>
+<tr class="separator:ab7e7a77feb7d4af68863236a8049e6a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa11191cecd0ecc1b04e786bc40e132c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_base_data_object.html">BaseDataObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_8h.html#aa11191cecd0ecc1b04e786bc40e132c1">getScenarioNames</a> ()</td></tr>
+<tr class="memdesc:aa11191cecd0ecc1b04e786bc40e132c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the scenario name list.  <a href="#aa11191cecd0ecc1b04e786bc40e132c1">More...</a><br /></td></tr>
+<tr class="separator:aa11191cecd0ecc1b04e786bc40e132c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0017afaed78304fbd544ec88631fbd35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_base_data_object.html">BaseDataObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_8h.html#a0017afaed78304fbd544ec88631fbd35">getScenario</a> (string name)</td></tr>
+<tr class="memdesc:a0017afaed78304fbd544ec88631fbd35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the parameter object from name.  <a href="#a0017afaed78304fbd544ec88631fbd35">More...</a><br /></td></tr>
+<tr class="separator:a0017afaed78304fbd544ec88631fbd35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad051b405402acffc8e8181939b1f3491"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_8h.html#ad051b405402acffc8e8181939b1f3491">parseConfig</a> ()</td></tr>
+<tr class="memdesc:ad051b405402acffc8e8181939b1f3491"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO (longterm)  <a href="#ad051b405402acffc8e8181939b1f3491">More...</a><br /></td></tr>
+<tr class="separator:ad051b405402acffc8e8181939b1f3491"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a329d4f6344e5e0e5b719f428ba0a99c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_base_data_object.html">BaseDataObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_8h.html#a329d4f6344e5e0e5b719f428ba0a99c3">getConfig</a> ()</td></tr>
+<tr class="memdesc:a329d4f6344e5e0e5b719f428ba0a99c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the TestConfigObject.  <a href="#a329d4f6344e5e0e5b719f428ba0a99c3">More...</a><br /></td></tr>
+<tr class="separator:a329d4f6344e5e0e5b719f428ba0a99c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec685e1d1e17d1123ac15ab9599f3598"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_base_data_object.html">BaseDataObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_8h.html#aec685e1d1e17d1123ac15ab9599f3598">runSingleAPI</a> (string api, string method, int timeout=2000)</td></tr>
+<tr class="memdesc:aec685e1d1e17d1123ac15ab9599f3598"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a single API.  <a href="#aec685e1d1e17d1123ac15ab9599f3598">More...</a><br /></td></tr>
+<tr class="separator:aec685e1d1e17d1123ac15ab9599f3598"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a119ade8f0a0cf728d6d4642a1843e252"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_base_data_object.html">BaseDataObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_8h.html#a119ade8f0a0cf728d6d4642a1843e252">runSingleAPIforAli</a> (string api, string method, string secretKey, int timeout=2000)</td></tr>
+<tr class="memdesc:a119ade8f0a0cf728d6d4642a1843e252"><td class="mdescLeft">&#160;</td><td class="mdescRight">The same API interface for Ali API.  <a href="#a119ade8f0a0cf728d6d4642a1843e252">More...</a><br /></td></tr>
+<tr class="separator:a119ade8f0a0cf728d6d4642a1843e252"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2855a71934a3d410d35b6663aa7abc9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_base_data_object.html">BaseDataObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_8h.html#a2855a71934a3d410d35b6663aa7abc9f">runScenario</a> (bool verbose=false)</td></tr>
+<tr class="memdesc:a2855a71934a3d410d35b6663aa7abc9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the scenario The configurations is from Config Object ("x-config" field), so before call this, parse the field first using <a class="el" href="_interface_8h.html#ad051b405402acffc8e8181939b1f3491" title="TODO (longterm) ">parseConfig()</a>.  <a href="#a2855a71934a3d410d35b6663aa7abc9f">More...</a><br /></td></tr>
+<tr class="separator:a2855a71934a3d410d35b6663aa7abc9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a465a75b4afbe36237fe4115bc423d669"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_sequence_data_object.html">SequenceDataObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_8h.html#a465a75b4afbe36237fe4115bc423d669">getRuntimeErrors</a> ()</td></tr>
+<tr class="memdesc:a465a75b4afbe36237fe4115bc423d669"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get runtime errors array in Data Object format.  <a href="#a465a75b4afbe36237fe4115bc423d669">More...</a><br /></td></tr>
+<tr class="separator:a465a75b4afbe36237fe4115bc423d669"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a008cda78df49442a4df8fbfe1aab6b85"><td class="memItemLeft" align="right" valign="top"><a id="a008cda78df49442a4df8fbfe1aab6b85"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_8h.html#a008cda78df49442a4df8fbfe1aab6b85">cleanRuntimeErrors</a> ()</td></tr>
+<tr class="memdesc:a008cda78df49442a4df8fbfe1aab6b85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean the inner runtime errors array. <br /></td></tr>
+<tr class="separator:a008cda78df49442a4df8fbfe1aab6b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bc26142f5d227e6003a4145a98ce2db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_sequence_data_object.html">SequenceDataObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_8h.html#a9bc26142f5d227e6003a4145a98ce2db">getRuntimeLogs</a> (int level=0)</td></tr>
+<tr class="memdesc:a9bc26142f5d227e6003a4145a98ce2db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get logs in sequence format.  <a href="#a9bc26142f5d227e6003a4145a98ce2db">More...</a><br /></td></tr>
+<tr class="separator:a9bc26142f5d227e6003a4145a98ce2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9987b8d2b2ee59e2abd159ed5427be7"><td class="memItemLeft" align="right" valign="top"><a id="aa9987b8d2b2ee59e2abd159ed5427be7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_8h.html#aa9987b8d2b2ee59e2abd159ed5427be7">cleanRuntimeLogs</a> ()</td></tr>
+<tr class="memdesc:aa9987b8d2b2ee59e2abd159ed5427be7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean the inner log records array. <br /></td></tr>
+<tr class="separator:aa9987b8d2b2ee59e2abd159ed5427be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:acaf0644c14bf7a45d314781c4168cb83"><td class="memItemLeft" align="right" valign="top"><a id="acaf0644c14bf7a45d314781c4168cb83"></a>
 <a class="el" href="class_controller.html">Controller</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>controller</b></td></tr>
 <tr class="separator:acaf0644c14bf7a45d314781c4168cb83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1a10cca4dd9b9b1b3d303a3a9de77d7"><td class="memItemLeft" align="right" valign="top"><a id="ab1a10cca4dd9b9b1b3d303a3a9de77d7"></a>
+<a class="el" href="class_scenarios.html">Scenarios</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>scenarios</b></td></tr>
+<tr class="separator:ab1a10cca4dd9b9b1b3d303a3a9de77d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3bad02f59ae3d710fa0add479dc6fc1"><td class="memItemLeft" align="right" valign="top"><a id="ad3bad02f59ae3d710fa0add479dc6fc1"></a>
+<a class="el" href="class_config_object.html">ConfigObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>config</b></td></tr>
+<tr class="separator:ad3bad02f59ae3d710fa0add479dc6fc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6eeb564ea3d5f7075828fde30f5cc139"><td class="memItemLeft" align="right" valign="top"><a id="a6eeb564ea3d5f7075828fde30f5cc139"></a>
 InterfaceState&#160;</td><td class="memItemRight" valign="bottom"><b>state</b></td></tr>
 <tr class="separator:a6eeb564ea3d5f7075828fde30f5cc139"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -815,6 +873,29 @@ InterfaceState&#160;</td><td class="memItemRight" valign="bottom"><b>state</b></
 
 </div>
 </div>
+<a id="a329d4f6344e5e0e5b719f428ba0a99c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a329d4f6344e5e0e5b719f428ba0a99c3">&#9670;&nbsp;</a></span>getConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_base_data_object.html">BaseDataObject</a>* getConfig </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the TestConfigObject. </p>
+<p>Should call <a class="el" href="_interface_8h.html#ad051b405402acffc8e8181939b1f3491" title="TODO (longterm) ">parseConfig()</a> before to get parsed results</p>
+<p>If not parsed, return NULL(None for Python) instead of the object and add an error to error list </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="_interface_8h.html#ad051b405402acffc8e8181939b1f3491" title="TODO (longterm) ">parseConfig()</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the object (derived from inner representation, may differ slightly from the input)</dd></dl>
+<p>Get the TestConfigObject. </p>
+
+</div>
+</div>
 <a id="aabf76c78cbb66e48714a6ba6dded74f6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aabf76c78cbb66e48714a6ba6dded74f6">&#9670;&nbsp;</a></span>getConsumes()</h2>
 
@@ -1162,6 +1243,112 @@ InterfaceState&#160;</td><td class="memItemRight" valign="bottom"><b>state</b></
 
 </div>
 </div>
+<a id="a465a75b4afbe36237fe4115bc423d669"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a465a75b4afbe36237fe4115bc423d669">&#9670;&nbsp;</a></span>getRuntimeErrors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_sequence_data_object.html">SequenceDataObject</a>* getRuntimeErrors </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get runtime errors array in Data Object format. </p>
+<dl class="section return"><dt>Returns</dt><dd>the errors array</dd></dl>
+<p>Get runtime errors array in Data Object format. </p>
+
+</div>
+</div>
+<a id="a9bc26142f5d227e6003a4145a98ce2db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bc26142f5d227e6003a4145a98ce2db">&#9670;&nbsp;</a></span>getRuntimeLogs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_sequence_data_object.html">SequenceDataObject</a>* getRuntimeLogs </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>level</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get logs in sequence format. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">level</td><td>level threshold </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the logs array</dd></dl>
+<p>Get logs in sequence format. </p>
+
+</div>
+</div>
+<a id="a0017afaed78304fbd544ec88631fbd35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0017afaed78304fbd544ec88631fbd35">&#9670;&nbsp;</a></span>getScenario()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_base_data_object.html">BaseDataObject</a>* getScenario </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the parameter object from name. </p>
+<p>name should be an element of <a class="el" href="_interface_8h.html#a85e3544cbdb88671aee9b5e974a559a2" title="Get the parameter name list(key set of &#39;parameters&#39; node). ">getParameterNames()</a></p>
+<p>Should call <a class="el" href="_interface_8h.html#ab7e7a77feb7d4af68863236a8049e6a3" title="TODO (longterm) ">parseScenario()</a> before to get parsed results</p>
+<p>If not parsed, return NULL(None for Python) instead of the object and add an error to error list </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="_interface_8h.html#ab7e7a77feb7d4af68863236a8049e6a3" title="TODO (longterm) ">parseScenario()</a> </dd>
+<dd>
+<a class="el" href="_interface_8h.html#aa11191cecd0ecc1b04e786bc40e132c1" title="Get the scenario name list. ">getScenarioNames()</a> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>the scenario name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the object (derived from inner representation, may differ slightly from the input) </dd></dl>
+
+</div>
+</div>
+<a id="aa11191cecd0ecc1b04e786bc40e132c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa11191cecd0ecc1b04e786bc40e132c1">&#9670;&nbsp;</a></span>getScenarioNames()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_base_data_object.html">BaseDataObject</a>* getScenarioNames </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the scenario name list. </p>
+<p>Should call <a class="el" href="_interface_8h.html#ab7e7a77feb7d4af68863236a8049e6a3" title="TODO (longterm) ">parseScenario()</a> before to get parsed results</p>
+<p>If not parsed, return NULL(None for Python) instead of the object and add an error to error list </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="_interface_8h.html#ab7e7a77feb7d4af68863236a8049e6a3" title="TODO (longterm) ">parseScenario()</a> </dd>
+<dd>
+<a class="el" href="_interface_8h.html#a0017afaed78304fbd544ec88631fbd35" title="Get the parameter object from name. ">getScenario(string name)</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the scenario name(in string type) sequence</dd></dl>
+<p>Get the scenario name list. </p>
+
+</div>
+</div>
 <a id="a88376c4165126e9d0c97699027e4dd47"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a88376c4165126e9d0c97699027e4dd47">&#9670;&nbsp;</a></span>getSchemes()</h2>
 
@@ -1248,6 +1435,62 @@ InterfaceState&#160;</td><td class="memItemRight" valign="bottom"><b>state</b></
 <p>It inspects all fields carefully except those related to scenario definition</p>
 <p>It gets fail when there's any error in error list, \ no matter whether it's from other operation or from this parsing operation. \ So please call <a class="el" href="_interface_8h.html#a4bc0965f5110a09ed60d539ca7931dc5" title="Clean the inner errors array. ">cleanErrors()</a> before calling this API. </p><dl class="section return"><dt>Returns</dt><dd>success or fail</dd></dl>
 <p>Parse the doc forest to inner class representation. </p>
+
+</div>
+</div>
+<a id="ad051b405402acffc8e8181939b1f3491"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad051b405402acffc8e8181939b1f3491">&#9670;&nbsp;</a></span>parseConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool parseConfig </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>TODO (longterm) </p>
+<p>Parse the doc forest to inner class representation.</p>
+<p>It inspects "x-config" field carefully.</p>
+<p>It gets fail when there's any error in error list, \ no matter whether it's from other operation or from this parsing operation. \ So please call <a class="el" href="_interface_8h.html#a4bc0965f5110a09ed60d539ca7931dc5" title="Clean the inner errors array. ">cleanErrors()</a> before calling this API.</p>
+<p>Should call <a class="el" href="_interface_8h.html#ab7e7a77feb7d4af68863236a8049e6a3" title="TODO (longterm) ">parseScenario()</a> before. Then can you parse the configs with existing API and scenario definitions.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_interface_8h.html#a6aba94d9ac7bb86de3fb165bbb40f9d2" title="Parse the doc forest to inner class representation. ">parseAPI()</a> </dd>
+<dd>
+<a class="el" href="_interface_8h.html#ad051b405402acffc8e8181939b1f3491" title="TODO (longterm) ">parseConfig()</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>success or fail</dd></dl>
+<p>TODO (longterm)</p>
+<p>&mdash; Parse to Config &mdash; </p>
+
+</div>
+</div>
+<a id="ab7e7a77feb7d4af68863236a8049e6a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7e7a77feb7d4af68863236a8049e6a3">&#9670;&nbsp;</a></span>parseScenario()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool parseScenario </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>TODO (longterm) </p>
+<p>Parse the doc forest to inner class representation.</p>
+<p>It inspects all scenario-related fields carefully.</p>
+<p>It gets fail when there's any error in error list, \ no matter whether it's from other operation or from this parsing operation. \ So please call <a class="el" href="_interface_8h.html#a4bc0965f5110a09ed60d539ca7931dc5" title="Clean the inner errors array. ">cleanErrors()</a> before calling this API.</p>
+<p>Should call <a class="el" href="_interface_8h.html#a6aba94d9ac7bb86de3fb165bbb40f9d2" title="Parse the doc forest to inner class representation. ">parseAPI()</a> before. Then can you parse the scenario.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_interface_8h.html#a6aba94d9ac7bb86de3fb165bbb40f9d2" title="Parse the doc forest to inner class representation. ">parseAPI()</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>success or fail</dd></dl>
+<p>TODO (longterm)</p>
+<p>&mdash; Parse to <a class="el" href="class_scenario.html">Scenario</a> &mdash; </p>
 
 </div>
 </div>
@@ -1676,6 +1919,137 @@ InterfaceState&#160;</td><td class="memItemRight" valign="bottom"><b>state</b></
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>success or fail</dd></dl>
 <p>Init 'swagger: 2.0' &amp; 'x-vee: 2.0 AS' to the specified doc. </p>
+
+</div>
+</div>
+<a id="a2855a71934a3d410d35b6663aa7abc9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2855a71934a3d410d35b6663aa7abc9f">&#9670;&nbsp;</a></span>runScenario()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_base_data_object.html">BaseDataObject</a>* runScenario </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>verbose</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Run the scenario The configurations is from Config Object ("x-config" field), so before call this, parse the field first using <a class="el" href="_interface_8h.html#ad051b405402acffc8e8181939b1f3491" title="TODO (longterm) ">parseConfig()</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">verbose</td><td>whether print debug info to clog</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_interface_8h.html#ad051b405402acffc8e8181939b1f3491" title="TODO (longterm) ">parseConfig()</a></dd></dl>
+<p>If fatal error occurred, it will return NULL, and error message can be gotten from <a class="el" href="_interface_8h.html#a465a75b4afbe36237fe4115bc423d669" title="Get runtime errors array in Data Object format. ">getRuntimeErrors()</a>. In normal cases, the return object is a test report.</p>
+<p>Caution: this function may spend much time.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_interface_8h.html#a465a75b4afbe36237fe4115bc423d669" title="Get runtime errors array in Data Object format. ">getRuntimeErrors()</a></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the report object or NULL</dd></dl>
+<p>Run the scenario The configurations is from Config Object ("x-config" field), so before call this, parse the field first using <a class="el" href="_interface_8h.html#ad051b405402acffc8e8181939b1f3491" title="TODO (longterm) ">parseConfig()</a>. </p>
+
+</div>
+</div>
+<a id="aec685e1d1e17d1123ac15ab9599f3598"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec685e1d1e17d1123ac15ab9599f3598">&#9670;&nbsp;</a></span>runSingleAPI()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_base_data_object.html">BaseDataObject</a>* runSingleAPI </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>method</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Run a single API. </p>
+<p>If it runs successfully, the return data is the report. But there may still some request errors, they can be accessed by "err" if exist. Otherwise, return NULL. In this case, detailed error msg can be obtained by <a class="el" href="_interface_8h.html#a465a75b4afbe36237fe4115bc423d669" title="Get runtime errors array in Data Object format. ">getRuntimeErrors()</a></p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_interface_8h.html#a465a75b4afbe36237fe4115bc423d669" title="Get runtime errors array in Data Object format. ">getRuntimeErrors()</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">api</td><td>the API Name </td></tr>
+    <tr><td class="paramname">method</td><td>the method </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the report object or NULL (see description above)</dd></dl>
+<p>Run a single API. </p>
+
+</div>
+</div>
+<a id="a119ade8f0a0cf728d6d4642a1843e252"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a119ade8f0a0cf728d6d4642a1843e252">&#9670;&nbsp;</a></span>runSingleAPIforAli()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_base_data_object.html">BaseDataObject</a>* runSingleAPIforAli </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>api</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>method</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>secretKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code>2000</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The same API interface for Ali API. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="_interface_8h.html#a465a75b4afbe36237fe4115bc423d669" title="Get runtime errors array in Data Object format. ">getRuntimeErrors()</a> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">api</td><td>the API Name </td></tr>
+    <tr><td class="paramname">method</td><td>the method </td></tr>
+    <tr><td class="paramname">secretKey</td><td>Ali Secret Key </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the report object or NULL (see description above) </dd></dl>
 
 </div>
 </div>

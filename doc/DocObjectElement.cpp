@@ -49,13 +49,15 @@ std::map<std::string, DocElement*> *DocObjectElement::getMemberMap() {
 
 void DocObjectElement::printTo(std::ostream &os) {
     for (int i=0; i<this->level; ++i) os << "  ";
-    os << "[object]" << endl;
+    os << "{" << endl;
     for (std::map<std::string, DocElement*>::iterator ite = this->member.begin();
             ite != this->member.end(); ++ite) {
         for (int i=0; i<=this->level; ++i) os << "  ";
-        os << "key: " << ite->first << endl;
+        os << ite->first << ": " << endl;
         ite->second->printTo(os);
     }
+    for (int i=0; i<this->level; ++i) os << "  ";
+    os << "}" << endl;
 }
 
 DocObjectElement::~DocObjectElement() {

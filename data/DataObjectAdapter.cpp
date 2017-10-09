@@ -9,7 +9,7 @@
 #include "../doc/DocObjectElement.h"
 
 
-DocElement *DataObjectAdapter::toDocElement(BaseDataObject *origin) {
+DocElement *DataObjectAdapter::toDocElement(BaseDataObject *origin, int level) {
     if (origin == NULL) return NULL;
     if (origin->type == BASE) {
         return NULL;
@@ -18,22 +18,23 @@ DocElement *DataObjectAdapter::toDocElement(BaseDataObject *origin) {
         stringstream s;
         s << ((IntegerDataObject*)(origin))->value;
         s.flush();
-        return new DocScalarElement(1, 1, s.str());
+        return new DocScalarElement(1, 1, s.str(), level + 1);
     }
     if (origin->type == NUMBER) {
         stringstream s;
         s << ((NumberDataObject*)(origin))->value;
         s.flush();
-        return new DocScalarElement(1, 1, s.str());
+        return new DocScalarElement(1, 1, s.str(), level + 1);
     }
     if (origin->type == BOOLEAN) {
         stringstream s;
-        s << ((IntegerDataObject*)(origin))->value;
+        bool value = ((BooleanDataObject*)(origin))->value;
+        if (value) s << "true"; else s << "false";
         s.flush();
-        return new DocScalarElement(1, 1, s.str());
+        return new DocScalarElement(1, 1, s.str(), level + 1);
     }
     if (origin->type == STRING) {
-        return new DocScalarElement(1, 1, ((StringDataObject*)(origin))->str);
+        return new DocScalarElement(1, 1, ((StringDataObject*)(origin))->str, level + 1);
     }
     if (origin->type == BYTEFILE) {
         FileDataObject *o = (FileDataObject*)origin;
@@ -41,7 +42,7 @@ DocElement *DataObjectAdapter::toDocElement(BaseDataObject *origin) {
         char *newC = new char[o->len + 1];
         strcpy(newC, c);
         newC[o->len] = 0;
-        return new DocScalarElement(1, 1, string(newC));
+        return new DocScalarElement(1, 1, string(newC), level + 1);
     }
     if (origin->type == CUSTOMIZED) {
         CustomizedDataObject *o = (CustomizedDataObject*)origin;
@@ -49,25 +50,25 @@ DocElement *DataObjectAdapter::toDocElement(BaseDataObject *origin) {
         char *newC = new char[o->len + 1];
         strcpy(newC, c);
         newC[o->len] = 0;
-        return new DocScalarElement(1, 1, string(newC));
+        return new DocScalarElement(1, 1, string(newC), level + 1);
     }
     if (origin->type == SEQUENCE) {
         SequenceDataObject *o = (SequenceDataObject*)origin;
-        DocSequenceElement *seq = new DocSequenceElement(1, 1);
+        DocSequenceElement *seq = new DocSequenceElement(1, 1, level);
         int len = o->length();
         for (int i=0; i<len; ++i) {
             BaseDataObject *item = (*o)[i];
-            seq->add(DataObjectAdapter::toDocElement(item));
+            seq->add(DataObjectAdapter::toDocElement(item, level + 1));
         }
         return seq;
     }
     if (origin->type == OBJECT) {
         ObjectDataObject *o = (ObjectDataObject*)origin;
-        DocObjectElement *ele = new DocObjectElement(1, 1);
+        DocObjectElement *ele = new DocObjectElement(1, 1, level);
         for (map<string, BaseDataObject*>::iterator ite = o->m.begin();
                 ite != o->m.end();
                 ++ite) {
-            ele->add(ite->first, DataObjectAdapter::toDocElement(ite->second));
+            ele->add(ite->first, DataObjectAdapter::toDocElement(ite->second, level + 1));
         }
         return ele;
     }

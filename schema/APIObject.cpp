@@ -417,7 +417,7 @@ bool APIObject::create(string filePath, DocObjectElement *ele, string name, APIR
         /** deprecated **/
         DocElement *deprecatedEle = ele->get("deprecated");
         if (deprecatedEle != NULL) {
-            pair<bool, bool> res = DocElementHelper::parserToBool(deprecatedEle);
+            pair<bool, bool> res = DocElementHelper::parseToBool(deprecatedEle);
             if (res.second) {
                 this->deprecated = res.first;
             } else {
@@ -442,7 +442,7 @@ bool APIObject::create(string filePath, DocObjectElement *ele, string name, APIR
             for (int i=0; i < len; ++i) {
                 DocElement *item = consSeqEle->get(i);
                 APIConstraintObject *obj = new APIConstraintObject();
-                if (obj->create(filePath, consEle)) {
+                if (obj->create(filePath, item)) {
                     this->constraint.push_back(obj);
                 } else
                     return false;

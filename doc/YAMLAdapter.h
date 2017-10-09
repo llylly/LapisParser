@@ -6,7 +6,7 @@
 #define VPARSER_YAMLADAPTER_H
 
 #include <cstdio>
-#include "../parser/libyaml/yaml.h"
+#include "../lib/libyaml/yaml.h"
 #include "../error/Error.h"
 #include "DocElement.h"
 #include "DocScalarElement.h"
@@ -15,6 +15,15 @@
 
 class YAMLAdapter {
 public:
+    /**
+     * Parse a string to DocElement
+     * @param string: the string
+     * @param length: the length of string
+     * @return DocElement*: the root node of the parsed doc tree
+     * NULL means error when parsing
+     */
+    static DocElement* parseStr(const unsigned char *string, int length);
+
     /**
      * Parse a doc to DocElement
      * @param fileName: path of the YAML doc to be parsed

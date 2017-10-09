@@ -122,5 +122,29 @@ PyObject *wrap_getTags
         (PyObject *self, PyObject *args);
 PyObject *wrap_getExternalDocs
         (PyObject *self, PyObject *args);
+PyObject *wrap_parseScenario
+        (PyObject *self, PyObject *args);
+PyObject *wrap_getScenarioNames
+        (PyObject *self, PyObject *args);
+PyObject *wrap_getScenario
+        (PyObject *self, PyObject *args);
+PyObject *wrap_parseConfig
+        (PyObject *self, PyObject *args);
+PyObject *wrap_getConfig
+        (PyObject *self, PyObject *args);
+PyObject *wrap_runSingleAPI
+        (PyObject *self, PyObject *args);
+PyObject *wrap_runSingleAPIforAli
+        (PyObject *self, PyObject *args);
+PyObject *wrap_runScenario
+        (PyObject *self, PyObject *args);
+PyObject *wrap_getRuntimeErrors
+        (PyObject *self, PyObject *args);
+PyObject *wrap_cleanRuntimeErrors
+        (PyObject *self, PyObject *args);
+PyObject *wrap_getRuntimeLogs
+        (PyObject *self, PyObject *args);
+PyObject *wrap_cleanRuntimeLogs
+        (PyObject *self, PyObject *args);
 
 #endif //VPARSER_PYTHONINTERFACE_H

@@ -190,7 +190,7 @@ bool ArraySchema::init(string filePath, DocObjectElement *obj, int schemaType) {
     /* uniqueItems */
     DocElement *uniqueObj = obj->get("uniqueItems");
     if (uniqueObj) {
-        pair<bool, bool> ret = DocElementHelper::parserToBool(uniqueObj);
+        pair<bool, bool> ret = DocElementHelper::parseToBool(uniqueObj);
         if (ret.second) {
             this->uniqueItems = ret.first;
         } else {

@@ -44,6 +44,7 @@ XMLObject *XMLObjectFactory::create(string filePath, string fieldName, DocObject
     if (nameEle) {
         pair<string, bool> nameRes = DocElementHelper::parseToString(nameEle);
         if (nameRes.second) {
+            ans->hasName = true;
             ans->name = nameRes.first;
         } else {
             Error::addError(
@@ -61,6 +62,7 @@ XMLObject *XMLObjectFactory::create(string filePath, string fieldName, DocObject
     if (namespaceEle) {
         pair<string, bool> namespaceRes = DocElementHelper::parseToString(namespaceEle);
         if (namespaceRes.second) {
+            ans->hasNameSpace = true;
             ans->_namespace = namespaceRes.first;
         } else {
             Error::addError(
@@ -78,6 +80,7 @@ XMLObject *XMLObjectFactory::create(string filePath, string fieldName, DocObject
     if (prefixEle) {
         pair<string, bool> prefixRes = DocElementHelper::parseToString(prefixEle);
         if (prefixRes.second) {
+            ans->hasPrefix = true;
             ans->prefix = prefixRes.first;
         } else {
             Error::addError(
@@ -93,7 +96,7 @@ XMLObject *XMLObjectFactory::create(string filePath, string fieldName, DocObject
     /* attribute */
     DocElement *attributeEle = ele->get("attribute");
     if (attributeEle) {
-        pair<bool, bool> attributeRes = DocElementHelper::parserToBool(attributeEle);
+        pair<bool, bool> attributeRes = DocElementHelper::parseToBool(attributeEle);
         if (attributeRes.second) {
             ans->attribute = attributeRes.first;
         } else {
@@ -110,7 +113,7 @@ XMLObject *XMLObjectFactory::create(string filePath, string fieldName, DocObject
     /* wrapped */
     DocElement *wrappedEle = ele->get("wrapped");
     if (wrappedEle) {
-        pair<bool, bool> wrappedRes = DocElementHelper::parserToBool(wrappedEle);
+        pair<bool, bool> wrappedRes = DocElementHelper::parseToBool(wrappedEle);
         if (wrappedRes.second) {
             ans->wrapped = wrappedRes.first;
         } else {
