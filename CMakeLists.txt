@@ -99,6 +99,8 @@ link_directories(lib/libcurl/curl)
 target_link_libraries(VParser crypto)
 target_link_libraries(VParserPy crypto)
 
+include_directories(lib/libxml/)
+
 link_libraries(usr/include/python2.7)
 target_link_libraries(VParser python)
 target_link_libraries(VParserPy python)

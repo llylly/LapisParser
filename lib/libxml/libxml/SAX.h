@@ -12,11 +12,11 @@
 #ifndef __XML_SAX_H__
 #define __XML_SAX_H__
 
-#include "stdio.h"
-#include "stdlib.h"
-#include "xmlversion.h"
-#include "parser.h"
-#include "xlink.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <libxml/xmlversion.h>
+#include <libxml/parser.h>
+#include <libxml/xlink.h>
 
 #ifdef LIBXML_LEGACY_ENABLED
 

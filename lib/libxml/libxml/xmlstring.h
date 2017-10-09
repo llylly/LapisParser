@@ -12,7 +12,7 @@
 #define __XML_STRING_H__
 
 #include <stdarg.h>
-#include "xmlversion.h"
+#include <libxml/xmlversion.h>
 
 #ifdef __cplusplus
 extern "C" {

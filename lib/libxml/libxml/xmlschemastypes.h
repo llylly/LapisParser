@@ -12,12 +12,12 @@
 #ifndef __XML_SCHEMA_TYPES_H__
 #define __XML_SCHEMA_TYPES_H__
 
-#include <xmlversion.h>
+#include <libxml/xmlversion.h>
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 
-#include <schemasInternals.h>
-#include <xmlschemas.h>
+#include <libxml/schemasInternals.h>
+#include <libxml/xmlschemas.h>
 
 #ifdef __cplusplus
 extern "C" {

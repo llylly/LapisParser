@@ -19,13 +19,13 @@
 #ifndef __XML_XPATH_H__
 #define __XML_XPATH_H__
 
-#include <xmlversion.h>
+#include <libxml/xmlversion.h>
 
 #ifdef LIBXML_XPATH_ENABLED
 
-#include <xmlerror.h>
-#include <tree.h>
-#include <hash.h>
+#include <libxml/xmlerror.h>
+#include <libxml/tree.h>
+#include <libxml/hash.h>
 #endif /* LIBXML_XPATH_ENABLED */
 
 #if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
@@ -159,7 +159,7 @@ struct _xmlXPathVariable {
 
 /**
  * xmlXPathEvalFunc:
- * @ctxt: an XPath lib context
+ * @ctxt: an XPath parser context
  * @nargs: the number of arguments passed to the function
  *
  * An XPath evaluation function, the parameters are on the XPath context stack.
@@ -364,7 +364,7 @@ typedef xmlXPathCompExpr *xmlXPathCompExprPtr;
 /**
  * xmlXPathParserContext:
  *
- * An XPath lib context. It contains pure parsing informations,
+ * An XPath parser context. It contains pure parsing informations,
  * an xmlXPathContext, and the stack of objects.
  */
 struct _xmlXPathParserContext {

@@ -7,7 +7,7 @@
  * Author: Daniel Veillard
  */
 
-#include "parser.h"
+#include <libxml/parser.h>
 
 #ifndef __XML_ERROR_H__
 #define __XML_ERROR_H__
@@ -470,7 +470,6 @@ typedef enum {
     XML_IO_EADDRINUSE, /* 1554 */
     XML_IO_EALREADY, /* 1555 */
     XML_IO_EAFNOSUPPORT, /* 1556 */
-    XML_IO_ILLEGAL_XXE, /* 1557 */
     XML_XINCLUDE_RECURSION=1600,
     XML_XINCLUDE_PARSE_VALUE, /* 1601 */
     XML_XINCLUDE_ENTITY_DEF_MISMATCH, /* 1602 */

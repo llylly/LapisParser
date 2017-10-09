@@ -60,6 +60,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="class_ref_expand-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">RefExpand Class Reference</div>  </div>
@@ -76,6 +77,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aee75b0fcb9282b86f22be5f84ee4ecb7"><td class="memItemLeft" align="right" valign="top"><a id="aee75b0fcb9282b86f22be5f84ee4ecb7"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>work</b> ()</td></tr>
 <tr class="separator:aee75b0fcb9282b86f22be5f84ee4ecb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:af016ba6041d1a616bd24b0d1cedac3ba"><td class="memItemLeft" align="right" valign="top"><a id="af016ba6041d1a616bd24b0d1cedac3ba"></a>
+static <a class="el" href="class_doc_element.html">DocElement</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>findByPath</b> (string currentDoc, string path, int line, int col)</td></tr>
+<tr class="separator:af016ba6041d1a616bd24b0d1cedac3ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This phase replace all Reference Object with the entity To prevent infinite recursion, I configured a maximum scan time If there's still reference after too many scans, judge there's infinite recursion and exit. </p>

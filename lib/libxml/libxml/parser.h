@@ -12,14 +12,14 @@
 
 #include <stdarg.h>
 
-#include "xmlversion.h"
-#include "tree.h"
-#include "dict.h"
-#include "hash.h"
-#include "valid.h"
-#include "entities.h"
-#include "xmlerror.h"
-#include "xmlstring.h"
+#include <libxml/xmlversion.h>
+#include <libxml/tree.h>
+#include <libxml/dict.h>
+#include <libxml/hash.h>
+#include <libxml/valid.h>
+#include <libxml/entities.h>
+#include <libxml/xmlerror.h>
+#include <libxml/xmlstring.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -807,9 +807,9 @@ typedef xmlParserInputPtr (*xmlExternalEntityLoader) (const char *URL,
 }
 #endif
 
-#include "encoding.h"
-#include "xmlIO.h"
-#include "globals.h"
+#include <libxml/encoding.h>
+#include <libxml/xmlIO.h>
+#include <libxml/globals.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -1111,8 +1111,7 @@ typedef enum {
     XML_PARSE_HUGE      = 1<<19,/* relax any hardcoded limit from the parser */
     XML_PARSE_OLDSAX    = 1<<20,/* parse using SAX2 interface before 2.7.0 */
     XML_PARSE_IGNORE_ENC= 1<<21,/* ignore internal document encoding hint */
-    XML_PARSE_BIG_LINES = 1<<22,/* Store big lines numbers in text PSVI field */
-    XML_PARSE_NOXXE	= 1<<23 /* Forbid any external entity loading */
+    XML_PARSE_BIG_LINES = 1<<22 /* Store big lines numbers in text PSVI field */
 } xmlParserOption;
 
 XMLPUBFUN void XMLCALL

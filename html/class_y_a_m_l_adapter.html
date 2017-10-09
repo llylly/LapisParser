@@ -68,6 +68,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ac51125dcfeb4a2cf20ea137047b45c8c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_doc_element.html">DocElement</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_y_a_m_l_adapter.html#ac51125dcfeb4a2cf20ea137047b45c8c">parseStr</a> (const unsigned char *string, int length)</td></tr>
+<tr class="memdesc:ac51125dcfeb4a2cf20ea137047b45c8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a string to <a class="el" href="class_doc_element.html">DocElement</a>.  <a href="#ac51125dcfeb4a2cf20ea137047b45c8c">More...</a><br /></td></tr>
+<tr class="separator:ac51125dcfeb4a2cf20ea137047b45c8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afab0b621534d60bbe2b28ba1d199f34a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_doc_element.html">DocElement</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_y_a_m_l_adapter.html#afab0b621534d60bbe2b28ba1d199f34a">parseDoc</a> (const char *fileName)</td></tr>
 <tr class="memdesc:afab0b621534d60bbe2b28ba1d199f34a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a doc to <a class="el" href="class_doc_element.html">DocElement</a>.  <a href="#afab0b621534d60bbe2b28ba1d199f34a">More...</a><br /></td></tr>
 <tr class="separator:afab0b621534d60bbe2b28ba1d199f34a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -108,6 +111,53 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>DocElement*: the root node of the parsed doc tree NULL means error when parsing </dd></dl>
+
+</div>
+</div>
+<a id="ac51125dcfeb4a2cf20ea137047b45c8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac51125dcfeb4a2cf20ea137047b45c8c">&#9670;&nbsp;</a></span>parseStr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_doc_element.html">DocElement</a> * YAMLAdapter::parseStr </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned char *&#160;</td>
+          <td class="paramname"><em>string</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parse a string to <a class="el" href="class_doc_element.html">DocElement</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">string</td><td>the string </td></tr>
+    <tr><td class="paramname">length</td><td>the length of string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>DocElement*: the root node of the parsed doc tree NULL means error when parsing </dd></dl>
+<p>Important: this function is used for parsing API response. Therefore we should insure no errors added to the error list.</p>
 
 </div>
 </div>

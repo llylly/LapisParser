@@ -10,12 +10,12 @@
 #ifndef __XML_XMLREADER_H__
 #define __XML_XMLREADER_H__
 
-#include <xmlversion.h>
-#include <tree.h>
-#include <xmlIO.h>
+#include <libxml/xmlversion.h>
+#include <libxml/tree.h>
+#include <libxml/xmlIO.h>
 #ifdef LIBXML_SCHEMAS_ENABLED
-#include <relaxng.h>
-#include <xmlschemas.h>
+#include <libxml/relaxng.h>
+#include <libxml/xmlschemas.h>
 #endif
 
 #ifdef __cplusplus
@@ -393,7 +393,7 @@ typedef void *  xmlTextReaderLocatorPtr;
  * @arg: the user argument
  * @msg: the message
  * @severity: the severity of the error
- * @locator: a locator indicating where the error occured
+ * @locator: a locator indicating where the error occurred
  *
  * Signature of an error callback from a reader parser
  */

@@ -14,8 +14,8 @@
 
 #include <stdio.h>
 #include <limits.h>
-#include "xmlversion.h"
-#include "xmlstring.h"
+#include <libxml/xmlversion.h>
+#include <libxml/xmlstring.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,7 +31,7 @@ typedef xmlParserInputBuffer *xmlParserInputBufferPtr;
 typedef struct _xmlOutputBuffer xmlOutputBuffer;
 typedef xmlOutputBuffer *xmlOutputBufferPtr;
 
-/* lib.h */
+/* parser.h */
 typedef struct _xmlParserInput xmlParserInput;
 typedef xmlParserInput *xmlParserInputPtr;
 
@@ -330,7 +330,7 @@ typedef enum {
 #ifdef __cplusplus
 }
 #endif
-#include "xmlregexp.h"
+#include <libxml/xmlregexp.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -532,7 +532,7 @@ struct _xmlNode {
 typedef enum {
     XML_DOC_WELLFORMED		= 1<<0, /* document is XML well formed */
     XML_DOC_NSVALID		= 1<<1, /* document is Namespace valid */
-    XML_DOC_OLD10		= 1<<2, /* parsed with old XML-1.0 lib */
+    XML_DOC_OLD10		= 1<<2, /* parsed with old XML-1.0 parser */
     XML_DOC_DTDVALID		= 1<<3, /* DTD validation was successful */
     XML_DOC_XINCLUDE		= 1<<4, /* XInclude substitution was done */
     XML_DOC_USERBUILT		= 1<<5, /* Document was built using the API
@@ -1304,7 +1304,7 @@ XMLPUBFUN xmlNodePtr XMLCALL
 }
 #endif
 #ifndef __XML_PARSER_H__
-#include <xmlmemory.h>
+#include <libxml/xmlmemory.h>
 #endif
 
 #endif /* __XML_TREE_H__ */

@@ -22,7 +22,7 @@
 #ifndef __XML_CHAR_ENCODING_H__
 #define __XML_CHAR_ENCODING_H__
 
-#include "xmlversion.h"
+#include <libxml/xmlversion.h>
 
 #ifdef LIBXML_ICONV_ENABLED
 #include <iconv.h>
@@ -42,9 +42,9 @@ extern "C" {
  * It also supports ASCII, ISO-8859-1, and UTF16 (LE and BE) by default.
  *
  * Anything else would have to be translated to UTF8 before being
- * given to the lib itself. The BOM for UTF16 and the encoding
+ * given to the parser itself. The BOM for UTF16 and the encoding
  * declaration are looked at and a converter is looked for at that
- * point. If not found the lib stops here as asked by the XML REC. A
+ * point. If not found the parser stops here as asked by the XML REC. A
  * converter can be registered by the user using xmlRegisterCharEncodingHandler
  * but the current form doesn't allow stateful transcoding (a serious
  * problem agreed !). If iconv has been found it will be used
@@ -155,7 +155,7 @@ struct _xmlCharEncodingHandler {
 #ifdef __cplusplus
 }
 #endif
-#include "tree.h"
+#include <libxml/tree.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -11,7 +11,7 @@
 #ifndef __NANO_HTTP_H__
 #define __NANO_HTTP_H__
 
-#include <xmlversion.h>
+#include <libxml/xmlversion.h>
 
 #ifdef LIBXML_HTTP_ENABLED
 

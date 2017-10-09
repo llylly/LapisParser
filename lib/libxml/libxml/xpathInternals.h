@@ -12,8 +12,8 @@
 #ifndef __XML_XPATH_INTERNALS_H__
 #define __XML_XPATH_INTERNALS_H__
 
-#include <xmlversion.h>
-#include <xpath.h>
+#include <libxml/xmlversion.h>
+#include <libxml/xpath.h>
 
 #ifdef LIBXML_XPATH_ENABLED
 
@@ -33,7 +33,7 @@ extern "C" {
  */
 /**
  * xmlXPathSetError:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  * @err:  an xmlXPathError code
  *
  * Raises an error.
@@ -44,7 +44,7 @@ extern "C" {
 
 /**
  * xmlXPathSetArityError:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  *
  * Raises an XPATH_INVALID_ARITY error.
  */
@@ -53,7 +53,7 @@ extern "C" {
 
 /**
  * xmlXPathSetTypeError:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  *
  * Raises an XPATH_INVALID_TYPE error.
  */
@@ -62,7 +62,7 @@ extern "C" {
 
 /**
  * xmlXPathGetError:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  *
  * Get the error code of an XPath context.
  *
@@ -72,7 +72,7 @@ extern "C" {
 
 /**
  * xmlXPathCheckError:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  *
  * Check if an XPath error was raised.
  *
@@ -82,7 +82,7 @@ extern "C" {
 
 /**
  * xmlXPathGetDocument:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  *
  * Get the document of an XPath context.
  *
@@ -92,7 +92,7 @@ extern "C" {
 
 /**
  * xmlXPathGetContextNode:
- * @ctxt: an XPath lib context
+ * @ctxt: an XPath parser context
  *
  * Get the context node of an XPath context.
  *
@@ -113,7 +113,7 @@ XMLPUBFUN void * XMLCALL
 
 /**
  * xmlXPathReturnBoolean:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  * @val:  a boolean
  *
  * Pushes the boolean @val on the context stack.
@@ -123,7 +123,7 @@ XMLPUBFUN void * XMLCALL
 
 /**
  * xmlXPathReturnTrue:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  *
  * Pushes true on the context stack.
  */
@@ -131,7 +131,7 @@ XMLPUBFUN void * XMLCALL
 
 /**
  * xmlXPathReturnFalse:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  *
  * Pushes false on the context stack.
  */
@@ -139,7 +139,7 @@ XMLPUBFUN void * XMLCALL
 
 /**
  * xmlXPathReturnNumber:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  * @val:  a double
  *
  * Pushes the double @val on the context stack.
@@ -149,7 +149,7 @@ XMLPUBFUN void * XMLCALL
 
 /**
  * xmlXPathReturnString:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  * @str:  a string
  *
  * Pushes the string @str on the context stack.
@@ -159,7 +159,7 @@ XMLPUBFUN void * XMLCALL
 
 /**
  * xmlXPathReturnEmptyString:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  *
  * Pushes an empty string on the stack.
  */
@@ -168,7 +168,7 @@ XMLPUBFUN void * XMLCALL
 
 /**
  * xmlXPathReturnNodeSet:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  * @ns:  a node-set
  *
  * Pushes the node-set @ns on the context stack.
@@ -178,7 +178,7 @@ XMLPUBFUN void * XMLCALL
 
 /**
  * xmlXPathReturnEmptyNodeSet:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  *
  * Pushes an empty node-set on the context stack.
  */
@@ -187,7 +187,7 @@ XMLPUBFUN void * XMLCALL
 
 /**
  * xmlXPathReturnExternal:
- * @ctxt:  an XPath lib context
+ * @ctxt:  an XPath parser context
  * @val:  user data
  *
  * Pushes user data on the context stack.
@@ -197,7 +197,7 @@ XMLPUBFUN void * XMLCALL
 
 /**
  * xmlXPathStackIsNodeSet:
- * @ctxt: an XPath lib context
+ * @ctxt: an XPath parser context
  *
  * Check if the current value on the XPath stack is a node set or
  * an XSLT value tree.
@@ -211,7 +211,7 @@ XMLPUBFUN void * XMLCALL
 
 /**
  * xmlXPathStackIsExternal:
- * @ctxt: an XPath lib context
+ * @ctxt: an XPath parser context
  *
  * Checks if the current value on the XPath stack is an external
  * object.

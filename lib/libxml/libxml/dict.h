@@ -24,8 +24,8 @@ __XML_EXTERNC typedef struct _xmlDict xmlDict;
 __XML_EXTERNC typedef xmlDict *xmlDictPtr;
 
 #include <limits.h>
-#include "xmlversion.h"
-#include "tree.h"
+#include <libxml/xmlversion.h>
+#include <libxml/tree.h>
 
 #ifdef __cplusplus
 extern "C" {

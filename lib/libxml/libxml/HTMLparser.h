@@ -12,8 +12,8 @@
 
 #ifndef __HTML_PARSER_H__
 #define __HTML_PARSER_H__
-#include <xmlversion.h>
-#include <parser.h>
+#include <libxml/xmlversion.h>
+#include <libxml/parser.h>
 
 #ifdef LIBXML_HTML_ENABLED
 
@@ -115,12 +115,12 @@ XMLPUBFUN htmlParserCtxtPtr XMLCALL
 XMLPUBFUN int XMLCALL
 			htmlParseDocument(htmlParserCtxtPtr ctxt);
 XMLPUBFUN htmlDocPtr XMLCALL
-			htmlSAXParseDoc	(xmlChar *cur,
+			htmlSAXParseDoc	(const xmlChar *cur,
 					 const char *encoding,
 					 htmlSAXHandlerPtr sax,
 					 void *userData);
 XMLPUBFUN htmlDocPtr XMLCALL
-			htmlParseDoc	(xmlChar *cur,
+			htmlParseDoc	(const xmlChar *cur,
 					 const char *encoding);
 XMLPUBFUN htmlDocPtr XMLCALL
 			htmlSAXParseFile(const char *filename,

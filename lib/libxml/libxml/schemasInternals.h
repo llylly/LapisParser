@@ -3,7 +3,7 @@
  * Description: internal interfaces for the XML Schemas handling
  *              and schema validity checking
  *		The Schemas development is a Work In Progress.
- *              Some of those interfaces are not garanteed to be API or ABI stable !
+ *              Some of those interfaces are not guaranteed to be API or ABI stable !
  *
  * Copy: See Copyright for the status of this software.
  *
@@ -14,13 +14,13 @@
 #ifndef __XML_SCHEMA_INTERNALS_H__
 #define __XML_SCHEMA_INTERNALS_H__
 
-#include <xmlversion.h>
+#include <libxml/xmlversion.h>
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 
-#include <xmlregexp.h>
-#include <hash.h>
-#include <dict.h>
+#include <libxml/xmlregexp.h>
+#include <libxml/hash.h>
+#include <libxml/dict.h>
 
 #ifdef __cplusplus
 extern "C" {

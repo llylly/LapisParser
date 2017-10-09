@@ -10,8 +10,8 @@
 #ifndef __XML_IO_H__
 #define __XML_IO_H__
 
-#include "stdio.h"
-#include "xmlversion.h"
+#include <stdio.h>
+#include <libxml/xmlversion.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -114,10 +114,10 @@ typedef int (XMLCALL *xmlOutputCloseCallback) (void * context);
 }
 #endif
 
-#include "globals.h"
-#include "tree.h"
-#include "parser.h"
-#include "encoding.h"
+#include <libxml/globals.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
+#include <libxml/encoding.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -296,14 +296,6 @@ XMLPUBFUN xmlParserInputPtr XMLCALL
  */
 XMLPUBFUN xmlParserInputPtr XMLCALL
 	xmlNoNetExternalEntityLoader	(const char *URL,
-					 const char *ID,
-					 xmlParserCtxtPtr ctxt);
-
-/*
- * A predefined entity loader external entity expansion
- */
-XMLPUBFUN xmlParserInputPtr XMLCALL
-	xmlNoXxeExternalEntityLoader	(const char *URL,
 					 const char *ID,
 					 xmlParserCtxtPtr ctxt);
 

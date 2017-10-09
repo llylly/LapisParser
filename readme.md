@@ -29,16 +29,16 @@ A useful parser for Lapis scripts. Provides Python API as interface.
 
 1. Download the repository
 
-2. Download libyaml(>0.1.7) & compile
+2. Download libyaml (0.1.7) & compile
 
     [Download Page](http://pyyaml.org/wiki/LibYAML)
 
 3. Copy `libyaml.a` (the static library file) to `parser/libyaml` folder, 
     and `yaml.h` (the header file) to the same folder
 
-4. Download libxml2(>2.9.0) & compile
+4. Download libxml2 (2.9.6) & compile
 
-    [Download Page](http://www.xmlsoft.org/downloads.html)
+    [Download Page](https://git.gnome.org/browse/libxml2/tag/?h=v2.9.6)
 
 5. Copy `libxml2.a` (the static library file) to `parser/libxml` folder,
     and the header file folder(the `include/libxml` folder) to `parser/libxml` folder
@@ -84,11 +84,13 @@ Then enjoy it :)
     **Every C++ interface here has a strictly corresponding Python one except for `init()`, which is executed during package initialization.**
 
     + string (C++) - String (Python)
-
     + BaseDataObject*(C++) - String / Bool / int / float / dict / list (all accepted) (Python)
-
     + Default parameters are also valid for Python inferfaces
 
+
+#### Document
+
+​	Please view `html/_interface_8h.html`.
 
 #### Progress
 

@@ -23,9 +23,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#include <xmlversion.h>
-#include <tree.h>
-#include <xpath.h>
+#include <libxml/xmlversion.h>
+#include <libxml/tree.h>
+#include <libxml/xpath.h>
 
 /*
  * XML Canonicazation
@@ -43,7 +43,7 @@ extern "C" {
  *    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
  *    xmlSubstituteEntitiesDefault(1);
  *
- * or corresponding lib context setting:
+ * or corresponding parser context setting:
  *    xmlParserCtxtPtr ctxt;
  *
  *    ...

@@ -11,7 +11,7 @@
 #ifndef __NANO_FTP_H__
 #define __NANO_FTP_H__
 
-#include <xmlversion.h>
+#include <libxml/xmlversion.h>
 
 #ifdef LIBXML_FTP_ENABLED
 
