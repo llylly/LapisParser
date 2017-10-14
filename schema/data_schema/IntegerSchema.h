@@ -26,6 +26,12 @@ public:
     bool init(string filePath, DocObjectElement *obj, int schemaType) override;
 
     DataSchemaObject *findField(const vector<string> &fieldVec, int index) override;
+
+    /**
+     * The Integer Schema of size
+     * @return A newly created Integer Schema
+     */
+    static IntegerSchema* getSizeFieldSchema();
 };
 
 

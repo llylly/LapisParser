@@ -3,6 +3,7 @@
 //
 
 #include "ArraySchema.h"
+#include "IntegerSchema.h"
 
 ArraySchema::ArraySchema(): DataSchemaObject() {
     type = TYPE_ARRAY;
@@ -251,6 +252,9 @@ ArraySchema::~ArraySchema() {
 
 DataSchemaObject *ArraySchema::findField(const vector<string> &fieldVec, int index) {
     if (index == fieldVec.size()) return this;
+    // "size" extension
+    if (fieldVec[index] == "size")
+        return IntegerSchema::getSizeFieldSchema()->findField(fieldVec, index + 1);
     size_t *errP = new size_t();
     stoi(fieldVec[index], errP, 10);
     if (*errP != fieldVec[index].length()) {

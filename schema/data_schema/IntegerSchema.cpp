@@ -4,6 +4,7 @@
 
 #include "IntegerSchema.h"
 
+IntegerSchema *sizeIntegerSchema = new IntegerSchema();
 
 IntegerSchema::IntegerSchema(): DataSchemaObject() {
     type = TYPE_INTEGER;
@@ -237,4 +238,10 @@ DataSchemaObject *IntegerSchema::findField(const vector<string> &fieldVec, int i
         return this;
     else
         return NULL;
+}
+
+IntegerSchema *IntegerSchema::getSizeFieldSchema() {
+    sizeIntegerSchema->allowEmptyValue = false;
+    sizeIntegerSchema->minimum = 0;
+    return sizeIntegerSchema;
 }

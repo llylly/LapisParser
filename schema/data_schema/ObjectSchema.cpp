@@ -3,6 +3,7 @@
 //
 
 #include "ObjectSchema.h"
+#include "IntegerSchema.h"
 
 
 ObjectSchema::ObjectSchema(): DataSchemaObject() {
@@ -204,6 +205,8 @@ DataSchemaObject *ObjectSchema::findField(const vector<string> &fieldVec, int in
     else {
         if (properties.count(fieldVec[index]) > 0)
             return properties[fieldVec[index]]->findField(fieldVec, index + 1);
+        else if (fieldVec[index] == "size")
+            return IntegerSchema::getSizeFieldSchema()->findField(fieldVec, index + 1);
         else
             return NULL;
     }

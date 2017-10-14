@@ -225,6 +225,7 @@ string ExecTransformer::baseSerialize(
         s.flush();
         return s.str();
     }
+    return "";
 }
 
 DocElement *ExecTransformer::deserialize(string s, DataSchemaObject *schema) {
