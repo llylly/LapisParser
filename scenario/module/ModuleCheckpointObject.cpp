@@ -39,6 +39,9 @@ BaseDataObject *ModuleCheckpointObject::toDataObject() {
         case OUTSET_CHECKPOINT:
             typeStr = "outSet";
             break;
+        case ISSETSIZE_CHECKPOINT:
+            typeStr = "isSetSize";
+            break;
         case EQUAL_CHECKPOINT:
             typeStr = "equal";
             break;
@@ -50,7 +53,7 @@ BaseDataObject *ModuleCheckpointObject::toDataObject() {
     }
     (*res)["type"] = new StringDataObject(typeStr);
 
-    if ((this->type == INSET_CHECKPOINT) || (this->type == OUTSET_CHECKPOINT)) {
+    if ((this->type == INSET_CHECKPOINT) || (this->type == OUTSET_CHECKPOINT) || (this->type == ISSETSIZE_CHECKPOINT)) {
         (*res)["setName"] = new StringDataObject(this->setName);
     }
     if ((this->type == EQUAL_CHECKPOINT) || (this->type == UNEQUAL_CHECKPOINT)) {
@@ -125,6 +128,8 @@ ModuleCheckpointObject *ModuleCheckpointObjectFactory::create(string filePath, s
                 res->type = INSET_CHECKPOINT;
             else if (typeStr == "outSet")
                 res->type = OUTSET_CHECKPOINT;
+            else if (typeStr == "isSetSize")
+                res->type = ISSETSIZE_CHECKPOINT;
             else if (typeStr == "equal")
                 res->type = EQUAL_CHECKPOINT;
             else if (typeStr == "unequal")
@@ -137,7 +142,7 @@ ModuleCheckpointObject *ModuleCheckpointObjectFactory::create(string filePath, s
         }
     }
 
-    if ((res->type == INSET_CHECKPOINT) || (res->type == OUTSET_CHECKPOINT)) {
+    if ((res->type == INSET_CHECKPOINT) || (res->type == OUTSET_CHECKPOINT) || (res->type == ISSETSIZE_CHECKPOINT)) {
         /** setName (required) **/
         DocElement *setNameEle = objEle->get("setName");
         if (setNameEle == NULL) {

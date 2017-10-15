@@ -17,6 +17,7 @@ public:
     int getLength();
     void printTo(std::ostream &os) override;
     ~DocSequenceElement();
+    bool equals(DocElement *ele) override;
 
 private:
     std::vector<DocElement*> arr;

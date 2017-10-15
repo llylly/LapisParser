@@ -19,6 +19,7 @@ public:
     std::map<std::string, DocElement*> *getMemberMap();
     void printTo(std::ostream &os) override;
     ~DocObjectElement();
+    bool equals(DocElement *ele) override;
 
 private:
     std::map<std::string, DocElement*> member;

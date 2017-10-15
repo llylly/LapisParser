@@ -52,3 +52,17 @@ DocSequenceElement::~DocSequenceElement() {
         delete *ite;
     }
 }
+
+bool DocSequenceElement::equals(DocElement *ele) {
+    if (ele == NULL) return false;
+    if (ele->type != DOC_SEQUENCE) return false;
+    DocSequenceElement *seqEle = (DocSequenceElement*)ele;
+    if (this->getLength() != seqEle->getLength()) return false;
+    int len = this->getLength();
+    for (int i=0; i<len; ++i) {
+        DocElement *nowItem = this->get(i);
+        if (nowItem == NULL) return false;
+        if (!nowItem->equals(seqEle->get(i))) return false;
+    }
+    return true;
+}

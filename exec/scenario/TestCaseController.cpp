@@ -3,6 +3,7 @@
 //
 
 #include "TestCaseController.h"
+#include "../../schema/data_schema/IntegerSchema.h"
 
 TestCaseController::TestCaseController(Scenario *scenario, ConfigObject *config, string host, string basePath) {
     assert(scenario != NULL);
@@ -272,48 +273,63 @@ TestCaseReport *TestCaseController::run() {
                         break;
                     }
                     vector<string> &fieldVec = cpNow->fieldVec;
+                    bool needDel = false;
                     for (int i=1; i<fieldVec.size(); ++i) {
+                        // add "size" support
                         if (nowField->type == OBJECT) {
                             ObjectDataObject *objField = (ObjectDataObject*)nowField;
-                            if (!objField->hasKey(fieldVec[i]) ||
-                                    (nowSchema->type != DataSchemaObject::TYPE_OBJECT) ||
-                                    (((ObjectSchema*)nowSchema)->properties.count(fieldVec[i]) == 0)) {
-                                checkPointPass = false;
-                                break;
+                            if ((fieldVec[i] == "size") && (((ObjectSchema*)nowSchema)->properties.count(fieldVec[i]) == 0)) {
+                                // 'size' is an extra field
+                                nowField = new IntegerDataObject(objField->size());
+                                nowSchema = IntegerSchema::getSizeFieldSchema();
+                                needDel = true;
                             } else {
-                                nowField = (*objField)[fieldVec[i]];
-                                nowSchema = ((ObjectSchema*)nowSchema)->properties[fieldVec[i]];
+                                if (!objField->hasKey(fieldVec[i]) ||
+                                    (nowSchema->type != DataSchemaObject::TYPE_OBJECT) ||
+                                    (((ObjectSchema *) nowSchema)->properties.count(fieldVec[i]) == 0)) {
+                                    checkPointPass = false;
+                                    break;
+                                } else {
+                                    nowField = (*objField)[fieldVec[i]];
+                                    nowSchema = ((ObjectSchema *) nowSchema)->properties[fieldVec[i]];
+                                }
                             }
-
                         }
                         else if (nowField->type == SEQUENCE) {
                             SequenceDataObject *seqField = (SequenceDataObject*)nowField;
-                            if ((seqField->length() == 0) ||
+                            if (fieldVec[i] == "size") {
+                                nowField = new IntegerDataObject(seqField->length());
+                                nowSchema = IntegerSchema::getSizeFieldSchema();
+                                needDel = true;
+                            } else {
+                                if ((seqField->length() == 0) ||
                                     (nowSchema->type != DataSchemaObject::TYPE_ARRAY)) {
-                                checkPointPass = false;
-                                break;
+                                    checkPointPass = false;
+                                    break;
+                                }
+                                int ind;
+                                try {
+                                    ind = stoi(fieldVec[i]);
+                                } catch (std::invalid_argument) {
+                                    checkPointPass = false;
+                                    break;
+                                } catch (std::out_of_range) {
+                                    checkPointPass = false;
+                                    break;
+                                }
+                                if (ind >= 0)
+                                    nowField = (*seqField)[ind % seqField->length()];
+                                else {
+                                    ind = abs(ind) % seqField->length();
+                                    if (ind == 0) ind = seqField->length();
+                                    nowField = (*seqField)[seqField->length() - ind];
+                                }
+                                nowSchema = ((ArraySchema *) nowSchema)->items;
                             }
-                            int ind;
-                            try {
-                                ind = stoi(fieldVec[i]);
-                            } catch (std::invalid_argument) {
-                                checkPointPass = false;
-                                break;
-                            } catch (std::out_of_range) {
-                                checkPointPass = false;
-                                break;
-                            }
-                            if (ind >= 0)
-                                nowField = (*seqField)[ind % seqField->length()];
-                            else {
-                                ind = abs(ind) % seqField->length();
-                                if (ind == 0) ind = seqField->length();
-                                nowField = (*seqField)[seqField->length() - ind];
-                            }
-                            nowSchema = ((ArraySchema*)nowSchema)->items;
                         }
                         else {
                             checkPointPass = false;
+                            if (needDel) delete nowField;
                             break;
                         }
                     }
@@ -326,20 +342,36 @@ TestCaseReport *TestCaseController::run() {
                     if ((cpNow->type == EQUAL_CHECKPOINT) || (cpNow->type == UNEQUAL_CHECKPOINT)) {
                         BaseDataObject *guest = schema->transform(cpNow->value);
                         if (guest == NULL) {
+                            if (needDel) delete nowField;
                             checkPointPass = false;
                             break;
                         } else {
                             if ((cpNow->type == EQUAL_CHECKPOINT) && (!nowField->equals(guest))) {
+                                if (needDel) delete nowField;
                                 checkPointPass = false;
                                 delete guest;
                                 break;
                             }
                             if ((cpNow->type == UNEQUAL_CHECKPOINT) && (nowField->equals(guest))) {
+                                if (needDel) delete nowField;
                                 checkPointPass = false;
                                 delete guest;
                                 break;
                             }
                             delete guest;
+                        }
+                    }
+
+                    if (cpNow->type == ISSETSIZE_CHECKPOINT) {
+                        int num = -1;
+                        if (nowField->type == INTEGER)
+                            num = (int)((IntegerDataObject*)nowField)->value;
+                        if (nowField->type == NUMBER)
+                            num = (int)((NumberDataObject*)nowField)->value;
+                        if (num != nowSets[cpNow->setName].size()) {
+                            checkPointPass = false;
+                            if (needDel) delete nowField;
+                            break;
                         }
                     }
 
@@ -359,13 +391,16 @@ TestCaseReport *TestCaseController::run() {
                             if (in_set) break;
                         }
                         if ((cpNow->type == INSET_CHECKPOINT) && (!in_set)) {
+                            if (needDel) delete nowField;
                             checkPointPass = false;
                             break;
                         }
                         if ((cpNow->type == OUTSET_CHECKPOINT) && (in_set)) {
+                            if (needDel) delete nowField;
                             checkPointPass = false;
                             break;
                         }
+                        if (needDel) delete nowField;
                     }
                 }
 
@@ -410,7 +445,9 @@ TestCaseReport *TestCaseController::run() {
                                 obj = requesterReport->request[object[1]], p = 2;
                             if (object[0] == "out")
                                 obj = response, p = 1;
-                            for (int i = p; i < object.size() - 1; ++i) {
+                            bool needDel = false;
+                            // add "size" support
+                            for (int i = p; i < object.size(); ++i) {
                                 if (obj == NULL)  {
                                     setEffectPass = false;
                                     break;
@@ -418,36 +455,47 @@ TestCaseReport *TestCaseController::run() {
                                 if (obj->type == OBJECT) {
                                     ObjectDataObject *objObj = (ObjectDataObject*)obj;
                                     if (!objObj->hasKey(object[i])) {
-                                        setEffectPass = false;
-                                        break;
+                                        if (object[i] == "size") {
+                                            needDel = true;
+                                            obj = new IntegerDataObject(objObj->size());
+                                        } else {
+                                            setEffectPass = false;
+                                            break;
+                                        }
                                     }
                                     obj = (*objObj)[object[i]];
                                 }
                                 else if (obj->type == SEQUENCE) {
                                     SequenceDataObject *seqObj = (SequenceDataObject*)obj;
-                                    if (seqObj->length() == 0) {
-                                        setEffectPass = false;
-                                        break;
-                                    }
-                                    int ind;
-                                    try {
-                                        ind = stoi(object[i]);
-                                    } catch (std::invalid_argument) {
-                                        checkPointPass = false;
-                                        break;
-                                    } catch (std::out_of_range) {
-                                        checkPointPass = false;
-                                        break;
-                                    }
-                                    if (ind >= 0)
-                                        obj = (*seqObj)[ind % seqObj->length()];
-                                    else {
-                                        ind = abs(ind) % seqObj->length();
-                                        if (ind == 0) ind = seqObj->length();
-                                        obj = (*seqObj)[seqObj->length() - ind];
+                                    if (object[i] == "size") {
+                                        needDel = true;
+                                        obj = new IntegerDataObject(seqObj->length());
+                                    } else {
+                                        if (seqObj->length() == 0) {
+                                            setEffectPass = false;
+                                            break;
+                                        }
+                                        int ind;
+                                        try {
+                                            ind = stoi(object[i]);
+                                        } catch (std::invalid_argument) {
+                                            checkPointPass = false;
+                                            break;
+                                        } catch (std::out_of_range) {
+                                            checkPointPass = false;
+                                            break;
+                                        }
+                                        if (ind >= 0)
+                                            obj = (*seqObj)[ind % seqObj->length()];
+                                        else {
+                                            ind = abs(ind) % seqObj->length();
+                                            if (ind == 0) ind = seqObj->length();
+                                            obj = (*seqObj)[seqObj->length() - ind];
+                                        }
                                     }
                                 } else {
                                     setEffectPass = false;
+                                    if (needDel) delete obj;
                                     break;
                                 }
                             }
@@ -456,17 +504,36 @@ TestCaseReport *TestCaseController::run() {
                                 break;
                             }
                             DocElement *ele = DataObjectAdapter::toDocElement(obj);
-                            nowSet.push_back(ele);
+                            bool exist = false;
+                            if (scenario->sets[seNow->setName]->unique) {
+                                for (vector<DocElement*>::iterator iite = nowSet.begin(); iite != nowSet.end(); ++iite)
+                                    if (((*iite) != NULL) && ((*iite)->equals(ele))) {
+                                        exist = true;
+                                        break;
+                                    }
+                            }
+                            if (!exist)
+                                nowSet.push_back(ele);
+                            if (needDel) delete obj;
                         }
                         if (seNow->type == DELETE_SETEFFECT) {
                             string &condition = seNow->condition;
+                            vector<DocElement*> toDel;
+                            toDel.clear();
+                            /** TODO: illness delete **/
                             for (vector<DocElement*>::iterator iite = nowSet.begin();
                                     iite != nowSet.end();
                                     ++iite)
                                 if (ModuleSetEffectObject::needDelete(condition, requesterReport->request, response, *iite)) {
-                                    delete *iite;
-                                    nowSet.erase(iite);
+//                                    toDel.push_back(*iite);
+//                                    nowSet.erase(iite);
                                 }
+                            for (vector<DocElement*>::iterator iite = toDel.begin();
+                                    iite != toDel.end();
+                                    ++iite)
+                                ;
+//                                delete *iite;
+                            nowSet.clear();
                         }
                     }
                 }
@@ -530,15 +597,17 @@ bool TestCaseController::checkConstraintsWith(string nowModule) {
                     else
                         l = i - nowCons->maxInterval;
                 }
-                else if (nowCons->type == APIConstraintType::AFTER) {
-                    l = i + nowCons->minInterval;
-                    if (nowCons->maxInterval == -1)
-                        r = (int)moduleSeq.size() - 1;
-                    else
-                        r = i + nowCons->maxInterval;
-                    if (r > moduleSeq.size() - 1)
-                        r = (int)moduleSeq.size() - 1;
-                } else {
+                    /** TODO: now temporarily discard AFTER constraints **/
+//                else if (nowCons->type == APIConstraintType::AFTER) {
+//                    l = i + nowCons->minInterval;
+//                    if (nowCons->maxInterval == -1)
+//                        r = (int)moduleSeq.size() - 1;
+//                    else
+//                        r = i + nowCons->maxInterval;
+//                    if (r > moduleSeq.size() - 1)
+//                        r = (int)moduleSeq.size() - 1;
+//                }
+                else {
                     // err
                     l = 0, r = -1;
                 }

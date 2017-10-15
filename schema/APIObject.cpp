@@ -605,13 +605,13 @@ bool APIObject::create(string filePath, DocObjectElement *ele, string name, APIR
             );
             return false;
         }
-        ParameterObject *fatherParam = NULL;
-        if (responses.count(code)) fatherParam = parameters[code]; else fatherParam = parameters["default"];
+        ResponseObject *fatherResp = NULL;
+        if (responses.count(code)) fatherResp = responses[code]; else fatherResp = responses["default"];
         for (vector<ResponseExtensionObject*>::iterator iite = ite->second.begin();
                 iite != ite->second.end();
                 ++iite) {
             ResponseExtensionObject *nowObj = *iite;
-            if (fatherParam->schema->findField(nowObj->fieldVec, 0) == NULL) {
+            if (fatherResp->schema->findField(nowObj->fieldVec, 0) == NULL) {
                 Error::addError(
                         new FieldIllegalError(filePath, ele->line, ele->col, "operation.responses.x-extension.field")
                 );
@@ -654,6 +654,23 @@ bool APIObject::create(string filePath, DocObjectElement *ele, string name, APIR
     return true;
 }
 
+bool APIObject::checkResponseName(string str) {
+    for (map<string, ResponseObject*>::iterator ite = this->responses.begin();
+            ite != this->responses.end(); ++ite) {
+        if (str == ite->first)
+            return true;
+    }
+    for (map<string, vector<ResponseExtensionObject*>>::iterator ite = this->responseExtensions.begin();
+            ite != this->responseExtensions.end();
+            ++ite)
+        for (vector<ResponseExtensionObject*>::iterator iite = ite->second.begin();
+                iite != ite->second.end();
+                ++iite) {
+            if (str == (*iite)->name)
+                return true;
+        }
+    return false;
+}
 
 /**
  * TODO

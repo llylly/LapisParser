@@ -18,7 +18,7 @@ map<string, BaseDataObject*> *ModuleRequester::dataGen() {
          ++ite) {
         const string &paramName = ite->first;
         ParameterObject *nowParam = ite->second;
-        if (DataSchemaObject::randomReal() <= nowParam->nullProbability)
+        if ((!nowParam->required) && (DataSchemaObject::randomReal() <= nowParam->nullProbability))
             continue;
         BaseDataObject *nowData = nowParam->schema->generate();
 
@@ -159,32 +159,34 @@ map<string, BaseDataObject*> *ModuleRequester::dataGen() {
 
                 /** try to generate new value */
                 BaseDataObject *newValue = NULL;
-                for (int tr=0; tr<MAX_TRY_TIMES; ++tr) {
+
+                for (int tr = 0; tr < MAX_TRY_TIMES; ++tr) {
                     if (nowCons->type == RANDOM_INPUTCONSTRAINT) {
                         newValue = nowCons->from->generate();
                     }
                     if (nowCons->type == FROMSET_INPUTCONSTRAINT) {
-                        if ((this->sets == NULL) || (this->sets->count(nowCons->setName) == 0)
-                                || ((*(this->sets))[nowCons->setName].size() == 0)) {
-                            if (nowCons->setPolicy == SIZE_SETPOLICY)
-                                newValue = new IntegerDataObject(0);
-                            if (nowCons->setPolicy == MEMBER_SETPOLICY) {
+                        if (nowCons->setPolicy == SIZE_SETPOLICY)
+                            newValue = new IntegerDataObject(int((*this->sets)[nowCons->setName].size()));
+                        else if (nowCons->setPolicy == MEMBER_SETPOLICY) {
+                            bool find = false;
+                            int setSize = int((*this->sets)[nowCons->setName].size());
+                            if (setSize > 0) {
+                                for (int tr = 0; tr < MAX_TRY_TIMES; ++tr) {
+                                    DocElement *nowEle = (*this->sets)[nowCons->setName][rand() % setSize];
+                                    BaseDataObject *nowObj = nowSchema->transform(nowEle);
+                                    if (nowObj != NULL) {
+                                        newValue = nowObj, find = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!find) {
                                 if (nowCons->nullPolicy == RANDOM_NULLPOLICY)
                                     newValue = DataObjectAdapter::deepCopy(nowField);
                                 if (nowCons->nullPolicy == BREAK_NULLPOLICY) {
                                     this->err = new SetEmptyTerminate(nowCons->getKeyName(), nowCons->setName);
                                     return NULL;
                                 }
-                            }
-                        } else {
-                            if (nowCons->setPolicy == SIZE_SETPOLICY)
-                                newValue = new IntegerDataObject(int((*this->sets)[nowCons->setName].size()));
-                            if (nowCons->setPolicy == MEMBER_SETPOLICY) {
-                                int setSize = int((*this->sets)[nowCons->setName].size());
-                                DocElement *nowEle = (*this->sets)[nowCons->setName][rand() % setSize];
-                                BaseDataObject *nowObj = nowSchema->transform(nowEle);
-                                if (nowObj != NULL)
-                                    newValue = nowObj;
                             }
                         }
                     }

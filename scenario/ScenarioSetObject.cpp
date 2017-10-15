@@ -93,7 +93,17 @@ ScenarioSetObject *ScenarioSetObjectFactory::create(string filePath, DocElement 
             int defaultCnt = defaultEle->getLength();
             for (int i=0; i<defaultCnt; ++i) {
                 DocElement *now = defaultEle->get(i);
-                res->_default.push_back(now);
+                bool exist = false;
+                // unique constraint
+                if (res->unique) {
+                    for (vector<DocElement*>::iterator ite = res->_default.begin(); ite !=res->_default.end(); ++ite)
+                        if (((*ite) != NULL) && ((*ite)->equals(now))) {
+                            exist = true;
+                            break;
+                        }
+                }
+                if (!exist)
+                    res->_default.push_back(now);
             }
         }
     }

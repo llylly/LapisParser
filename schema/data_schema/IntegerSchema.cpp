@@ -243,5 +243,6 @@ DataSchemaObject *IntegerSchema::findField(const vector<string> &fieldVec, int i
 IntegerSchema *IntegerSchema::getSizeFieldSchema() {
     sizeIntegerSchema->allowEmptyValue = false;
     sizeIntegerSchema->minimum = 0;
+    sizeIntegerSchema->valid = true;
     return sizeIntegerSchema;
 }

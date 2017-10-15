@@ -13,6 +13,7 @@ public:
     std::string getValue();
     void printTo(std::ostream &os) override;
     ~DocScalarElement();
+    bool equals(DocElement *ele) override;
 
 private:
     std::string value;

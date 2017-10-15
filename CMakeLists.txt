@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.6)
 project(VParser)
 
+# the path has 'python2.7' folder
+set(PYTHON_INCLUDE_PATH /Users/lly/anaconda/include)
+set(PYTHON_LIB_PATH /Users/lly/anaconda/lib/libpython2.7.dylib)
+
 set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_CXX_FLAGS "-fPIC")
@@ -101,8 +105,8 @@ target_link_libraries(VParserPy crypto)
 
 include_directories(lib/libxml/)
 
-link_libraries(usr/include/python2.7)
-target_link_libraries(VParser python)
-target_link_libraries(VParserPy python)
+include_directories(BEFORE ${PYTHON_INCLUDE_PATH})
+target_link_libraries(VParser ${PYTHON_LIB_PATH})
+target_link_libraries(VParserPy ${PYTHON_LIB_PATH})
 
 

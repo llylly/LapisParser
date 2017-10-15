@@ -72,3 +72,17 @@ DocObjectElement::~DocObjectElement() {
         //delete ite->second;
     }
 }
+
+bool DocObjectElement::equals(DocElement *ele) {
+    if (ele == NULL) return false;
+    if (ele->type != DOC_OBJECT) return false;
+    DocObjectElement *objEle = (DocObjectElement*)ele;
+    if (this->getSize() != objEle->getSize()) return false;
+    for (map<std::string, DocElement*>::iterator ite = this->member.begin();
+            ite != this->member.end(); ++ite) {
+        if (objEle->get(ite->first) == NULL) return false;
+        if (ite->second == NULL) return false;
+        if (!ite->second->equals(objEle->get(ite->first))) return false;
+    }
+    return true;
+}

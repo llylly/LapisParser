@@ -3,6 +3,7 @@
 //
 
 #include "ScenarioModuleObject.h"
+#include "../schema/data_schema/IntegerSchema.h"
 
 ScenarioModuleObject::ScenarioModuleObject() {
     this->name = "";
@@ -217,7 +218,7 @@ ScenarioModuleObject *ScenarioModuleObjectFactory::create(string filePath, DocEl
             } else {
                 /** including & excluding state check **/
                 for (vector<string>::iterator ite = o->excluding.begin(); ite != o->excluding.end(); ++ite) {
-                    if (res->api->responses.count(*ite) + res->api->responseExtensions.count(*ite) == 0) {
+                    if (!res->api->checkResponseName(*ite)) {
                         Error::addError(
                                 new InvalidResponseTypeError(filePath, repeatEle->line, repeatEle->col,
                                                              "x-scenario.modules.repeat.excluding",
@@ -228,7 +229,7 @@ ScenarioModuleObject *ScenarioModuleObjectFactory::create(string filePath, DocEl
                     }
                 }
                 for (vector<string>::iterator ite = o->including.begin(); ite != o->including.end(); ++ite) {
-                    if (res->api->responses.count(*ite) + res->api->responseExtensions.count(*ite) == 0) {
+                    if (!res->api->checkResponseName(*ite)) {
                         Error::addError(
                                 new InvalidResponseTypeError(filePath, repeatEle->line, repeatEle->col,
                                                              "x-scenario.modules.repeat.including",
@@ -267,7 +268,9 @@ ScenarioModuleObject *ScenarioModuleObjectFactory::create(string filePath, DocEl
 
                     /** key validation **/
                     /** the key must be actually pointed to one of request parameters or its subfield **/
+                    /** 'size' support added **/
                     {
+                        // the first element is "out"
                         vector<string> &fieldVec = item->fieldVec;
                         string &paramName = fieldVec[1];
                         bool legal = true;
@@ -279,24 +282,32 @@ ScenarioModuleObject *ScenarioModuleObjectFactory::create(string filePath, DocEl
                                 if (schema->type == DataSchemaObject::TYPE_OBJECT) {
                                     ObjectSchema *objSchema = (ObjectSchema*)schema;
                                     if (objSchema->properties.count(fieldVec[i]) == 0) {
-                                        legal = false;
-                                        break;
+                                        if (fieldVec[i] == "size")
+                                            schema = IntegerSchema::getSizeFieldSchema();
+                                        else {
+                                            legal = false;
+                                            break;
+                                        }
                                     } else {
                                         schema = objSchema->properties[fieldVec[i]];
                                     }
                                 }
                                 else if (schema->type == DataSchemaObject::TYPE_ARRAY) {
-                                    try {
-                                        stoi(fieldVec[i]);
-                                    } catch (std::invalid_argument) {
-                                        legal = false;
-                                        break;
-                                    } catch (std::out_of_range) {
-                                        legal = false;
-                                        break;
+                                    if (fieldVec[i] == "size")
+                                        schema = IntegerSchema::getSizeFieldSchema();
+                                    else {
+                                        try {
+                                            stoi(fieldVec[i]);
+                                        } catch (std::invalid_argument) {
+                                            legal = false;
+                                            break;
+                                        } catch (std::out_of_range) {
+                                            legal = false;
+                                            break;
+                                        }
+                                        ArraySchema *arrSchema = (ArraySchema *) schema;
+                                        schema = arrSchema->items;
                                     }
-                                    ArraySchema *arrSchema = (ArraySchema*)schema;
-                                    schema = arrSchema->items;
                                 }
                                 else {
                                     legal = false;
@@ -338,7 +349,7 @@ ScenarioModuleObject *ScenarioModuleObjectFactory::create(string filePath, DocEl
 
                     /** including & excluding state check **/
                     for (vector<string>::iterator iite = item->excluding.begin(); iite != item->excluding.end(); ++iite) {
-                        if (res->api->responses.count(*iite) + res->api->responseExtensions.count(*iite) == 0) {
+                        if (!res->api->checkResponseName(*iite)) {
                             Error::addError(
                                     new InvalidResponseTypeError(filePath, ite->second->line, ite->second->col, "x-scenario.modules.checkpoint.excluding",
                                                                  *iite)
@@ -348,7 +359,7 @@ ScenarioModuleObject *ScenarioModuleObjectFactory::create(string filePath, DocEl
                         }
                     }
                     for (vector<string>::iterator iite = item->including.begin(); iite != item->including.end(); ++iite) {
-                        if (res->api->responses.count(*iite) + res->api->responseExtensions.count(*iite) == 0) {
+                        if (!res->api->checkResponseName(*iite)) {
                             Error::addError(
                                     new InvalidResponseTypeError(filePath, ite->second->line, ite->second->col, "x-scenario.modules.checkpoint.including",
                                                                  *iite)
@@ -384,7 +395,7 @@ ScenarioModuleObject *ScenarioModuleObjectFactory::create(string filePath, DocEl
 
                     /** including & excluding state check **/
                     for (vector<string>::iterator iite = item->excluding.begin(); iite != item->excluding.end(); ++iite) {
-                        if (res->api->responses.count(*iite) + res->api->responseExtensions.count(*iite) == 0) {
+                        if (!res->api->checkResponseName(*iite)) {
                             Error::addError(
                                     new InvalidResponseTypeError(filePath, nowEle->line, nowEle->col, "x-scenario.modules.setEffects.excluding",
                                                                  *iite)
@@ -394,7 +405,7 @@ ScenarioModuleObject *ScenarioModuleObjectFactory::create(string filePath, DocEl
                         }
                     }
                     for (vector<string>::iterator iite = item->including.begin(); iite != item->including.end(); ++iite) {
-                        if (res->api->responses.count(*iite) + res->api->responseExtensions.count(*iite) == 0) {
+                        if (!res->api->checkResponseName(*iite)) {
                             Error::addError(
                                     new InvalidResponseTypeError(filePath, nowEle->line, nowEle->col, "x-scenario.modules.setEffects.including",
                                                                  *iite)
@@ -429,7 +440,7 @@ ScenarioModuleObject *ScenarioModuleObjectFactory::create(string filePath, DocEl
 
                 /** including & excluding state check **/
                 for (vector<string>::iterator iite = nowObj->excluding.begin(); iite != nowObj->excluding.end(); ++iite) {
-                    if (res->api->responses.count(*iite) + res->api->responseExtensions.count(*iite) == 0) {
+                    if (!res->api->checkResponseName(*iite)) {
                         Error::addError(
                                 new InvalidResponseTypeError(filePath, nowEle->line, nowEle->col, "x-scenario.modules.transState.excluding",
                                                              *iite)
@@ -439,7 +450,7 @@ ScenarioModuleObject *ScenarioModuleObjectFactory::create(string filePath, DocEl
                     }
                 }
                 for (vector<string>::iterator iite = nowObj->including.begin(); iite != nowObj->including.end(); ++iite) {
-                    if (res->api->responses.count(*iite) + res->api->responseExtensions.count(*iite) == 0) {
+                    if (!res->api->checkResponseName(*iite)) {
                         Error::addError(
                                 new InvalidResponseTypeError(filePath, nowEle->line, nowEle->col, "x-scenario.modules.transState.including",
                                                              *iite)

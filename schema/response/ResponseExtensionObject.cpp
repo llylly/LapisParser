@@ -37,6 +37,9 @@ ResponseExtensionObject::ResponseExtensionObject(): AbstractResponseObject() {
 }
 
 ResponseExtensionObject::ResponseExtensionObject(const ResponseExtensionObject &source): AbstractResponseObject(source) {
+    this->name = source.name;
+    this->field = source.field;
+
     this->fieldVec.clear();
     for (vector<string>::const_iterator ite = source.fieldVec.cbegin();
             ite != source.fieldVec.cend();

@@ -63,6 +63,13 @@ public:
      */
     BaseDataObject* toDataObject() override;
 
+    /**
+     * Check whether the name specifies a response or extended response
+     * @param str: the name
+     * @return true or false
+     */
+    bool checkResponseName(string str);
+
 
     bool valid;
     vector<string> tags;

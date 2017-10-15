@@ -306,8 +306,8 @@
         delete[] arg;                           \
         return Py_None;                         \
     }                                           \
-    if ((arg[2]) && PyInt_Check(arg[2]))        \
-        arg2 = PyInt_AsLong(arg[2]);            \
+    if ((arg[2]) && PyString_Check(arg[2]))     \
+        arg2 = PyString_AsString(arg[2]);       \
     else {                                      \
         delete[] arg;                           \
         return Py_None;                         \

@@ -1,9 +1,10 @@
-cmake-build-debug/*
+cmake-build-debug/
 *.udb
-.idea/*
+.idea/
 *.so
 *.yaml
 *.xml
+*.pkl
 Makefile
 CMakeCache.txt
 CMakeFiles/*

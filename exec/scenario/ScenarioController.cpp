@@ -4,7 +4,7 @@
 
 #include "ScenarioController.h"
 
-ScenarioController::ScenarioController(ConfigObject *config, Scenarios *scenarios, ScenarioReport *report, string host, string baseaPath,
+ScenarioController::ScenarioController(ConfigObject *config, Scenarios *scenarios, ScenarioReport *report, string host, string basePath,
                                        bool verbose, ostream &os): os(os) {
     assert(config != NULL);
     assert(scenarios != NULL);

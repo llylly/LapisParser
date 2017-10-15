@@ -27,6 +27,8 @@ public:
     virtual ~DocElement();
 
     static map<string, DocElement*> docs;
+
+    virtual bool equals(DocElement *ele) = 0;
 };
 
 class DocElementHelper {

@@ -3,6 +3,7 @@
 //
 
 #include "ModuleSetEffectObject.h"
+#include "../../schema/data_schema/IntegerSchema.h"
 
 ModuleSetEffectObject::ModuleSetEffectObject() {
     this->type = INVALID_SETEFFECT;
@@ -87,6 +88,7 @@ bool ModuleSetEffectObject::conditionCheck(string condition, APIObject *api) {
 }
 
 bool ModuleSetEffectObject::inFieldCheck(const vector<string> &inObj, APIObject *api) {
+    /** add "size" support **/
     if (inObj.size() < 2) return false;
     if (inObj[0] != "in") return false;
     if (api == NULL) return false;
@@ -96,19 +98,28 @@ bool ModuleSetEffectObject::inFieldCheck(const vector<string> &inObj, APIObject 
     for (int i=2; i<inObj.size(); ++i) {
         if (schema->type == DataSchemaObject::TYPE_OBJECT) {
             ObjectSchema *objSchema = (ObjectSchema*)schema;
-            if (objSchema->properties.count(inObj[i]) == 0) return false;
+            if (objSchema->properties.count(inObj[i]) == 0) {
+                if (inObj[i] == "size")
+                    schema = IntegerSchema::getSizeFieldSchema();
+                else
+                return false;
+            }
             schema = objSchema->properties[inObj[i]];
         }
         else if (schema->type == DataSchemaObject::TYPE_ARRAY) {
-            try {
-                int index = stoi(inObj[i]);
-            } catch (std::invalid_argument) {
-                return false;
-            } catch (std::out_of_range) {
-                return false;
+            if (inObj[i] == "size")
+                schema = IntegerSchema::getSizeFieldSchema();
+            else {
+                try {
+                    int index = stoi(inObj[i]);
+                } catch (std::invalid_argument) {
+                    return false;
+                } catch (std::out_of_range) {
+                    return false;
+                }
+                ArraySchema *arrSchema = (ArraySchema *) schema;
+                schema = arrSchema->items;
             }
-            ArraySchema *arrSchema = (ArraySchema*)schema;
-            schema = arrSchema->items;
         }
         else
             return false;

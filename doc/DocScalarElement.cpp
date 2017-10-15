@@ -23,3 +23,10 @@ void DocScalarElement::printTo(std::ostream &os) {
 }
 
 DocScalarElement::~DocScalarElement() {}
+
+bool DocScalarElement::equals(DocElement *ele) {
+    if (ele == NULL) return false;
+    if (ele->type != DOC_SCALAR) return false;
+    DocScalarElement *scaEle = (DocScalarElement*)ele;
+    return this->value == scaEle->value;
+}

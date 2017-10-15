@@ -48,13 +48,6 @@ void BaseRequester::work() {
     // this guy saved to report
     map<string, BaseDataObject*> *dataParam = this->dataGen();
 
-    if (this->report) {
-        for (map<string, BaseDataObject*>::iterator ite = dataParam->begin();
-             ite != dataParam->end();
-             ++ite)
-            this->report->request[ite->first] = ite->second;
-    }
-
     if (this->err != NULL) {
         if (this->report)
             this->report->err = this->err, this->report->endTime = time(0);
@@ -67,6 +60,13 @@ void BaseRequester::work() {
             delete dataParam;
         }
         return;
+    }
+
+    if (this->report) {
+        for (map<string, BaseDataObject*>::iterator ite = dataParam->begin();
+             ite != dataParam->end();
+             ++ite)
+            this->report->request[ite->first] = ite->second;
     }
     /***----stage 1 end----***/
 
@@ -472,31 +472,37 @@ pair<string, BaseDataObject*> *BaseRequester::responseParse(
             ResponseExtensionObject *nowExt = *ite;
             BaseDataObject *nowField = obj;
             vector<string> &fieldVec = nowExt->fieldVec;
+            bool needDel = false;
             for (vector<string>::iterator iite = fieldVec.begin();
                     iite != fieldVec.end();
                     ++iite) {
+                // add "size" support
                 if (nowField->type == SEQUENCE) {
                     SequenceDataObject *seq = (SequenceDataObject*)nowField;
-                    if (seq->length() == 0) {
-                        nowField = NULL;
-                        break;
-                    } else {
-                        int ind = 0;
-                        try {
-                            ind = stoi(*iite);
-                        } catch (std::invalid_argument) {
+                    if ((*iite) == "size")
+                        needDel = true, nowField = new IntegerDataObject(seq->length());
+                    else {
+                        if (seq->length() == 0) {
                             nowField = NULL;
                             break;
-                        } catch (std::out_of_range) {
-                            nowField = NULL;
-                            break;
-                        }
-                        if (ind >= 0)
-                            nowField = (*seq)[ind % seq->length()];
-                        else {
-                            ind = abs(ind) % seq->length();
-                            if (ind == 0) ind = seq->length();
-                            nowField = (*seq)[seq->length() - ind];
+                        } else {
+                            int ind = 0;
+                            try {
+                                ind = stoi(*iite);
+                            } catch (std::invalid_argument) {
+                                nowField = NULL;
+                                break;
+                            } catch (std::out_of_range) {
+                                nowField = NULL;
+                                break;
+                            }
+                            if (ind >= 0)
+                                nowField = (*seq)[ind % seq->length()];
+                            else {
+                                ind = abs(ind) % seq->length();
+                                if (ind == 0) ind = seq->length();
+                                nowField = (*seq)[seq->length() - ind];
+                            }
                         }
                     }
                 }
@@ -505,11 +511,19 @@ pair<string, BaseDataObject*> *BaseRequester::responseParse(
                     if (objField->hasKey(*iite)) {
                         nowField = (*objField)[*iite];
                     } else {
-                        nowField = NULL;
-                        break;
+                        if ((*iite) == "size")
+                            needDel = true, nowField = new IntegerDataObject(objField->size());
+                        else {
+                            nowField = NULL;
+                            break;
+                        }
                     }
                 }
                 else {
+                    if (needDel) {
+                        delete nowField;
+                        needDel = false;
+                    }
                     nowField = NULL;
                     break;
                 }
@@ -517,8 +531,10 @@ pair<string, BaseDataObject*> *BaseRequester::responseParse(
             if (nowField == NULL) continue;
             if (nowExt->schema->check(nowField)) {
                 responseType = nowExt->name;
+                if (needDel) delete nowField;
                 break;
             }
+            if (needDel) delete nowField;
         }
     }
 

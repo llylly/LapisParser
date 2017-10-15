@@ -314,7 +314,7 @@ Scenario *ScenarioFactory::create(string filePath, DocObjectElement *ele, Contro
                 if (res->modules[nowObj->from]->type == SCENARIO_NORMAL_MODULE) {
                     APIObject *api = res->modules[nowObj->from]->api;
                     for (vector<string>::iterator iite = nowObj->excluding.begin(); iite != nowObj->excluding.end(); ++iite) {
-                        if (api->responses.count(*iite) + api->responseExtensions.count(*iite) == 0) {
+                        if (!api->checkResponseName(*iite)) {
                             Error::addError(
                                     new InvalidResponseTypeError(filePath, nowEle->line, nowEle->col, "x-scenario.modules.connections.excluding",
                                                                  *iite)
@@ -324,7 +324,7 @@ Scenario *ScenarioFactory::create(string filePath, DocObjectElement *ele, Contro
                         }
                     }
                     for (vector<string>::iterator iite = nowObj->including.begin(); iite != nowObj->including.end(); ++iite) {
-                        if (api->responses.count(*iite) + api->responseExtensions.count(*iite) == 0) {
+                        if (!api->checkResponseName(*iite)) {
                             Error::addError(
                                     new InvalidResponseTypeError(filePath, nowEle->line, nowEle->col, "x-scenario.modules.connections.including",
                                                                  *iite)
