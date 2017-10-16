@@ -5,13 +5,14 @@
 #include "TestCaseController.h"
 #include "../../schema/data_schema/IntegerSchema.h"
 
-TestCaseController::TestCaseController(Scenario *scenario, ConfigObject *config, string host, string basePath) {
+TestCaseController::TestCaseController(Scenario *scenario, ConfigObject *config, string host, string basePath, int verbose) {
     assert(scenario != NULL);
     assert(config != NULL);
     this->scenario = scenario;
     this->config = config;
     this->host = host;
     this->basePath = basePath;
+    this->verbose = verbose;
 }
 
 TestCaseReport *TestCaseController::run() {
@@ -49,6 +50,8 @@ TestCaseReport *TestCaseController::run() {
     }
     /** main loop **/
     while (true) {
+        if (verbose == 2)
+            cerr << "  step #" << moduleSeq.size() << "  " << moduleSeq[moduleSeq.size()-1] << endl;
         if (ans->getTerminate() != NULL) {
             /** has been terminated for some reason, break **/
             break;

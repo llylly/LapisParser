@@ -832,8 +832,8 @@ PyObject *wrap_runSingleAPIforAli
 
 PyObject *wrap_runScenario
         (PyObject *self, PyObject *args) {
-    /** IbOo **/
-    PARSE_IbOo(args, runScenario)
+    /** IiOo **/
+    PARSE_IiOo(args, runScenario)
 }
 
 PyObject *wrap_getRuntimeErrors

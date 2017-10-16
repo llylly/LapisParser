@@ -17,7 +17,7 @@
 
 class TestCaseController {
 public:
-    TestCaseController(Scenario *scenario, ConfigObject *config, string host, string basePath);
+    TestCaseController(Scenario *scenario, ConfigObject *config, string host, string basePath, int verbose = 0);
     TestCaseReport *run();
 
 private:
@@ -25,6 +25,7 @@ private:
     ConfigObject *config;
     string host;
     string basePath;
+    int verbose;
 
     string nowModule;
     map<string, vector<DocElement*>> nowSets;

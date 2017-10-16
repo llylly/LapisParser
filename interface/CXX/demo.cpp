@@ -25,12 +25,11 @@ void sendReq(string name, string method) {
 int main(int argc, char** argv) {
     init();
 
-    addDocFromFile("post_server.yaml");
+    addDocFromFile("ali_sample.yaml");
     parseAPI();
     getAPINames();
     parseScenario();
     parseConfig();
-    print_obj(cout, runScenario());
     Logger::printLog(cerr);
 
     return 0;

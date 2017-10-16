@@ -25,7 +25,7 @@ BaseDataObject *ScenarioReport::toDataObject() {
     (*ans)["scenarioName"] = new StringDataObject(this->scenarioName);
     (*ans)["startTime"] = new IntegerDataObject(this->startTime);
     (*ans)["endTime"] = new IntegerDataObject(this->endTime);
-    (*ans)["lastTime "] = new IntegerDataObject(this->lastTime);
+    (*ans)["lastTime"] = new IntegerDataObject(this->lastTime);
     (*ans)["totTestCase"] = new IntegerDataObject(this->testCases.size());
     SequenceDataObject *seq = new SequenceDataObject();
     for (vector<TestCaseReport*>::iterator ite = this->testCases.begin();

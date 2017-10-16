@@ -13,12 +13,12 @@
 class ScenarioController {
 public:
     ScenarioController(ConfigObject *config, Scenarios *scenarios, ScenarioReport *report, string host, string basePath,
-                       bool verbose=false, ostream &os=cout);
+                       int verbose=0, ostream &os=cout);
     ~ScenarioController();
 
     void run();
 
-    bool verbose;
+    int verbose;
     ostream &os;
 
     ConfigObject *config;

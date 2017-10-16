@@ -1219,7 +1219,7 @@ bool parseScenario() {
 /** --- Scenario Info Acquire --- **/
 
 BaseDataObject *getScenarioNames() {
-    if (scenarios == NULL || state != SCENARIO_PARSED) {
+    if (scenarios == NULL || ((state == DOC_TREE) || (state == API_PARSED))) {
         Error::addError(
                 new NotScenarioParsedError()
         );
@@ -1234,7 +1234,7 @@ BaseDataObject *getScenarioNames() {
 }
 
 BaseDataObject *getScenario(string name) {
-    if (scenarios == NULL || state != SCENARIO_PARSED) {
+    if (scenarios == NULL || ((state == DOC_TREE) || (state == API_PARSED))) {
         Error::addError(
                 new NotScenarioParsedError()
         );
@@ -1389,7 +1389,7 @@ BaseDataObject *runSingleAPIforAli(string name, string method, string secretKey,
 
 /** --- Run Scenario --- **/
 
-BaseDataObject *runScenario(bool verbose) {
+BaseDataObject *runScenario(int verbose) {
     BaseDataObject *ret = NULL;
 
     if ((state != CONFIG_PARSED) || (config == NULL) ||

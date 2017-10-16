@@ -844,7 +844,7 @@ extern InterfaceState state;
      *
      * @return the report object or NULL
      */
-    BaseDataObject *runScenario(bool verbose = false);
+    BaseDataObject *runScenario(int verbose = 0);
 
 /** @cond --- Errors --- @endcond **/
 

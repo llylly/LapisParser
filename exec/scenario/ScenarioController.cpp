@@ -5,7 +5,7 @@
 #include "ScenarioController.h"
 
 ScenarioController::ScenarioController(ConfigObject *config, Scenarios *scenarios, ScenarioReport *report, string host, string basePath,
-                                       bool verbose, ostream &os): os(os) {
+                                       int verbose, ostream &os): os(os) {
     assert(config != NULL);
     assert(scenarios != NULL);
     assert(report != NULL);
@@ -28,7 +28,7 @@ void ScenarioController::run() {
         os.flush();
     }
     for (int nowCase = 0; nowCase < this->config->maxCase; ++nowCase) {
-        TestCaseController *testCase = new TestCaseController(this->scenario, config, host, basePath);
+        TestCaseController *testCase = new TestCaseController(this->scenario, config, host, basePath, this->verbose);
         TestCaseReport *nowRep = testCase->run();
         if (nowRep != NULL)
             report->addTestCase(nowRep);
