@@ -162,6 +162,6 @@ def ali_sample():
 
 if __name__ == '__main__':
     deletePkl()
-    # map_sample()
-    post_sample()
+    map_sample()
+    # post_sample()
     # ali_sample()

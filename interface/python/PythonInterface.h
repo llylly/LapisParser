@@ -110,6 +110,10 @@ PyObject *wrap_generateRandomDataFromDataSchema
         (PyObject *self, PyObject *args);
 PyObject *wrap_verifyDataByDataSchema
         (PyObject *self, PyObject *args);
+PyObject *wrap_generateRandomDataFromAPISchema
+        (PyObject *self, PyObject *args);
+PyObject *wrap_verifyDataByAPISchema
+        (PyObject *self, PyObject *args);
 PyObject *wrap_getParameterNames
         (PyObject *self, PyObject *args);
 PyObject *wrap_getParameter

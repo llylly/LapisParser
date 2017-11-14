@@ -1089,6 +1089,78 @@ bool verifyDataByDataSchema(BaseDataObject *data, string name) {
         return false;
 }
 
+BaseDataObject *generateRandomDataFromAPISchema(string name, string method) {
+    if (state == DOC_TREE || controller == NULL) {
+        Error::addError(
+                new NotParsedError()
+        );
+        return NULL;
+    }
+    if (controller->paths != NULL) {
+        pair<string, APIRequestMethod> requestName;
+        requestName.first = name;
+        if ((method == "get") || (method == "GET"))
+            requestName.second = APIRequestMethod::GET;
+        else if ((method == "post") || (method == "POST"))
+            requestName.second = APIRequestMethod::POST;
+        else
+            return NULL;
+        APIObject *obj = controller->paths->getObjectByName(requestName);
+        if (obj != NULL) {
+            ObjectDataObject *ans = new ObjectDataObject();
+            for (map<string, ParameterObject*>::iterator ite = obj->parameters.begin();
+                    ite != obj->parameters.end();
+                    ++ite) {
+                if ((ite->second->required) || (DataSchemaObject::randomReal() > ite->second->nullProbability))
+                    (*ans)[ite->first] = ite->second->schema->generate();
+            }
+            return ans;
+        } else
+            return NULL;
+    } else
+        return NULL;
+}
+
+bool verifyDataByAPISchema(BaseDataObject *data, string name, string method) {
+    if (state == DOC_TREE || controller == NULL) {
+        Error::addError(
+                new NotParsedError()
+        );
+        return false;
+    }
+    if (controller->paths != NULL) {
+        pair<string, APIRequestMethod> requestName;
+        requestName.first = name;
+        if ((method == "get") || (method == "GET"))
+            requestName.second = APIRequestMethod::GET;
+        else if ((method == "post") || (method == "POST"))
+            requestName.second = APIRequestMethod::POST;
+        else
+            return false;
+        APIObject *obj = controller->paths->getObjectByName(requestName);
+        if (obj != NULL) {
+            if (data->type == DATA_OBJECT_TYPE::OBJECT) {
+                bool ans = true;
+                ObjectDataObject *objData = (ObjectDataObject*)data;
+                for (map<string, BaseDataObject*>::iterator ite = objData->m.begin();
+                        ite != objData->m.end();
+                        ++ite) {
+                    if (obj->parameters.count(ite->first) > 0) {
+                        ans &= (obj->parameters)[ite->first]->schema->check(ite->second);
+                    } else {
+                        ans = false;
+                        break;
+                    }
+                }
+                return ans;
+            } else
+                return false;
+        } else
+            return false;
+    } else
+        return false;
+}
+
 BaseDataObject *getParameterNames() {
     if (state == DOC_TREE || controller == NULL) {
         Error::addError(

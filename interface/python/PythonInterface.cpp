@@ -72,6 +72,34 @@
     return ret ? Py_True : Py_False;            \
 }
 
+#define PARSE_ossOb(args, func) {               \
+    PyObject **arg = parseHelper(args, 3, 3);   \
+    if (arg == NULL) return Py_None;            \
+                                                \
+    BaseDataObject *arg0 = PythonObjectAdapter::toDataObject(arg[0]); \
+    string arg1 = "", arg2 = "";                \
+    if ((arg[1]) && PyString_Check(arg[1]))     \
+        arg1 = PyString_AsString(arg[1]);       \
+    else {                                      \
+        delete[] arg;                           \
+        delete arg0;                            \
+        return Py_None;                         \
+    }                                           \
+    if ((arg[2]) && PyString_Check(arg[2]))     \
+        arg2 = PyString_AsString(arg[2]);       \
+    else {                                      \
+        delete[] arg;                           \
+        delete arg0;                            \
+        return Py_None;                         \
+    }                                           \
+    delete[] arg;                               \
+                                                \
+    bool ret;                                   \
+    ret = func(arg0, arg1, arg2);               \
+    delete arg0;                                \
+    return ret ? Py_True : Py_False;            \
+}
+
 
 #define PARSE_Oo(func) {                        \
     BaseDataObject *ret = func();               \
@@ -751,6 +779,18 @@ PyObject *wrap_verifyDataByDataSchema
     PARSE_osOb(args, verifyDataByDataSchema)
 }
 
+PyObject *wrap_generateRandomDataFromAPISchema
+        (PyObject *self, PyObject *args) {
+    /** ssOo **/
+    PARSE_ssOo(args, generateRandomDataFromAPISchema)
+}
+
+PyObject *wrap_verifyDataByAPISchema
+        (PyObject *self, PyObject *args) {
+    /** ossOb **/
+    PARSE_ossOb(args, verifyDataByAPISchema)
+}
+
 PyObject *wrap_getParameterNames
         (PyObject *self, PyObject *args) {
     /** Oo **/
@@ -914,6 +954,8 @@ static PyMethodDef LapisParserMethods[] = {
         {"getDataSchema",                    wrap_getDataSchema,                    METH_VARARGS, "getDataSchema"},
         {"generateRandomDataFromDataSchema", wrap_generateRandomDataFromDataSchema, METH_VARARGS, "generateRandomDataFromDataSchema"},
         {"verifyDataByDataSchema",           wrap_verifyDataByDataSchema,           METH_VARARGS, "verifyDataByDataSchema"},
+        {"generateRandomDataFromAPISchema",  wrap_generateRandomDataFromAPISchema,  METH_VARARGS, "generateRandomDataFromAPISchema"},
+        {"verifyDataByAPISchema",            wrap_verifyDataByAPISchema,            METH_VARARGS, "verifyDataByAPISchema"},
         {"getParameterNames",                wrap_getParameterNames,                METH_VARARGS, "getParameterNames"},
         {"getParameter",                     wrap_getParameter,                     METH_VARARGS, "getParameter"},
         {"getResponseNames",                 wrap_getResponseNames,                 METH_VARARGS, "getResponseNames"},

@@ -631,6 +631,37 @@ extern InterfaceState state;
     bool verifyDataByDataSchema(BaseDataObject *data, string name);
 
     /**
+     * Generate request parameters using the random policy from an existing API schema.
+     *
+     * API schema is specified by name in 'paths', and the name and method should be an element of getAPINames()
+     *
+     * Should call parseAPI() before to get parsed results
+     *
+     * If not parsed, return NULL(None for Python) instead of the object and add an error to error list
+     * @see parseAPI()
+     * @see getAPINames()
+     * @param name: the API name
+     * @param method: the API method
+     * @return the object
+     */
+    BaseDataObject *generateRandomDataFromAPISchema(string name, string method);
+
+    /**
+     * Verify whether the data object conforms to the schema of parameters
+     *
+     * Data schema is specified by name in 'paths', and the name and method should be an element of getAPINames()
+     *
+     * Should call parseAPI() before to get results. Otherwise return false whatever
+     * @see parseAPI()
+     * @see getAPINames()
+     * @param data: the data object to verify
+     * @param name: the API name
+     * @param method: the API method
+     * @return legal or not
+     */
+    bool verifyDataByAPISchema(BaseDataObject *data, string name, string method);
+
+    /**
      * Get the parameter name list(key set of 'parameters' node).
      *
      * Should call parseAPI() before to get parsed results
