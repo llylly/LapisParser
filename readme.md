@@ -11,15 +11,15 @@ A useful parser for Lapis scripts. Provides Python API as interface.
 
 #### Library dependencies:
 
-+ libxml (should be contained in the proj)
++ libxml (headers should be contained in the proj & installed in OS)
 
     `lib/libxml`
 
-+ libyaml (should be contained in the proj)
++ libyaml (headers should be contained in the proj & installed in OS)
 
     `lib/libyaml`
 
-+ libcurl (should be contained in the proj)
++ libcurl headers (headers should be contained in the proj & installed in OS)
 
     `lib/libcurl`
 
@@ -33,26 +33,32 @@ A useful parser for Lapis scripts. Provides Python API as interface.
 
     [Download Page](http://pyyaml.org/wiki/LibYAML)
 
-3. Copy `libyaml.a` (the static library file) to `parser/libyaml` folder, 
-    and `yaml.h` (the header file) to the same folder
+3. Copy `yaml.h` (the header file) to `lib/libyaml` folder
 
 4. Download libxml2 (2.9.6) & compile
 
     [Download Page](https://git.gnome.org/browse/libxml2/tag/?h=v2.9.6)
 
-5. Copy `libxml2.a` (the static library file) to `parser/libxml` folder,
-    and the header file folder(the `include/libxml` folder) to `parser/libxml` folder
+5. Copy the header file **folder** (the `include/libxml` folder) to `lib/libxml` folder
 
-    **Notice: for all headers, the `limxml/` prefix should be removed from include declarations.**
+    ".h" header files lies in `lib/libxml/libxml` folder then.
 
-6. Run `cmake .` in project root directory
+6. Download libcurl (7.56.1) & compile
 
-7. Run `make` in project root directory, 
+    [Download Page](https://curl.haxx.se/download.html)
+
+7. Copy the header file foler (the `include/curl` folder) to `lib/libcurl` folder
+
+    ".h" header files lies in `lib/libcurl/curl` folder then.
+
+8. Run `cmake .` in project root directory
+
+9. Run `make` in project root directory, 
     then you will get `libVParserPy.dylib` & executable `VParser` in root directory
 
-8. Run `cd interface/python/`
+10. Run `cd interface/python/`
 
-9. Run `python demo.py` & executable file for test
+11. Run `python demo.py` & executable file for test
 
 #### CPP API
 

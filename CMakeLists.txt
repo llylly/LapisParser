@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.5)
 project(VParser)
 
 # the path has 'python2.7' folder
@@ -87,15 +87,12 @@ add_executable(VParser ${SOURCE_FILES} interface/CXX/demo.cpp)
 
 add_library(VParserPy SHARED ${SOURCE_FILES})
 
-link_libraries(lib/libyaml/)
 target_link_libraries(VParser yaml)
 target_link_libraries(VParserPy yaml)
 
-link_libraries(lib/libxml/)
 target_link_libraries(VParser xml2)
 target_link_libraries(VParserPy xml2)
 
-link_libraries(lib/libcurl/)
 target_link_libraries(VParser curl)
 target_link_libraries(VParserPy curl)
 link_directories(lib/libcurl/curl)

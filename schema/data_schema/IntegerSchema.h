@@ -5,7 +5,7 @@
 #ifndef VPARSER_INTEGERSCHEMA_H
 #define VPARSER_INTEGERSCHEMA_H
 
-
+#include <climits>
 #include "../DataSchemaObject.h"
 #include "../../error/IllegalIntervalError.h"
 

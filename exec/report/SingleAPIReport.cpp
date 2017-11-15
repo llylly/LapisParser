@@ -4,8 +4,7 @@
 
 #include "SingleAPIReport.h"
 
-SingleAPIReport::SingleAPIReport() {
-    RequesterReport::RequesterReport();
+SingleAPIReport::SingleAPIReport(): RequesterReport() {
     this->useAliMiddleware = false;
 }
 
