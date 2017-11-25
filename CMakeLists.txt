@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-fPIC")
 set(CMAKE_C_FLAGS "-fPIC")
 
+SET(ENV{LD_LIBRARY_PATH} "/usr/local/lib:$ENV{LD_LIBRARY_PATH}")
 
 set(SOURCE_FILES
         interface/python/PythonObjectAdapter.cpp interface/python/PythonObjectAdapter.h
@@ -87,6 +88,9 @@ add_executable(VParser ${SOURCE_FILES} interface/CXX/demo.cpp)
 
 add_library(VParserPy SHARED ${SOURCE_FILES})
 
+#target_link_libraries(VParser /usr/local/lib/libyaml.a)
+#target_link_libraries(VParserPy /usr/local/lib/libyaml.a)
+
 target_link_libraries(VParser yaml)
 target_link_libraries(VParserPy yaml)
 
@@ -96,6 +100,9 @@ target_link_libraries(VParserPy xml2)
 target_link_libraries(VParser curl)
 target_link_libraries(VParserPy curl)
 link_directories(lib/libcurl/curl)
+
+#target_link_libraries(VParser /usr/local/opt/openssl/lib/libcrypto.a)
+#target_link_libraries(VParserPy /usr/local/opt/openssl/lib/libcrypto.a)
 
 target_link_libraries(VParser crypto)
 target_link_libraries(VParserPy crypto)

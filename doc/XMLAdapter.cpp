@@ -16,13 +16,7 @@ DocElement *XMLAdapter::parseDoc(const char *fileName) {
         XMLFormatError *err = new XMLFormatError(1, 1);
 
         // Read error message from stderr
-        err->msg = "";
-        char *errMsgBuf = new char[10000];
-        FILE *errIn = fopen("/dev/stderr", "r");
-        while (fscanf(errIn, "%s\n", errMsgBuf) > 0)
-            err->msg += errMsgBuf, err->msg += "\n";
-        delete[] errMsgBuf;
-        fclose(errIn);
+        err->msg = "It is not a legal XML document.";
 
         Error::addError(err);
         return NULL;
