@@ -2,8 +2,11 @@ cmake_minimum_required(VERSION 3.5)
 project(VParser)
 
 # the path has 'python2.7' folder
-set(PYTHON_INCLUDE_PATH /Users/lly/anaconda/include)
-set(PYTHON_LIB_PATH /Users/lly/anaconda/lib/libpython2.7.dylib)
+#set(PYTHON_INCLUDE_PATH /Users/lly/anaconda/include)
+#set(PYTHON_LIB_PATH /Users/lly/anaconda/lib/libpython2.7.dylib)
+
+set(PYTHON_INCLUDE_PATH /usr/include)
+set(PYTHON_LIB_PATH /usr/lib/python2.7/config-x86_64-linux-gnu/libpython2.7.so)
 
 set(CMAKE_CXX_STANDARD 11)
 
