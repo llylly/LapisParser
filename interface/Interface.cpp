@@ -985,6 +985,10 @@ BaseDataObject *getAPINames() {
                 (*item)["method"] = new StringDataObject("get");
             if (ite->first.second == APIRequestMethod::POST)
                 (*item)["method"] = new StringDataObject("post");
+            if (ite->first.second == APIRequestMethod::PUT)
+                (*item)["method"] = new StringDataObject("put");
+            if (ite->first.second == APIRequestMethod::DELETE)
+                (*item)["method"] = new StringDataObject("delete");
             ans->push(item);
         }
         return ans;
@@ -1006,6 +1010,10 @@ BaseDataObject *getAPI(string name, string method) {
             requestName.second = APIRequestMethod::GET;
         else if ((method == "post") || (method == "POST"))
             requestName.second = APIRequestMethod::POST;
+        else if ((method == "put") || (method == "PUT"))
+            requestName.second = APIRequestMethod::PUT;
+        else if ((method == "delete") || (method == "DELETE"))
+            requestName.second = APIRequestMethod::DELETE;
         else
             return NULL;
         APIObject *obj = controller->paths->getObjectByName(requestName);
@@ -1097,12 +1105,16 @@ BaseDataObject *generateRandomDataFromAPISchema(string name, string method) {
         return NULL;
     }
     if (controller->paths != NULL) {
-        pair<string, APIRequestMethod> requestName;
+        std::pair<string, APIRequestMethod> requestName;
         requestName.first = name;
         if ((method == "get") || (method == "GET"))
             requestName.second = APIRequestMethod::GET;
         else if ((method == "post") || (method == "POST"))
             requestName.second = APIRequestMethod::POST;
+        else if ((method == "put") || (method == "PUT"))
+            requestName.second = APIRequestMethod::PUT;
+        else if ((method == "delete") || (method == "DELETE"))
+            requestName.second = APIRequestMethod::DELETE;
         else
             return NULL;
         APIObject *obj = controller->paths->getObjectByName(requestName);
@@ -1135,6 +1147,10 @@ bool verifyDataByAPISchema(BaseDataObject *data, string name, string method) {
             requestName.second = APIRequestMethod::GET;
         else if ((method == "post") || (method == "POST"))
             requestName.second = APIRequestMethod::POST;
+        else if ((method == "put") || (method == "PUT"))
+            requestName.second = APIRequestMethod::PUT;
+        else if ((method == "delete") || (method == "DELETE"))
+            requestName.second = APIRequestMethod::DELETE;
         else
             return false;
         APIObject *obj = controller->paths->getObjectByName(requestName);
@@ -1374,6 +1390,10 @@ BaseDataObject *runSingleAPI(string name, string method, int timeout) {
         requestName.second = APIRequestMethod::GET;
     else if ((method == "post") || (method == "POST"))
         requestName.second = APIRequestMethod::POST;
+    else if ((method == "put") || (method == "PUT"))
+        requestName.second = APIRequestMethod::PUT;
+    else if ((method == "delete") || (method == "DELETE"))
+        requestName.second = APIRequestMethod::DELETE;
     else {
         RuntimeError::addError(new APINotFoundError());
         return NULL;
@@ -1425,6 +1445,10 @@ BaseDataObject *runSingleAPIforAli(string name, string method, string secretKey,
         requestName.second = APIRequestMethod::GET;
     else if ((method == "post") || (method == "POST"))
         requestName.second = APIRequestMethod::POST;
+    else if ((method == "put") || (method == "PUT"))
+        requestName.second = APIRequestMethod::PUT;
+    else if ((method == "delete") || (method == "DELETE"))
+        requestName.second = APIRequestMethod::DELETE;
     else {
         RuntimeError::addError(new APINotFoundError());
         return NULL;

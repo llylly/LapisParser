@@ -290,7 +290,9 @@ pair<long long, string> *BaseRequester::emit(
 
         bool hasBodyParam = false;
         bool hasFormParams = false;
-        if (api->requestMethod == APIRequestMethod::POST) {
+        if ((api->requestMethod == APIRequestMethod::POST) ||
+                (api->requestMethod == APIRequestMethod::GET) ||
+                (api->requestMethod == APIRequestMethod::DELETE)) {
             for (map<string, ParameterObject*>::iterator ite = this->api->parameters.begin();
                     ite != this->api->parameters.end();
                     ++ite) {
@@ -324,7 +326,14 @@ pair<long long, string> *BaseRequester::emit(
                     }
                 }
             }
-            curl_easy_setopt(curl, CURLOPT_POST, 1L);
+            if (api->requestMethod == APIRequestMethod::POST)
+                curl_easy_setopt(curl, CURLOPT_POST, 1L);
+            else if (api->requestMethod == APIRequestMethod::PUT)
+                curl_easy_setopt(curl, CURLOPT_PUT, 1L);
+            else if (api->requestMethod == APIRequestMethod::DELETE) {
+                curl_easy_setopt(curl, CURLOPT_POST, 1L);
+                curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "delete");
+            }
         } else
             curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
 

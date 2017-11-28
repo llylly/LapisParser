@@ -380,6 +380,30 @@ bool Controller::work() {
                             }
                         }
 
+                        /** put **/
+                        DocElement *putEle = o_itemEle->get("put");
+                        if (putEle != NULL) {
+                            APIObject *put_o = paths->parseAPI(ite->first, putEle, key.substr(1), PUT, schemes,
+                                                                paramsVec);
+                            if (put_o == NULL) {
+                                paramsVec->clear();
+                                delete paramsVec;
+                                return false;
+                            }
+                        }
+
+                        /** delete **/
+                        DocElement *deleteEle = o_itemEle->get("delete");
+                        if (deleteEle != NULL) {
+                            APIObject *delete_o = paths->parseAPI(ite->first, deleteEle, key.substr(1), DELETE, schemes,
+                                                                paramsVec);
+                            if (delete_o == NULL) {
+                                paramsVec->clear();
+                                delete paramsVec;
+                                return false;
+                            }
+                        }
+
                         paramsVec->clear();
                         delete paramsVec;
                     }
