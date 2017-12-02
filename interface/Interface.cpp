@@ -989,6 +989,14 @@ BaseDataObject *getAPINames() {
                 (*item)["method"] = new StringDataObject("put");
             if (ite->first.second == APIRequestMethod::DELETE)
                 (*item)["method"] = new StringDataObject("delete");
+            if (ite->first.second == APIRequestMethod::HEAD)
+                (*item)["method"] = new StringDataObject("head");
+            if (ite->first.second == APIRequestMethod::OPTIONS)
+                (*item)["method"] = new StringDataObject("options");
+            if (ite->first.second == APIRequestMethod::PATCH)
+                (*item)["method"] = new StringDataObject("patch");
+            if (ite->first.second == APIRequestMethod::TRACE)
+                (*item)["method"] = new StringDataObject("trace");
             ans->push(item);
         }
         return ans;
@@ -1014,6 +1022,14 @@ BaseDataObject *getAPI(string name, string method) {
             requestName.second = APIRequestMethod::PUT;
         else if ((method == "delete") || (method == "DELETE"))
             requestName.second = APIRequestMethod::DELETE;
+        else if ((method == "head") || (method == "HEAD"))
+            requestName.second = APIRequestMethod::HEAD;
+        else if ((method == "options") || (method == "OPTIONS"))
+            requestName.second = APIRequestMethod::OPTIONS;
+        else if ((method == "patch") || (method == "PATCH"))
+            requestName.second = APIRequestMethod::PATCH;
+        else if ((method == "trace") || (method == "TRACE"))
+            requestName.second = APIRequestMethod::TRACE;
         else
             return NULL;
         APIObject *obj = controller->paths->getObjectByName(requestName);
@@ -1115,6 +1131,14 @@ BaseDataObject *generateRandomDataFromAPISchema(string name, string method) {
             requestName.second = APIRequestMethod::PUT;
         else if ((method == "delete") || (method == "DELETE"))
             requestName.second = APIRequestMethod::DELETE;
+        else if ((method == "head") || (method == "HEAD"))
+            requestName.second = APIRequestMethod::HEAD;
+        else if ((method == "options") || (method == "OPTIONS"))
+            requestName.second = APIRequestMethod::OPTIONS;
+        else if ((method == "patch") || (method == "PATCH"))
+            requestName.second = APIRequestMethod::PATCH;
+        else if ((method == "trace") || (method == "TRACE"))
+            requestName.second = APIRequestMethod::TRACE;
         else
             return NULL;
         APIObject *obj = controller->paths->getObjectByName(requestName);
@@ -1151,6 +1175,14 @@ bool verifyDataByAPISchema(BaseDataObject *data, string name, string method) {
             requestName.second = APIRequestMethod::PUT;
         else if ((method == "delete") || (method == "DELETE"))
             requestName.second = APIRequestMethod::DELETE;
+        else if ((method == "head") || (method == "HEAD"))
+            requestName.second = APIRequestMethod::HEAD;
+        else if ((method == "options") || (method == "OPTIONS"))
+            requestName.second = APIRequestMethod::OPTIONS;
+        else if ((method == "patch") || (method == "PATCH"))
+            requestName.second = APIRequestMethod::PATCH;
+        else if ((method == "trace") || (method == "TRACE"))
+            requestName.second = APIRequestMethod::TRACE;
         else
             return false;
         APIObject *obj = controller->paths->getObjectByName(requestName);
@@ -1394,6 +1426,14 @@ BaseDataObject *runSingleAPI(string name, string method, int timeout) {
         requestName.second = APIRequestMethod::PUT;
     else if ((method == "delete") || (method == "DELETE"))
         requestName.second = APIRequestMethod::DELETE;
+    else if ((method == "head") || (method == "HEAD"))
+        requestName.second = APIRequestMethod::HEAD;
+    else if ((method == "options") || (method == "OPTIONS"))
+        requestName.second = APIRequestMethod::OPTIONS;
+    else if ((method == "patch") || (method == "PATCH"))
+        requestName.second = APIRequestMethod::PATCH;
+    else if ((method == "trace") || (method == "TRACE"))
+        requestName.second = APIRequestMethod::TRACE;
     else {
         RuntimeError::addError(new APINotFoundError());
         return NULL;
@@ -1449,6 +1489,14 @@ BaseDataObject *runSingleAPIforAli(string name, string method, string secretKey,
         requestName.second = APIRequestMethod::PUT;
     else if ((method == "delete") || (method == "DELETE"))
         requestName.second = APIRequestMethod::DELETE;
+    else if ((method == "head") || (method == "HEAD"))
+        requestName.second = APIRequestMethod::HEAD;
+    else if ((method == "options") || (method == "OPTIONS"))
+        requestName.second = APIRequestMethod::OPTIONS;
+    else if ((method == "patch") || (method == "PATCH"))
+        requestName.second = APIRequestMethod::PATCH;
+    else if ((method == "trace") || (method == "TRACE"))
+        requestName.second = APIRequestMethod::TRACE;
     else {
         RuntimeError::addError(new APINotFoundError());
         return NULL;

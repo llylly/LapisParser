@@ -167,7 +167,9 @@ DocScalarElement* YAMLAdapter::parseScalar(yaml_parser_t &parser, yaml_event_t& 
 
 DocObjectElement* YAMLAdapter::parseObject(yaml_parser_t& parser, int level) {
     yaml_event_t event;
-    DocObjectElement *obj = new DocObjectElement((int) parser.mark.line, (int) parser.mark.column, level);
+//    DocObjectElement *obj = new DocObjectElement((int) parser.mark.line, (int) parser.mark.column, level);
+    int origin_line = (int) parser.mark.line;
+    DocObjectElement *obj = new DocObjectElement(-1, (int) parser.mark.column, level);
     bool outDone = false, done = false;
     unsigned char stat = 0;
     string tmpKey;
@@ -259,6 +261,8 @@ DocObjectElement* YAMLAdapter::parseObject(yaml_parser_t& parser, int level) {
                             goto error;
                         }
                         obj->add(tmpKey, ele);
+                        if (obj->line == -1)
+                            obj->line = ele->line;
                         done = true;
                         break;
 
@@ -269,6 +273,8 @@ DocObjectElement* YAMLAdapter::parseObject(yaml_parser_t& parser, int level) {
                             goto error;
                         }
                         obj->add(tmpKey, elee);
+                        if (obj->line == -1)
+                            obj->line = elee->line;
                         done = true;
                         break;
 
@@ -279,6 +285,8 @@ DocObjectElement* YAMLAdapter::parseObject(yaml_parser_t& parser, int level) {
                             goto error;
                         }
                         obj->add(tmpKey, eleee);
+                        if (obj->line == -1)
+                            obj->line = eleee->line;
                         done = true;
                         break;
 
@@ -294,6 +302,7 @@ DocObjectElement* YAMLAdapter::parseObject(yaml_parser_t& parser, int level) {
         yaml_event_delete(&event);
     }
 
+    if (obj->line == -1) obj->line = origin_line;
     return obj;
 
 error:

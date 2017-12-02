@@ -404,6 +404,54 @@ bool Controller::work() {
                             }
                         }
 
+                        /** head **/
+                        DocElement *headEle = o_itemEle->get("head");
+                        if (headEle != NULL) {
+                            APIObject *head_o = paths->parseAPI(ite->first, headEle, key.substr(1), HEAD, schemes,
+                                                                  paramsVec);
+                            if (head_o == NULL) {
+                                paramsVec->clear();
+                                delete paramsVec;
+                                return false;
+                            }
+                        }
+
+                        /** options **/
+                        DocElement *optionsEle = o_itemEle->get("options");
+                        if (optionsEle != NULL) {
+                            APIObject *options_o = paths->parseAPI(ite->first, optionsEle, key.substr(1), OPTIONS, schemes,
+                                                                  paramsVec);
+                            if (options_o == NULL) {
+                                paramsVec->clear();
+                                delete paramsVec;
+                                return false;
+                            }
+                        }
+
+                        /** patch **/
+                        DocElement *patchEle = o_itemEle->get("patch");
+                        if (patchEle != NULL) {
+                            APIObject *patch_o = paths->parseAPI(ite->first, patchEle, key.substr(1), PATCH, schemes,
+                                                                  paramsVec);
+                            if (patch_o == NULL) {
+                                paramsVec->clear();
+                                delete paramsVec;
+                                return false;
+                            }
+                        }
+
+                        /** trace **/
+                        DocElement *traceEle = o_itemEle->get("trace");
+                        if (traceEle != NULL) {
+                            APIObject *trace_o = paths->parseAPI(ite->first, traceEle, key.substr(1), TRACE, schemes,
+                                                                  paramsVec);
+                            if (trace_o == NULL) {
+                                paramsVec->clear();
+                                delete paramsVec;
+                                return false;
+                            }
+                        }
+
                         paramsVec->clear();
                         delete paramsVec;
                     }

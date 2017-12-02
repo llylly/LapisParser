@@ -25,12 +25,13 @@ void sendReq(string name, string method) {
 int main(int argc, char** argv) {
     init();
 
-    addDocFromFile("ali_sample.yaml");
+    addDocFromFile("bug1_sample.yaml");
     parseAPI();
     getAPINames();
     parseScenario();
     parseConfig();
-    Logger::printLog(cerr);
+    print_obj(cerr, getErrors());
+//    Logger::printLog(cerr);
 
     return 0;
 

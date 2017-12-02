@@ -20,7 +20,7 @@ enum APIConstraintType {
 };
 
 enum APIRequestMethod {
-    GET, POST, PUT, DELETE
+    GET, POST, PUT, DELETE, HEAD, OPTIONS, PATCH, TRACE
 };
 
 class APIPool;

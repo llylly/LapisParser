@@ -332,7 +332,23 @@ pair<long long, string> *BaseRequester::emit(
                 curl_easy_setopt(curl, CURLOPT_PUT, 1L);
             else if (api->requestMethod == APIRequestMethod::DELETE) {
                 curl_easy_setopt(curl, CURLOPT_POST, 1L);
-                curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "delete");
+                curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+            }
+            else if (api->requestMethod == APIRequestMethod::HEAD) {
+                curl_easy_setopt(curl, CURLOPT_POST, 1L);
+                curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);
+            }
+            else if (api->requestMethod == APIRequestMethod::OPTIONS) {
+                curl_easy_setopt(curl, CURLOPT_POST, 1L);
+                curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "OPTIONS");
+            }
+            else if (api->requestMethod == APIRequestMethod::PATCH) {
+                curl_easy_setopt(curl, CURLOPT_POST, 1L);
+                curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PATCH");
+            }
+            else if (api->requestMethod == APIRequestMethod::TRACE) {
+                curl_easy_setopt(curl, CURLOPT_POST, 1L);
+                curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "TRACE");
             }
         } else
             curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
