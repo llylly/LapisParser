@@ -367,6 +367,7 @@ bool APIObject::create(string filePath, DocObjectElement *ele, string name, APIR
                 ResponseObject *source = responsePool->parseResponse(filePath, ite->second);
                 if (source == NULL)
                     return false;
+                // ResponsePool saves the raw response object for reuse. Therefore concrete version should be a hard copy. We cannot delete source.
                 ResponseObject *target = new ResponseObject(*source);
                 target->code = code;
                 target->stage = VALID;
@@ -386,6 +387,7 @@ bool APIObject::create(string filePath, DocObjectElement *ele, string name, APIR
                 for (int i=0; i<len; ++i) {
                     DocElement *now = so->get(i);
                     ResponseExtensionObject *obj = responsePool->parseResponseExtension(filePath, now);
+                    // ResponsePool saves the raw response object for reuse. Therefore concrete version should be a hard copy. We cannot delete obj.
                     if (obj == NULL)
                         return false;
                     ResponseExtensionObject *target = new ResponseExtensionObject(*obj);
@@ -611,7 +613,16 @@ bool APIObject::create(string filePath, DocObjectElement *ele, string name, APIR
                 iite != ite->second.end();
                 ++iite) {
             ResponseExtensionObject *nowObj = *iite;
-            if (fatherResp->schema->findField(nowObj->fieldVec, 0) == NULL) {
+
+            bool inBody, inHeaders = false;
+            inBody = (fatherResp->schema->findField(nowObj->fieldVec, 0) != NULL);
+            if ((nowObj->fieldVec.size() > 1) && (nowObj->fieldVec[0] == "headers")) {
+                string &paramName = nowObj->fieldVec[1];
+                if (fatherResp->headers.count(paramName) > 0) {
+                    inHeaders = (fatherResp->headers[paramName]->schema->findField(nowObj->fieldVec, 2) != NULL);
+                }
+            }
+            if ((!inBody) && (!inHeaders)) {
                 Error::addError(
                         new FieldIllegalError(filePath, ele->line, ele->col, "operation.responses.x-extension.field")
                 );

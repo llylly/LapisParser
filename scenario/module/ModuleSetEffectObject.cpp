@@ -128,7 +128,9 @@ bool ModuleSetEffectObject::inFieldCheck(const vector<string> &inObj, APIObject 
 }
 
 bool ModuleSetEffectObject::outFieldCheck(const vector<string> &outObj) {
-    return (outObj.size() >= 1) && (outObj[0] == "out");
+    bool legal = (outObj.size() >= 1) && (outObj[0] == "out");
+    if ((outObj[1] == "headers") && (outObj.size() <= 2)) legal = false;
+    return legal;
 }
 
 ModuleSetEffectObject *ModuleSetEffectObjectFactory::create(string filePath, DocElement *ele, APIObject *api) {

@@ -33,4 +33,6 @@ AbstractResponseObject::AbstractResponseObject() {
     stage = INVALID_RESPONSE;
 }
 
-AbstractResponseObject::~AbstractResponseObject() { }
+AbstractResponseObject::~AbstractResponseObject() {
+    // 'schema' is stored in pool by default, so it doesn't belong to ResponseObject, we can't delete it here.
+}

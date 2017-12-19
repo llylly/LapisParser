@@ -2,6 +2,7 @@
 // Created by lly on 06/10/2017.
 //
 
+#include <cassert>
 #include "BaseRequester.h"
 
 static size_t writeMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp) {
@@ -13,6 +14,59 @@ static size_t writeMemoryCallback(void *contents, size_t size, size_t nmemb, voi
     (*str) += recvP;
     delete[] recvP;
     return realsize;
+}
+
+static size_t writeHeaderCallback(char *buffer, size_t size, size_t nitems, void *userdata) {
+    size_t realsize = size * nitems;
+    map<string, string>* headerMap = (map<string, string>*)userdata;
+
+    char *recvP = new char[realsize + 1];
+    memset(recvP, 0, sizeof(char) * (realsize + 1));
+    memcpy(recvP, buffer, realsize);
+    string s;
+    s = recvP;
+    delete[] recvP;
+
+    int state = 0, l = 0, r;
+    string k = "", v = "";
+    for (int i=0; i<=realsize; ++i) {
+        if ((buffer[i] == '\n') || (buffer[i] == '\r')) continue;
+        if (i < realsize) r = i;
+        if ((state == 0) && (buffer[i] == ':')) {
+            state = 1;
+            char *tmp = new char[r-l+1];
+            memcpy(tmp, buffer + l, (size_t)r-l);
+            tmp[r-l] = '\0';
+            k = string(tmp);
+            delete[] tmp;
+        } else
+        if (state == 1) {
+            state = 2;
+            l = i+1;
+        } else
+        if (i >= realsize) {
+            char *tmp = new char[r-l+1];
+            memcpy(tmp, buffer + l, (size_t)r-l);
+            tmp[r-l] = '\0';
+            v = string(tmp);
+            delete[] tmp;
+            if (k != "")
+                (*headerMap)[k] = v;
+            state = 0;
+        }
+    }
+
+    return realsize;
+}
+
+static string headerToStr(map<string, string> *map) {
+    string s = "";
+    for (auto ite = map->begin();
+            ite != map->end();
+            ++ite) {
+        s += ite->first + ": " + ite->second + "\n";
+    }
+    return s;
 }
 
 /* --------------- */
@@ -100,7 +154,7 @@ void BaseRequester::work() {
 
     /***----stage 4--------***/
     // tmp guy
-    pair<long long, string> *rawResponse = this->emit(middledStrParam);
+    pair<long long, pair<map<string, string>*, string>> *rawResponse = this->emit(middledStrParam);
 
     // recycle temp guy
     if (strParam != middledStrParam) {
@@ -121,10 +175,10 @@ void BaseRequester::work() {
 
     /***----stage 5--------***/
     // tmp guy
-    pair<long long, DocElement*> *docResponse = this->responsePartition(rawResponse);
+    pair<long long, DocObjectElement*> *docResponse = this->responsePartition(rawResponse);
 
     // recycle temp guy
-    delete rawResponse;
+    delete rawResponse->second.first;
 
     if (this->err != NULL) {
         if (this->report)
@@ -184,7 +238,7 @@ map<string, string> *BaseRequester::middleware(
     }
 }
 
-pair<long long, string> *BaseRequester::emit(
+pair<long long, pair<map<string, string>*, string>> *BaseRequester::emit(
         map<string, string> *strParam) {
 
     CURL *curl;
@@ -196,6 +250,7 @@ pair<long long, string> *BaseRequester::emit(
     if (curl) {
         long long responseCode = 0;
         string responseStr = "";
+        map<string, string> *headers = new map<string, string>();
 
         string url;
 
@@ -361,6 +416,10 @@ pair<long long, string> *BaseRequester::emit(
 
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeMemoryCallback);
 
+        curl_easy_setopt(curl, CURLOPT_HEADERDATA, (void*)(headers));
+
+        curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, writeHeaderCallback);
+
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
         res = curl_easy_perform(curl);
@@ -386,6 +445,7 @@ pair<long long, string> *BaseRequester::emit(
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &responseCode);
             /** Logger head **/
             Logger::addLog(new StrLog("Code: " + to_string(responseCode)));
+            Logger::addLog(new StrLog("Headers: " + headerToStr(headers)));
             Logger::addLog(new StrLog("Response: " + responseStr));
             Logger::addLog(new StrLog("------splitter------"));
             /** Logger tail **/
@@ -403,7 +463,8 @@ pair<long long, string> *BaseRequester::emit(
         curl_slist_free_all(headerlist);
         curl_global_cleanup();
 
-        return new pair<long long, string>(responseCode, responseStr);
+        return new pair<long long, pair<map<string, string>*, string>>
+                (responseCode, pair<map<string, string>*, string>(headers, responseStr));
     } else {
         curl_global_cleanup();
         this->err = new UnknownRequestError(-1, "requester init error");
@@ -411,8 +472,8 @@ pair<long long, string> *BaseRequester::emit(
     }
 }
 
-pair<long long, DocElement*> *BaseRequester::responsePartition(
-        pair<long long, string> *response) {
+pair<long long, DocObjectElement*> *BaseRequester::responsePartition(
+        pair<long long, pair<map<string, string>*, string>> *response) {
     if (response == NULL) {
         this->err = new IllegalResponseError(api->name);
         return NULL;
@@ -424,6 +485,56 @@ pair<long long, DocElement*> *BaseRequester::responsePartition(
     string strResponseCode = sstream.str();
     sstream.clear();
 
+    ResponseObject *responseObj = NULL;
+    if (api->responses.count(strResponseCode) > 0) {
+        responseObj = api->responses[strResponseCode];
+    } else {
+        if (api->responses.count("default") > 0)
+            responseObj = api->responses["default"];
+        else {
+            this->err = new IllegalResponseCodeError(api->name, response->first);
+            return NULL;
+        }
+    }
+
+    DocObjectElement *rootEle = new DocObjectElement(1, 1);
+    DocElement *bodyEle = NULL;
+    if (responseObj->schema == NULL)
+        bodyEle = new DocScalarElement(1, 1, "");
+    else {
+        bodyEle = ExecTransformer::deserialize(response->second.second, responseObj->schema);
+        if (bodyEle == NULL) {
+            this->err = new IllegalResponseCodeError(api->name, response->first);
+            return NULL;
+        }
+    }
+    rootEle->add("body", bodyEle);
+
+    DocObjectElement *headersEle = new DocObjectElement(1, 1);
+    map<string, ParameterObject*> &headersMap = responseObj->headers;
+    for (map<string, ParameterObject*>::iterator ite = headersMap.begin();
+            ite != headersMap.end();
+            ++ite) {
+        if (response->second.first->count(ite->first) > 0) {
+            DocElement *nowHeader = ExecTransformer::deserialize((*(response->second.first))[ite->first], ite->second->schema);
+            if (nowHeader == NULL) {
+                this->err = new IllegalResponseCodeError(api->name, response->first);
+                return NULL;
+            } else {
+                headersEle->add(ite->first, nowHeader);
+            }
+        } else {
+            if (ite->second->required) {
+                this->err = new IllegalResponseCodeError(api->name, response->first);
+                return NULL;
+            }
+        }
+    }
+    rootEle->add("headers", headersEle);
+
+    return new pair<long long, DocObjectElement*>(response->first, rootEle);
+
+    /*
     DataSchemaObject *schema = NULL;
     if (api->responses.count(strResponseCode) > 0) {
         schema = api->responses[strResponseCode]->schema;
@@ -445,17 +556,19 @@ pair<long long, DocElement*> *BaseRequester::responsePartition(
         return NULL;
     }
     return new pair<long long, DocElement*>(response->first, ele);
+     */
 }
 
+/** TODO **/
 pair<string, BaseDataObject*> *BaseRequester::responseParse(
-        pair<long long, DocElement*> *eleResponse) {
+        pair<long long, DocObjectElement*> *eleResponse) {
     if (eleResponse == NULL) {
         this->err = new IllegalResponseError(api->name);
         return NULL;
     }
 
     long long code = eleResponse->first;
-    DocElement *docEle = eleResponse->second;
+    DocObjectElement *docEle = eleResponse->second;
 
     stringstream sstream;
     sstream.clear();
@@ -464,6 +577,56 @@ pair<string, BaseDataObject*> *BaseRequester::responseParse(
     string strCode = sstream.str();
     sstream.clear();
 
+    ResponseObject *responseObj = NULL;
+    if (api->responses.count(strCode) > 0) {
+        responseObj = api->responses[strCode];
+    } else {
+        if (api->responses.count("default") > 0)
+            responseObj = api->responses["default"];
+        else {
+            this->err = new IllegalResponseCodeError(api->name, eleResponse->first);
+            return NULL;
+        }
+    }
+
+    DocElement *bodyEle = docEle->get("body");
+    DocObjectElement *headersEle = (DocObjectElement*)(docEle->get("headers"));
+    assert(bodyEle != NULL);
+    assert(headersEle != NULL);
+
+    BaseDataObject *bodyObj = NULL;
+    if (responseObj->schema == NULL) {
+        bodyObj = new StringDataObject("");
+    } else {
+        bodyObj = responseObj->schema->transform(bodyEle);
+        if (bodyObj == NULL) {
+            this->err = new IllegalResponseFormatError(api->name, code);
+            return NULL;
+        }
+    }
+
+    ObjectDataObject *headerObj = new ObjectDataObject();
+    map<string, ParameterObject*> &headerMap = responseObj->headers;
+    for (map<string, ParameterObject*>::iterator ite = headerMap.begin();
+            ite != headerMap.end();
+            ++ite) {
+        DocElement *nowEle = headersEle->get(ite->first);
+        if (nowEle != NULL) {
+            BaseDataObject *nowDataObj = ite->second->schema->transform(nowEle);
+            if (nowDataObj == NULL) {
+                this->err = new IllegalResponseFormatError(api->name, code);
+                return NULL;
+            } else
+                (*headerObj)[ite->first] = nowDataObj;
+        }
+    }
+
+    ObjectDataObject *obj = new ObjectDataObject();
+    (*obj)["body"] = bodyObj;
+    (*obj)["headers"] = headerObj;
+
+
+    /*
     DataSchemaObject *schema = NULL;
     if (api->responses.count(strCode) > 0) {
         schema = api->responses[strCode]->schema;
@@ -484,9 +647,11 @@ pair<string, BaseDataObject*> *BaseRequester::responseParse(
         this->err = new IllegalResponseFormatError(api->name, code);
         return NULL;
     }
+    */
+
     // save the schema definition
     if (this->report)
-        this->report->schema = schema;
+        this->report->schema = responseObj->schema;
     string responseType = strCode;
 
     if (api->responseExtensions.count(strCode) > 0) {
@@ -497,6 +662,8 @@ pair<string, BaseDataObject*> *BaseRequester::responseParse(
             ResponseExtensionObject *nowExt = *ite;
             BaseDataObject *nowField = obj;
             vector<string> &fieldVec = nowExt->fieldVec;
+            if ((fieldVec.size() > 0) && (fieldVec[0] != "headers"))
+                nowField = (*obj)["body"];
             bool needDel = false;
             for (vector<string>::iterator iite = fieldVec.begin();
                     iite != fieldVec.end();

@@ -48,8 +48,11 @@ BaseDataObject *ParameterObject::toDataObject() {
         case BODY:
             in = new StringDataObject("body");
             break;
+        case RESPONSE_HEADER:
+            break;
     }
-    (*o)["in"] = in;
+    if (in != NULL)
+        (*o)["in"] = in;
     if (this->description != "")
         (*o)["description"] = new StringDataObject(this->description);
     (*o)["required"] = new BooleanDataObject(this->required);
@@ -72,7 +75,7 @@ BaseDataObject *ParameterObject::toDataObject() {
     return o;
 }
 
-ParameterObject* ParameterObjectFactory::create(string filePath, DocElement *ele, DataSchemaPool *schemaPool) {
+ParameterObject* ParameterObjectFactory::create(string filePath, DocElement *ele, DataSchemaPool *schemaPool, bool isResponseHeader) {
     if (ele == NULL) {
         Error::addError(
                 new FieldMissError(filePath, 1, 1, "parameter")
@@ -89,36 +92,49 @@ ParameterObject* ParameterObjectFactory::create(string filePath, DocElement *ele
 
     ParameterObject *res = new ParameterObject();
 
-    /* name */
-    DocElement *nameEle = o->get("name");
-    if (nameEle == NULL) {
-        Error::addError(
-                new FieldMissError(filePath, ele->line, ele->col, "parameter.name")
-        );
-        delete res;
-        return NULL;
-    }
-    pair<string, bool> nameRes = DocElementHelper::parseToString(nameEle);
-    if (nameRes.second) {
-        res->name = nameRes.first;
-    } else {
-        Error::addError(
-                new FieldInvalidError(filePath, nameEle->line, nameEle->col, "parameter.name", nameEle->type, DOC_SCALAR)
-        );
-        delete res;
-        return NULL;
-    }
+    if (!isResponseHeader) {
+        /* name */
+        DocElement *nameEle = o->get("name");
+        if (nameEle == NULL) {
+            Error::addError(
+                    new FieldMissError(filePath, ele->line, ele->col, "parameter.name")
+            );
+            delete res;
+            return NULL;
+        }
+        pair<string, bool> nameRes = DocElementHelper::parseToString(nameEle);
+        if (nameRes.second) {
+            res->name = nameRes.first;
+        } else {
+            Error::addError(
+                    new FieldInvalidError(filePath, nameEle->line, nameEle->col, "parameter.name", nameEle->type,
+                                          DOC_SCALAR)
+            );
+            delete res;
+            return NULL;
+        }
+    } else
+        res->name = "ToBeFilled";
 
     /* in */
-    DocElement *inEle = o->get("in");
-    if (inEle == NULL) {
-        Error::addError(
-                new FieldMissError(filePath, ele->line, ele->col, "parameter.in")
-        );
-        delete res;
-        return NULL;
+    pair<string, bool> inRes = make_pair<string, bool>("", false);
+    DocElement *inEle = NULL;
+    if (!isResponseHeader) {
+        inEle = o->get("in");
+        if (inEle == NULL) {
+            Error::addError(
+                    new FieldMissError(filePath, ele->line, ele->col, "parameter.in")
+            );
+            delete res;
+            return NULL;
+        }
+        pair<string, bool> tmpInRes = DocElementHelper::parseToString(inEle);
+        inRes.first = tmpInRes.first;
+        inRes.second = tmpInRes.second;
+    } else {
+        inRes.first = "response_header";
+        inRes.second = true;
     }
-    pair<string, bool> inRes = DocElementHelper::parseToString(inEle);
     if (inRes.second) {
         if (inRes.first == "query") {
             res->in = QUERY;
@@ -135,17 +151,22 @@ ParameterObject* ParameterObjectFactory::create(string filePath, DocElement *ele
         else if (inRes.first == "body") {
             res->in = BODY;
         }
+        else if (inRes.first == "response_header") {
+            res->in = RESPONSE_HEADER;
+        }
         else {
-            Error::addError(
-                    new FieldIllegalError(filePath, inEle->line, inEle->col, "parameter.in")
-            );
+            if (inEle != NULL)
+                Error::addError(
+                        new FieldIllegalError(filePath, inEle->line, inEle->col, "parameter.in")
+                );
             delete res;
             return NULL;
         }
     } else {
-        Error::addError(
-                new FieldInvalidError(filePath, inEle->line, inEle->col, "parameter.in", inEle->type, DOC_SCALAR)
-        );
+        if (inEle != NULL)
+            Error::addError(
+                    new FieldInvalidError(filePath, inEle->line, inEle->col, "parameter.in", inEle->type, DOC_SCALAR)
+            );
         delete res;
         return NULL;
     }

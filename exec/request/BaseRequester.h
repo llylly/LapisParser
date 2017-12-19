@@ -29,11 +29,11 @@ protected:
 
     map<string, string> *middleware(map<string, string> *strParam);
 
-    pair<long long, string> *emit(map<string, string> *strParam);
+    pair<long long, pair<map<string, string>*, string>> *emit(map<string, string> *strParam);
 
-    pair<long long, DocElement*> *responsePartition(pair<long long, string> *response);
+    pair<long long, DocObjectElement*> *responsePartition(pair<long long, pair<map<string, string>*, string>> *response);
 
-    pair<string, BaseDataObject*> *responseParse(pair<long long, DocElement*> *eleResponse);
+    pair<string, BaseDataObject*> *responseParse(pair<long long, DocObjectElement*> *eleResponse);
 
     APIObject *api;
 

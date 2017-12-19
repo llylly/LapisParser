@@ -23,6 +23,7 @@ void sendReq(string name, string method) {
 }
 
 int main(int argc, char** argv) {
+
     init();
 
     addDocFromFile("bug1_sample.yaml");

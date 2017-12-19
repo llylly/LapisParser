@@ -96,7 +96,7 @@ ModuleCheckpointObject *ModuleCheckpointObjectFactory::create(string filePath, s
             key_s = i + 1;
         }
     }
-    if (res->fieldVec[0] != "out") {
+    if ((res->fieldVec[0] != "out") || ((res->fieldVec[1] == "headers") && (res->fieldVec.size() <= 2))) {
         Error::addError(new FieldIllegalError(filePath, ele->line, ele->col, "x-scenario.modules.checkpoint.key"));
         delete res;
         return NULL;

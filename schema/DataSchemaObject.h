@@ -112,10 +112,10 @@ public:
     /**
      * Find the required field schema object
      * @param fieldVec: the field name vector: {fieldVec[0]}.{fieldVec[1]}. ... . {fieldVec[len-1]}
-     * @param index: start index for current search
+     * @param startIndex: start index for current search
      * @return legal: pointer of this; illegal: null
      */
-    virtual DataSchemaObject *findField(const vector<string> &fieldVec, int index) = 0;
+    virtual DataSchemaObject *findField(const vector<string> &fieldVec, int startIndex) = 0;
 
     /**
      * Generate a random real number in [0,1]

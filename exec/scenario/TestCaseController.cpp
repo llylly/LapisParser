@@ -271,11 +271,13 @@ TestCaseReport *TestCaseController::run() {
 
                     BaseDataObject *nowField = response;
                     DataSchemaObject *nowSchema = schema;
-                    if ((nowField == NULL) || (nowSchema == NULL)) {
+                    if ((nowField == NULL) || (nowField->type != OBJECT) || (nowSchema == NULL)) {
                         checkPointPass = false;
                         break;
                     }
                     vector<string> &fieldVec = cpNow->fieldVec;
+                    if ((fieldVec.size() <= 1) || (fieldVec[1] != "headers"))
+                        nowField = (*((ObjectDataObject*)response))["body"];
                     bool needDel = false;
                     for (int i=1; i<fieldVec.size(); ++i) {
                         // add "size" support
@@ -446,8 +448,12 @@ TestCaseReport *TestCaseController::run() {
                             int p = 0;
                             if (object[0] == "in")
                                 obj = requesterReport->request[object[1]], p = 2;
-                            if (object[0] == "out")
-                                obj = response, p = 1;
+                            if (object[0] == "out") {
+                                if ((object.size() <= 1) || (object[1] != "headers"))
+                                    obj = (*((ObjectDataObject*)response))["body"], p = 1;
+                                else
+                                    obj = response, p = 1;
+                            }
                             bool needDel = false;
                             // add "size" support
                             for (int i = p; i < object.size(); ++i) {

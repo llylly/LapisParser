@@ -13,7 +13,7 @@
 using namespace std;
 
 enum IN_TYPE {
-    IN_INVALID, QUERY, HEADER, PATH, FORMDATA, BODY
+    IN_INVALID, QUERY, HEADER, PATH, FORMDATA, BODY, RESPONSE_HEADER
 };
 
 class ParameterObject: public BaseObject {
@@ -36,7 +36,7 @@ public:
 };
 
 struct ParameterObjectFactory {
-    static ParameterObject *create(string filePath, DocElement *ele, DataSchemaPool *schemaPool);
+    static ParameterObject *create(string filePath, DocElement *ele, DataSchemaPool *schemaPool, bool isResponseHeader = false);
 };
 
 #endif //VPARSER_PARAMETEROBJECT_H

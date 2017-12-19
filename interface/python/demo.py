@@ -65,6 +65,7 @@ def map_sample():
                 for set_name in sets:
                     print('      {}: {}'.format(set_name, sets[set_name]))
 
+
 def post_sample():
     if not os.path.exists(pickle_path):
         ret1 = addDocFromFile('../../post_server.yaml')
@@ -160,8 +161,41 @@ def ali_sample():
             test_report = pickle.load(f)
 
 
+def baidu_sample():
+    # if not os.path.exists(pickle_path):
+        ret1 = addDocFromFile('../../baidu_sample.yaml')
+        assert ret1 is True
+        ret2 = parseAPI()
+        assert ret2 is True
+        ret3 = getAPINames()
+        print(ret3)
+        print(getAPI('root', 'get'))
+        # baseline
+        # for api in ret3:
+        #     ret4 = runSingleAPI(api['name'], api['method'])
+        #     print('name: {} method: {}\n    {}'.format(api['name'], api['method'], ret4))
+        ret4 = parseScenario()
+        print(getErrors())
+        assert ret4 is True
+        ret = runSingleAPI('root', 'get')
+        for key in ret:
+            if key == 'response':
+                print('response:')
+                print('     {}: {}'.format('body', ret[key]['body']))
+                print('     {}: {}'.format('headers', ret[key]['headers']))
+            else:
+                print('{}: {}'.format(key, ret[key]))
+        print('Logs:')
+        for log in getRuntimeLogs():
+            print(log)
+    # else:
+    #     with open(pickle_path) as f:
+    #         test_report = pickle.load(f)
+
+
 if __name__ == '__main__':
     deletePkl()
-    map_sample()
+    # map_sample()
     # post_sample()
     # ali_sample()
+    baidu_sample()
