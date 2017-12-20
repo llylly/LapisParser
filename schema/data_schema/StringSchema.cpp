@@ -113,7 +113,7 @@ BaseDataObject *StringSchema::generate() {
     return new StringDataObject(s);
 }
 
-bool StringSchema::init(string filePath, DocObjectElement *obj, int schemaType) {
+bool StringSchema::init(string filePath, DocObjectElement *obj, int schemaType, ObjectSerialType inherentType) {
     /* format */
     DocElement *formatEle = obj->get("format");
     if (formatEle) {

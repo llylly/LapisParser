@@ -138,7 +138,7 @@ BaseDataObject *ArraySchema::generate() {
     return seq;
 }
 
-bool ArraySchema::init(string filePath, DocObjectElement *obj, int schemaType) {
+bool ArraySchema::init(string filePath, DocObjectElement *obj, int schemaType, ObjectSerialType inherentType) {
 
     /* items */
     DocElement *itemsObj = obj->get("items");
@@ -155,7 +155,7 @@ bool ArraySchema::init(string filePath, DocObjectElement *obj, int schemaType) {
         return false;
     }
     DataSchemaObject *itemsSchema = DataSchemaObjectFactory::create(filePath, (DocObjectElement*)itemsObj,
-                                                                    DataSchemaObjectFactory::ITEM_SCHEMA, false);
+                                                                    DataSchemaObjectFactory::ITEM_SCHEMA, false, inherentType);
     if (itemsSchema == NULL)
         return false;
     this->items = itemsSchema;

@@ -91,7 +91,7 @@ BaseDataObject *IntegerSchema::generate() {
     return new IntegerDataObject(v);
 }
 
-bool IntegerSchema::init(string filePath, DocObjectElement *obj, int schemaType) {
+bool IntegerSchema::init(string filePath, DocObjectElement *obj, int schemaType, ObjectSerialType inherentType) {
 
     /* format */
     /* format content doesn't matter, but we inspect its value to be in domain set */

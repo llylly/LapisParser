@@ -107,7 +107,7 @@ BaseDataObject *CustomizedSchema::generate() {
     return c;
 }
 
-bool CustomizedSchema::init(string filePath, DocObjectElement *obj, int schemaType) {
+bool CustomizedSchema::init(string filePath, DocObjectElement *obj, int schemaType, ObjectSerialType inherentType) {
     if (schemaType != DataSchemaObjectFactory::NORMAL_SCHEMA)
         return false;
 

@@ -23,6 +23,10 @@
 #include "../data/SequenceDataObject.h"
 #include "../data/NumberDataObject.h"
 
+enum ObjectSerialType {
+    JSON, YAML, XML
+};
+
 class DataSchemaObject: public BaseObject {
     /**
      * Class for all schema related fields.
@@ -80,7 +84,7 @@ public:
      *  true: built succeed!
      *  false: built failed, because of error in the script
      */
-    virtual bool init(string filePath, DocObjectElement *obj, int schemaType) = 0;
+    virtual bool init(string filePath, DocObjectElement *obj, int schemaType, ObjectSerialType inherentType) = 0;
 
 public:
     DataSchemaObject();
@@ -144,7 +148,8 @@ struct DataSchemaObjectFactory {
      *  If succeed, return generated DataSchemaObject
      *  If failed, return NULL
      */
-    static DataSchemaObject *create(string filePath, DocObjectElement *obj, int schemaType, bool inProperty = false);
+    static DataSchemaObject *create(string filePath, DocObjectElement *obj, int schemaType,
+                                    bool inProperty = false, ObjectSerialType inherentType = JSON);
 };
 
 #endif //VPARSER_DATASCHEMAOBJECT_H

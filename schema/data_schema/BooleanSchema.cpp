@@ -84,7 +84,7 @@ BaseDataObject *BooleanSchema::generate() {
     }
 }
 
-bool BooleanSchema::init(string filePath, DocObjectElement *obj, int schemaType) {
+bool BooleanSchema::init(string filePath, DocObjectElement *obj, int schemaType, ObjectSerialType inherentType) {
 
     /* x-trueString */
     DocElement *trueStrEle = obj->get("x-trueString");

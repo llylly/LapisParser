@@ -58,7 +58,7 @@ BaseDataObject *FileSchema::generate() {
     return f;
 }
 
-bool FileSchema::init(string filePath, DocObjectElement *obj, int schemaType) {
+bool FileSchema::init(string filePath, DocObjectElement *obj, int schemaType, ObjectSerialType inherentType) {
     return true;
 }
 

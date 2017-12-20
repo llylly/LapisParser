@@ -120,7 +120,7 @@ BaseDataObject *ObjectSchema::generate() {
     return obj;
 }
 
-bool ObjectSchema::init(string filePath, DocObjectElement *obj, int schemaType) {
+bool ObjectSchema::init(string filePath, DocObjectElement *obj, int schemaType, ObjectSerialType inherentType) {
     if (schemaType != DataSchemaObjectFactory::NORMAL_SCHEMA) {
         return false;
     }
@@ -141,25 +141,7 @@ bool ObjectSchema::init(string filePath, DocObjectElement *obj, int schemaType) 
         return false;
     }
 
-    DocObjectElement *pEle = (DocObjectElement*)propEle;
-    map<string, DocElement*> *pMap = pEle->getMemberMap();
-    for (map<string, DocElement*>::iterator ite = pMap->begin();
-            ite != pMap->end();
-            ++ite) {
-        if (ite->second->type != DOC_OBJECT) {
-            Error::addError(
-                    new FieldInvalidError(filePath, ite->second->line, ite->second->col, "schema.properties",
-                    ite->second->type, DOC_OBJECT)
-            );
-            return false;
-        }
-        DocObjectElement *item = (DocObjectElement*)ite->second;
-        DataSchemaObject *nowObj =
-                DataSchemaObjectFactory::create(filePath, item, DataSchemaObjectFactory::NORMAL_SCHEMA, true);
-        if (nowObj == NULL)
-            return false;
-        this->properties[ite->first] = nowObj;
-    }
+    this->serialType = inherentType;
 
     /* x-serial */
     DocElement *serialEle = obj->get("x-serial");
@@ -182,10 +164,31 @@ bool ObjectSchema::init(string filePath, DocObjectElement *obj, int schemaType) 
         } else {
             Error::addError(
                     new FieldInvalidError(filePath, serialEle->line, serialEle->col, "schema.x-serial",
-                    serialEle->type, DOC_SCALAR)
+                                          serialEle->type, DOC_SCALAR)
             );
             return false;
         }
+    }
+
+    DocObjectElement *pEle = (DocObjectElement*)propEle;
+    map<string, DocElement*> *pMap = pEle->getMemberMap();
+    for (map<string, DocElement*>::iterator ite = pMap->begin();
+            ite != pMap->end();
+            ++ite) {
+        if (ite->second->type != DOC_OBJECT) {
+            Error::addError(
+                    new FieldInvalidError(filePath, ite->second->line, ite->second->col, "schema.properties",
+                    ite->second->type, DOC_OBJECT)
+            );
+            return false;
+        }
+        DocObjectElement *item = (DocObjectElement*)ite->second;
+        DataSchemaObject *nowObj =
+                DataSchemaObjectFactory::create(filePath, item, DataSchemaObjectFactory::NORMAL_SCHEMA, true,
+                                                this->serialType);
+        if (nowObj == NULL)
+            return false;
+        this->properties[ite->first] = nowObj;
     }
 
     return true;

@@ -27,7 +27,7 @@ public:
     bool check(BaseDataObject *obj) override;
     BaseDataObject *transform(DocElement *ele) override;
     BaseDataObject *generate() override;
-    bool init(string filePath, DocObjectElement *obj, int schemaType) override;
+    bool init(string filePath, DocObjectElement *obj, int schemaType, ObjectSerialType inherentType) override;
 
     DataSchemaObject *findField(const vector<string> &fieldVec, int index) override;
 };

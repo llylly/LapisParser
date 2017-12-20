@@ -114,7 +114,8 @@ BaseDataObject *DataSchemaObject::toDataObject() {
     return obj;
 }
 
-DataSchemaObject *DataSchemaObjectFactory::create(string filePath, DocObjectElement *obj, int schemaType, bool inProperty) {
+DataSchemaObject *DataSchemaObjectFactory::create(string filePath, DocObjectElement *obj, int schemaType,
+                                                  bool inProperty, ObjectSerialType inherentType) {
     if (obj == NULL) return NULL;
 
     if (obj->type != DOC_OBJECT) {
@@ -317,7 +318,7 @@ DataSchemaObject *DataSchemaObjectFactory::create(string filePath, DocObjectElem
     /**
      * Handle type-specified fields
      */
-    if (!res->init(filePath, obj, schemaType)) {
+    if (!res->init(filePath, obj, schemaType, inherentType)) {
         delete res;
         return NULL;
     }
